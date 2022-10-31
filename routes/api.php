@@ -19,7 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/', function () {
-    return {response() -> json([
-        'test'=> 'sucks' 
-    ])};
+    return "test1";
 });
