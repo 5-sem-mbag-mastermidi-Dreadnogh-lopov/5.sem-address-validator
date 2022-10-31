@@ -18,6 +18,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', function () {
-    return "test1";
+Route::get('/', function (Request $request) {
+    $name = $request->input('name');
+    if (empty($name)) {
+        return 'noname';
+    }
+    return response()->json([
+        'test' => 123,
+        'athhhh' => 'poops'
+    ]);
 });
