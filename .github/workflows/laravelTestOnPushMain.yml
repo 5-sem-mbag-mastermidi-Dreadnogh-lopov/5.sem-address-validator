@@ -21,7 +21,7 @@ jobs:
     - name: install php curl & xml
       run: sudo apt install php-curl php-xml
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs=php+
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Generate key
