@@ -10,3 +10,6 @@ php artisan migration
 
 .env should contain:
 DB_CONNECTION=pgsql
+
+Run Tests:
+php artisan test --parallel

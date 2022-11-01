@@ -28,3 +28,7 @@ Route::get('/', function (Request $request) {
         'athhhh' => 'poops'
     ]);
 });
+
+Route::get('/test', function (Request $request) {
+   return 'du skrald';
+});
