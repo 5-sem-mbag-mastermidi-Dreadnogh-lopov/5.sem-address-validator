@@ -25,7 +25,14 @@ Route::get('/', function (Request $request) {
     }
     return response()->json([
         'test' => 123,
-        'athhhh' => 'poops'
+        'athhhh' => 'poops',
+        'name' => $name,
+        'time' => time(),
+        'date' => date('Y-m-d H:i:s'),
+        'ip' => $request->ip(),
+        'user-agent' => $request->userAgent(),
+        'server' => $_SERVER,
+        'request' => $request->all(),
     ]);
 });
 
