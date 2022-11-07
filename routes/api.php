@@ -3,6 +3,8 @@
 use App\Models\Hero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use app\Http\Controllers\AddressController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +19,5 @@ use Illuminate\Support\Facades\Route;
 
 //Version control
 Route::prefix('v1')->group(function () {
-    Route::post('/', [LocationController::class, 'index']);
+    Route::post('/', [AddressController::class, 'index']);
 });
