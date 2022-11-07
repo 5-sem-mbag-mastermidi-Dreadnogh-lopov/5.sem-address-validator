@@ -1,10 +1,9 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Models\Hero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use app\Http\Controllers\AddressController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +18,5 @@ use app\Http\Controllers\AddressController;
 
 //Version control
 Route::prefix('v1')->group(function () {
-    Route::post('/', [AddressController::class, 'index']);
+    Route::get('/test', [AddressController::class, 'index']);
 });
