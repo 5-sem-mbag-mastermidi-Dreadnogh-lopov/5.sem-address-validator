@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\lib\Model\Address;
+use App\Models\Address;
 use App\lib\Strategies\Countries\DenmarkStrategy;
 use App\lib\Strategies\Countries\SwedenStrategy;
 use App\lib\Strategies\Strategy;
@@ -15,13 +15,13 @@ class AddressController extends Controller
 
     public function index(Request $request)
     {
-        $address = new Address();
+        $request->validate([
+            'street' => 'required',
+            'country_code' => 'required|max:2',
+            'zip_code' => 'required'
+        ]);
 
-        $address->country_code = $request->country_code;
-        $address->street = $request->street;
-        $address->zip_code = $request->zip_code;
-        $address->city = $request->city;
-
+        $address = new Address($request->all());
 
         $strategy = match ($address->country_code) {
             'DK' => new DenmarkStrategy(),

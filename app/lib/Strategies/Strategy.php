@@ -2,7 +2,7 @@
 
 namespace App\lib\Strategies;
 
-use app\lib\model\Address;
+use app\models\Address;
 
 interface Strategy
 {

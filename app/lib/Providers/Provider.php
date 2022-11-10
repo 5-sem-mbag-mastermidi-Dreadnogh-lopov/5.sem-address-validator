@@ -2,7 +2,7 @@
 
 namespace App\lib\Providers;
 
-use App\lib\Model\Address;
+use App\Models\Address;
 
 interface Provider
 {

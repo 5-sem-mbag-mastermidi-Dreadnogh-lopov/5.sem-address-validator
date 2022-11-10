@@ -4,7 +4,7 @@ namespace App\lib\Strategies\Countries;
 
 use App\lib\Strategies\Strategy;
 use App\lib\Providers\DawaProvider;
-use App\lib\Model\Address;
+use App\Models\Address;
 
 class DenmarkStrategy implements Strategy
 {

@@ -18,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 //Version control
 Route::prefix('v1')->group(function () {
-    Route::get('/test', [AddressController::class, 'index']);
+    Route::get('/datawash', [AddressController::class, 'index']);
 });
