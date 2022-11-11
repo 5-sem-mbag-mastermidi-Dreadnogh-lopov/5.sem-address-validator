@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Models\Hero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 //Version control
 Route::prefix('v1')->group(function () {
-    Route::post('/', [LocationController::class, 'index']);
+    Route::get('/datawash', [AddressController::class, 'index']);
 });

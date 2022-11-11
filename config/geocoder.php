@@ -1,11 +1,12 @@
 <?php
 
-use Dawa\Geocoder\DawaProvider;
+namespace config;
+
+use App\lib\Providers\DawaProvider;
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GeoPlugin\GeoPlugin;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Http\Client\Curl\Client;
-use PTV\Geocoder\PTVProvider;
 
 return [
     'cache'     => [
@@ -59,10 +60,9 @@ return [
     */
     'providers' => [
         Chain::class => [
-            PTVProvider::class  => [],
             DawaProvider::class => [],
             GoogleMaps::class   => [
-                env('GOOGLE_MAPS_LOCALE', 'us'),
+                env('GOOGLE_MAPS_LOCALE', 'ge'),
                 env('GOOGLE_MAPS_API_KEY'),
             ],
             GeoPlugin::class    => [],
