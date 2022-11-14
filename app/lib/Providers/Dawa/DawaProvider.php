@@ -2,37 +2,22 @@
 
 namespace App\lib\Providers\Dawa;
 
-use App\Models\Address;
-use App\Models\DawaAddress;
-use Geocoder\Collection;
-use Geocoder\Model\AddressCollection;
-use Geocoder\Provider\Provider;
-use Geocoder\Query\GeocodeQuery;
-use Geocoder\Query\ReverseQuery;
-use Illuminate\Support\Collection as SupportCollection;
+use App\lib\Providers\Provider;
+use App\Models\AddressRequest;
+use App\Models\AddressResponse;
 use Illuminate\Support\Facades\Http;
 
 class DawaProvider implements Provider
 {
-    protected mixed $client;
     protected string $base_url = 'https://api.dataforsyningen.dk/';
 
     public function __construct()
     {
     }
 
-    public function geocodeQuery(GeocodeQuery $query): Collection
+    public function geocodeQuery(object $query) : Provider
     {
-        $addresses = new SupportCollection();
-
-        return new AddressCollection($addresses->map(function (Address $address) {
-            return new DawaAddress($address);
-        })->all());
-    }
-
-    public function reverseQuery(ReverseQuery $query): Collection
-    {
-        return new AddressCollection();
+        return "123";
     }
 
     public function getName(): string
@@ -40,16 +25,19 @@ class DawaProvider implements Provider
         return 'Dawa';
     }
 
-    function ValidateAddress(Address $address)
+    function ValidateAddress(AddressRequest $address) : AddressResponse
     {
         $response = Http::get($this->base_url . 'datavask/adresser', [
             'betegnelse' => $this->get_attributes($address)
-        ]);
+        ])->json();
 
-        return $response->json();
+        $res = new AddressResponse();
+        $res->category = $response['kategori'];
+
+        return $res;
     }
 
-    public static function get_attributes(Address $address)
+    public static function get_attributes(AddressRequest $address)
     {
         return "{$address->street}, {$address->zip_code} {$address->city}";
     }

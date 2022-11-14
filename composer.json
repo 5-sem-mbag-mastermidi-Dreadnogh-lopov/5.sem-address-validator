@@ -12,9 +12,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7",
-        "spatie/geocoder": "^3.14",
-        "toin0u/geocoder-laravel": "^4.4"
+        "laravel/tinker": "^2.7"
     },
     "require-dev": {
         "brianium/paratest": "^6.6",

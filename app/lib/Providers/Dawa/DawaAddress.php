@@ -1,34 +1,28 @@
 <?php
 
-namespace App\Models;
+namespace App\lib\Providers\Dawa;
 
+use App\Models\AddressRequest;
 use Exception;
-use Geocoder\Model\Address as GeocoderAddress;
-use Geocoder\Model\AdminLevelCollection;
-use Geocoder\Model\Coordinates;
-use Geocoder\Model\Country;
 
-class DawaAddress extends GeocoderAddress
+class DawaAddress
 {
-    /** @var string|null */
-    private $floor;
-    /** @var string|null */
-    private $door;
+    private ?string $floor;
+    private ?string $door;
 
     private $accessAddressId;
 
     /**
      * DawaAddress constructor.
      *
-     * @param Address|AccessAddress $address
+     * @param AddressRequest $address
      *
-     * @throws DawaException
      */
     public function __construct(
-        Address $address
+        AddressRequest $address
     ) {
-        if ($address instanceof Address) {
-            parent::__construct(
+        if ($address instanceof AddressRequest) {
+            __construct(
                 'dawa',
                 new AdminLevelCollection(),
                 new Coordinates($address->y, $address->x),
