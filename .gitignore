@@ -24,3 +24,6 @@ Homestead.json
 
 # php
 reports/
+
+# phpstorm
+.idea/

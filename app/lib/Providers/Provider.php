@@ -2,9 +2,10 @@
 
 namespace App\lib\Providers;
 
-use App\Models\Address;
+use App\Models\AddressRequest;
+use App\Models\AddressResponse;
 
 interface Provider
 {
-    function ValidateAddress(Address $address);
+    function ValidateAddress(AddressRequest $address) : AddressResponse;
 }

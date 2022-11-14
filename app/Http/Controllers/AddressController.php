@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\Address;
+use App\Models\AddressRequest;
 use App\lib\Strategies\Countries\DenmarkStrategy;
 use App\lib\Strategies\Countries\SwedenStrategy;
 use App\lib\Strategies\Strategy;
@@ -21,7 +21,7 @@ class AddressController extends Controller
             'zip_code' => 'required'
         ]);
 
-        $address = new Address($request->all());
+        $address = new AddressRequest($request->all());
 
         $strategy = match ($address->country_code) {
             'DK' => new DenmarkStrategy(),

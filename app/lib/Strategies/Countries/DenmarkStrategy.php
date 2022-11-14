@@ -4,32 +4,30 @@ namespace App\lib\Strategies\Countries;
 
 use App\lib\Strategies\Strategy;
 use App\lib\Providers\Dawa\DawaProvider;
-use App\Models\Address;
-use Geocoder\Query\GeocodeQuery;
-use Geocoder\Provider\Chain\Chain;
-use Geocoder\Provider\GoogleMaps\GoogleMaps;
+use App\lib\Providers\Provider;
+use App\Models\AddressRequest;
+use App\Models\AddressResponse;
 
 class DenmarkStrategy implements Strategy
 {
-    function ValidateAddress(Address $address)
+    private $providers = [DawaProvider::class];
+
+    function ValidateAddress(AddressRequest $address)
     {
-        $query = GeocodeQuery::create($this->get_attributes($address));
-
-        $client  = new \GuzzleHttp\Client();
-        $geocoder = new \Geocoder\ProviderAggregator();
-        $geocoder->registerProvider(new Chain([
-            new DawaProvider(),
-            new GoogleMaps($client, 'Denmark'),
-        ]));
-
-        $result = $geocoder->geocodeQuery($query);
-
-        // $provider = new DawaProvider();
-        // return $provider->ValidateAddress($address);
+        foreach ($this->providers as $provider){
+            $provider_class = new $provider();
+            $res = $this->execute($provider_class, $address);
+            if($res->categori == 'exact'){
+                dd($res);
+            } else if($res->categori == 'safe'){
+                dd($res);
+            }else if($res->categori == 'unsure'){
+                dd($res);
+            }
+        }
     }
 
-    public static function get_attributes(Address $address)
-    {
-        return "{$address->street}, {$address->zip_code} {$address->city} {$address->state}";
+    public function execute(Provider $provider, AddressRequest $address) : AddressResponse{
+        return $provider->ValidateAddress($address);
     }
 }

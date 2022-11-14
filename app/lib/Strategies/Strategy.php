@@ -2,9 +2,9 @@
 
 namespace App\lib\Strategies;
 
-use app\models\Address;
+use app\models\AddressRequest;
 
 interface Strategy
 {
-    function ValidateAddress(Address $address);
+    function ValidateAddress(AddressRequest $address);
 }
