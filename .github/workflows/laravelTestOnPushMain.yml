@@ -24,12 +24,5 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Generate key
       run: php artisan key:generate
-    - name: Create Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+    - name: Run test with coverage
+      run: vendor/bin/pest --coverage-html reports/
