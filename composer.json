@@ -16,6 +16,7 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.6",
+        "composer/xdebug-handler": "^3",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
