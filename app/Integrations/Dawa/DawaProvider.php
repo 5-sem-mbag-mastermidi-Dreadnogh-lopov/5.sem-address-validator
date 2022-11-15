@@ -1,8 +1,8 @@
 <?php
 
-namespace App\lib\Providers\Dawa;
+namespace App\Integrations\Dawa;
 
-use App\lib\Providers\Provider;
+use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Support\Facades\Http;
@@ -33,6 +33,8 @@ class DawaProvider implements Provider
 
         $res = new AddressResponse();
         $res->category = $response['kategori'];
+        $res->address_id = $response['0']['aktueladresse']['id'];
+        $res->street = $response['0']['aktueladresse']['vejnavn'];
 
         return $res;
     }

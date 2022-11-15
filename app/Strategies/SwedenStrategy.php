@@ -1,9 +1,8 @@
 <?php
 
-namespace App\lib\Strategies\Countries;
+namespace App\Strategies;
 
-use App\lib\Strategies\Strategy;
-use App\lib\Providers\DawaProvider;
+use App\lib\Integrations\DawaProvider;
 use App\Models\AddressRequest;
 
 /**

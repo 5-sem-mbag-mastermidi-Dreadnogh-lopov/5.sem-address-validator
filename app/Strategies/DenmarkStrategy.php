@@ -1,10 +1,9 @@
 <?php
 
-namespace App\lib\Strategies\Countries;
+namespace App\Strategies;
 
-use App\lib\Strategies\Strategy;
-use App\lib\Providers\Dawa\DawaProvider;
-use App\lib\Providers\Provider;
+use App\Integrations\Dawa\DawaProvider;
+use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 
@@ -17,11 +16,11 @@ class DenmarkStrategy implements Strategy
         foreach ($this->providers as $provider){
             $provider_class = new $provider();
             $res = $this->execute($provider_class, $address);
-            if($res->categori == 'exact'){
+            if($res->category == 'exact'){
                 dd($res);
-            } else if($res->categori == 'safe'){
+            } else if($res->category == 'safe'){
                 dd($res);
-            }else if($res->categori == 'unsure'){
+            }else if($res->category == 'unsure'){
                 dd($res);
             }
         }

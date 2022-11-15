@@ -11,7 +11,7 @@ class AddressResponse extends Model
     use hasFactory;
 
     protected $fillable = [
-        'id',
+        'address_id',
         'category',
         'street',
         'number',

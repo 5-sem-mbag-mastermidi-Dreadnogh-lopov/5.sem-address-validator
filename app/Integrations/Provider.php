@@ -1,6 +1,6 @@
 <?php
 
-namespace App\lib\Providers;
+namespace App\Integrations;
 
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
