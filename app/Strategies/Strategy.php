@@ -1,6 +1,6 @@
 <?php
 
-namespace App\lib\Strategies;
+namespace App\Strategies;
 
 use app\models\AddressRequest;
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\lib\Providers\Dawa;
+namespace App\Integrations\Dawa;
 
 use App\Models\AddressRequest;
 use Exception;
+use function App\lib\Integrations\Dawa\__construct;
 
 class DawaAddress
 {

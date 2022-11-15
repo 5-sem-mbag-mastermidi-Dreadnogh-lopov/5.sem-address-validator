@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddressRequest;
+use App\Strategies\DenmarkStrategy;
+use App\Strategies\Strategy;
+use App\Strategies\SwedenStrategy;
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\AddressRequest;
-use App\lib\Strategies\Countries\DenmarkStrategy;
-use App\lib\Strategies\Countries\SwedenStrategy;
-use App\lib\Strategies\Strategy;
 
 class AddressController extends Controller
 {
