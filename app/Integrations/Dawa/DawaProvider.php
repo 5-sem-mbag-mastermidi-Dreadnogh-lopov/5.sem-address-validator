@@ -15,7 +15,7 @@ class DawaProvider implements Provider
     {
     }
 
-    public function geocodeQuery(object $query) : Provider
+    public function geocodeQuery(object $query): Provider
     {
         return "123";
     }
@@ -25,16 +25,19 @@ class DawaProvider implements Provider
         return 'Dawa';
     }
 
-    function ValidateAddress(AddressRequest $address) : AddressResponse
+    function ValidateAddress(AddressRequest $address): AddressResponse
     {
+        $start = hrtime(true);
         $response = Http::get($this->base_url . 'datavask/adresser', [
             'betegnelse' => $this->get_attributes($address)
         ])->json();
+        $time_elapsed_secs = hrtime(true) - $start;
+        dump($time_elapsed_secs);
 
         $res = new AddressResponse();
         $res->category = $response['kategori'];
-        $res->address_id = $response['0']['aktueladresse']['id'];
-        $res->street = $response['0']['aktueladresse']['vejnavn'];
+        $res->address_id = $response['resultater'][0]['aktueladresse']['id'];
+        $res->street = $response['resultater'][0]['aktueladresse']['vejnavn'];
 
         return $res;
     }

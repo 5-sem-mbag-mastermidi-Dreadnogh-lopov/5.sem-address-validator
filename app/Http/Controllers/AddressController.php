@@ -23,12 +23,22 @@ class AddressController extends Controller
 
         $address = new AddressRequest($request->all());
 
-        $strategy = match ($address->country_code) {
+        $strategy = AddressController::getStrategy($address);
+
+        return $strategy->ValidateAddress($address);
+    }
+
+    /**
+     * @param AddressRequest $address
+     * @return DenmarkStrategy|SwedenStrategy
+     * @throws Exception
+     */
+    private static function getStrategy(AddressRequest $address): SwedenStrategy|DenmarkStrategy
+    {
+        return match ($address->country_code) {
             'DK' => new DenmarkStrategy(),
             'SE' => new SwedenStrategy(),
             default => throw new Exception('Country not supported'),
         };
-
-        return $strategy->ValidateAddress($address);
     }
 }
