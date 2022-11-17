@@ -27,12 +27,9 @@ class DawaProvider implements Provider
 
     function ValidateAddress(AddressRequest $address): AddressResponse
     {
-        $start = hrtime(true);
         $response = Http::get($this->base_url . 'datavask/adresser', [
             'betegnelse' => $this->get_attributes($address)
         ])->json();
-        $time_elapsed_secs = hrtime(true) - $start;
-        dump($time_elapsed_secs);
 
         $res = new AddressResponse();
         $res->category = $response['kategori'];
