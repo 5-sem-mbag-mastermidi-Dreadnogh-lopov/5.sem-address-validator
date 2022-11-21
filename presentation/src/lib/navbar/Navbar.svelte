@@ -1,82 +1,48 @@
 <script>
+    import PingStatus from "./PingStatus.svelte";
+    import { JWT } from "../stores/login.store.js";
+    //Constants
     import {
         activeMenu,
         LOGIN_BTN,
         ADMIN_TOOL_BTN,
         API_TEST_BTN,
     } from "../stores/page.store.js";
-    import PingStatus from "./PingStatus.svelte";
-    import { JWT } from "../stores/login.store.js";
-
-    //Constants
-
+    //how often to ping API in minutes
+    let interval = 1;
     //Methods
-    $: loggedIn = $JWT !== null || $JWT !== undefined || $JWT !== "";
-    console.log($JWT);
+    $: loggedIn = $JWT !== undefined;
+
+    let pages = [LOGIN_BTN, ADMIN_TOOL_BTN, API_TEST_BTN];
+    const handleClick = (page) => {
+        if (page === LOGIN_BTN) {
+            activeMenu.set(LOGIN_BTN);
+        } else if (page === ADMIN_TOOL_BTN && loggedIn) {
+            activeMenu.set(ADMIN_TOOL_BTN);
+        } else if (page === API_TEST_BTN) {
+            activeMenu.set(API_TEST_BTN);
+        } else {
+            alert("You need to login first");
+        }
+    };
 </script>
 
-<div class="flex items-center navbar">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <button
-        href="_blank"
-        class:active={$activeMenu == LOGIN_BTN}
-        on:click={() => {
-            activeMenu.set(LOGIN_BTN);
-        }}>{LOGIN_BTN}</button
-    >
-    <button
-        class:active={$activeMenu == ADMIN_TOOL_BTN}
-        on:click={() => {
-            if ($JWT !== ("" || undefined || null)) {
-                console.log($JWT);
-                activeMenu.set(ADMIN_TOOL_BTN);
-            } else {
-                alert("You are not logged in");
-            }
-        }}
-    >
-        {ADMIN_TOOL_BTN}
-    </button>
-    <button
-        href="_blank"
-        class:active={$activeMenu == API_TEST_BTN}
-        on:click={() => {
-            activeMenu.set(API_TEST_BTN);
-        }}>{API_TEST_BTN}</button
-    >
-    <div class="px-4 ml-auto {loggedIn ? 'text-green-500' : 'text-red-500'}">
-        JWT
+<div class="flex items-center navbar overflow-hidden bg-zinc-700">
+    {#each pages as page}
+        <!-- content here -->
+        <button
+            href="_blank"
+            class="p-4  {$activeMenu == page
+                ? 'bg-green-500 text-white'
+                : 'hover:bg-zinc-600 hover:text-white'}
+                transition-all"
+            on:click={() => {
+                handleClick(page);
+            }}>{page}</button
+        >
+    {/each}
+
+    <div class="px-4 ml-auto -mt-2">
+        <PingStatus {interval} {loggedIn} />
     </div>
-    {@debug loggedIn}
-    <div class="px-4 ml-auto"><PingStatus /></div>
 </div>
-
-<style>
-    /* Add a black background color to the top navigation */
-    .navbar {
-        background-color: #333;
-        overflow: hidden;
-    }
-
-    /* Style the links inside the navigation bar */
-    .navbar button {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-    }
-
-    /* Change the color of links on hover */
-    .navbar button:hover {
-        background-color: #ddd;
-        color: black;
-    }
-
-    /* Add a color to the active/current link */
-    .navbar button.active {
-        background-color: #04aa6d;
-        color: white;
-    }
-</style>

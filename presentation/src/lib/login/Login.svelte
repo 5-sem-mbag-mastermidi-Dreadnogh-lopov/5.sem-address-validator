@@ -5,7 +5,6 @@
     //TODO: Implement functional to work with API call.
     function submitLogin(password) {
         JWT.set(password);
-        alert($JWT);
     }
 </script>
 
@@ -26,7 +25,7 @@
     </div>
     <button
         on:click={() => submitLogin(password)}
-        class="p-2 border text-white hover:text-green-500 shadow rounded bg-green-500 m-2 -mt-12 w-44 transition-all hover:scale-105 hover:bg-white hover:border-green-500"
+        class="p-2 border text-white hover:text-green-500 shadow rounded bg-green-500 m-2 -mt-16 w-44 transition-all hover:scale-105 hover:bg-white hover:border-green-500"
         >Login</button
     >
 </div>
