@@ -1,6 +1,7 @@
 <script>
     let alive = true;
     let lastCheck = Date.now();
+    import { activeMenu, LOGIN_BTN } from "../stores/page.store";
     export let interval;
     export let loggedIn;
     //randomly change status
@@ -21,13 +22,22 @@
         alive = Math.random() > 0.3 ? true : false;
         lastCheck = Date.now();
     };
+    //goto login page if not logged in
+    function gotoLogin() {
+        if (!loggedIn) {
+            activeMenu.set(LOGIN_BTN);
+        }
+    }
 </script>
 
 <button class="relative" on:click={pingAPI}>
     <div class="flex flex-col text-xs text-white mr-3">
-        <div class="px-4 text-xs {loggedIn ? 'text-white' : 'text-red-500'}">
+        <button
+            class="px-4 text-xs {loggedIn ? 'text-white' : 'text-red-500'}"
+            on:click={gotoLogin}
+        >
             {loggedIn ? "Welcome Admin" : "Not logged in"}
-        </div>
+        </button>
         <p>Service is {alive ? "alive" : "down"}</p>
         <p>Last check: {new Date(lastCheck).toLocaleTimeString("it-IT")}</p>
     </div>
