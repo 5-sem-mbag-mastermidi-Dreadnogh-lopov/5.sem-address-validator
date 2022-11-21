@@ -27,13 +27,13 @@
     };
 </script>
 
-<div class="flex items-center navbar overflow-hidden bg-zinc-700">
+<div class="flex items-center navbar overflow-hidden bg-zinc-700 shadow-xl">
     {#each pages as page}
         <!-- content here -->
         <button
             href="_blank"
             class="p-4  {$activeMenu == page
-                ? 'bg-green-500 text-white'
+                ? 'bg-green-500 text-white font-bold'
                 : 'hover:bg-zinc-600 hover:text-white'}
                 transition-all"
             on:click={() => {
