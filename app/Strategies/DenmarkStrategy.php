@@ -24,7 +24,7 @@ class DenmarkStrategy implements Strategy
             new StringReplaceRule('chr', 'chr.'),
             new StringReplaceRule('chr.', 'christian'),
             new StringReplaceRule('hc', 'h.c.'),
-            new RomanNumeralRule(),
+            //new RomanNumeralRule(), // kinda broken, uncommented for now
         ];
     }
 
@@ -40,30 +40,29 @@ class DenmarkStrategy implements Strategy
         $addresses = $this->Wash($address);
 
         foreach ($this->providers as $provider) {
-            $res = $this->execute(new $provider(), $address);
-            if ($res->category == 'exact') {
-                dd($res);
-            } else if ($res->category == 'safe') {
-                dd($res);
-            } else if ($res->category == 'uncertain') {
-                dd($res);
-            }
+            $res = $this->execute(new $provider(), $address, $addresses);
         }
+
+        return $res;
     }
 
-    public function execute(Provider $provider, AddressRequest $address): AddressResponse
+    public function execute(Provider $provider, AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
     {
-        return $provider->ValidateAddress($address);
+        return $provider->ValidateAddress($address, $wash_results);
     }
 
-    private function Wash(AddressRequest $address): array
+    private function Wash(AddressRequest $address): array // TODO implement washing a little better, doesnt work with unique elements
     {
         $addresses = [];
 
         foreach ($this->test_ruleset as $rule) {
-            $addresses[] = $rule->apply($address->street);
+            $washed_street = $rule->apply($address->street);
+            $new_address = clone $address;
+            $address->street = $washed_street;
+            $addresses[] = $new_address;
         }
 
-        return array_unique($addresses);
+        //return array_unique($addresses);
+        return $addresses;
     }
 }

@@ -16,4 +16,9 @@ class AddressRequest extends Model
         'city',
         'country_code'
     ];
+
+    protected $attributes = [
+        'state' => null,
+        'city' => null,
+    ];
 }
