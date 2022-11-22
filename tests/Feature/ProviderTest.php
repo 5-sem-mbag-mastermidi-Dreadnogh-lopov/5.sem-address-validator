@@ -2,8 +2,7 @@
 
 test('test ValidateAddress', function () {
     $address = new \App\Models\AddressRequest([
-        'street' => 'urbansgade 23',
-        'state' => '',
+        'street' => 'urbansgade 23, 1 tv',
         'zip_code' => '9000',
         'city' => 'Aalborg',
         'country_code' => 'DK'
@@ -11,12 +10,23 @@ test('test ValidateAddress', function () {
 
     Http::fake([
         'https://api.dataforsyningen.dk/datavask/adresser?betegnelse=*' => Http::response([
-            'kategori' => "A",
-            'resultater' => [
-                '0' => [
-                    'aktueladresse' => [
-                        'id' => '77edff31-1517-49ce-93d5-dfe02cc60dab',
-                        'vejnavn' => 'Urbansgade'
+            "kategori" => "A",
+            "resultater" => [
+                0 => [
+                    "aktueladresse" => [
+                        "vejnavn" => "Urbansgade",
+                        "adresseringsvejnavn" => "Urbansgade",
+                        "husnr" => "23",
+                        "supplerendebynavn" => null,
+                        "postnr" => "9000",
+                        "postnrnavn" => "Aalborg",
+                        "status" => 1,
+                        "virkningstart" => "2009-11-24T02:15:25.000Z",
+                        "virkningslut" => null,
+                        "adgangsadresseid" => "0a3f509c-d8bb-32b8-e044-0003ba298018",
+                        "etage" => "1",
+                        "dør" => "tv",
+                        "href" => "https://api.dataforsyningen.dk/adresser/0a3f50ca-e927-32b8-e044-0003ba298018"
                     ]
                 ]
             ]
@@ -25,9 +35,7 @@ test('test ValidateAddress', function () {
 
     $provider = new \App\Integrations\Dawa\DawaProvider();
 
-    $response = $provider->ValidateAddress($address);
+    $response = $provider->ValidateAddress($address, []);
 
-    expect($response->category)->toEqual('A');
-    expect($response->address_id)->toEqual('77edff31-1517-49ce-93d5-dfe02cc60dab');
-    expect($response->street)->toEqual('Urbansgade');
+    expect($response->city)->toEqual('Aalborg');
 });
