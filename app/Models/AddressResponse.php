@@ -4,20 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class AddressResponse extends Model
 {
     use hasFactory;
 
+    protected $table = 'address';
+
     protected $fillable = [
-        'address_id',
-        'category',
-        'street',
-        'number',
-        'floor',
-        'door',
+        'id',
+        'address_formatted',
+        'street_name',
+        'street_number',
         'zip_code',
-        'city'
+        'city',
+        'state',
+        'country_code',
+        'country_name',
+        'latitude',
+        'longitude',
+        'mainland',
+        'response_json'
+    ];
+
+    protected $visible = [
+        'address_formatted',
+        'street_name',
+        'street_number',
+        'zip_code',
+        'city',
+        'state',
+        'country_code',
+        'country_name',
+        'latitude',
+        'longitude',
+        'mainland',
+        'response_json'
     ];
 }
