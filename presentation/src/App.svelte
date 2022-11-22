@@ -1,9 +1,13 @@
 <script>
     import Navbar from "./lib/navbar/Navbar.svelte";
-    import Content from "./lib/Content.svelte";
+    import Routes from "./lib/Routes.svelte";
 </script>
+
+<svelte:head>
+    <title>Address Validator</title>
+</svelte:head>
 
 <main>
     <Navbar />
-    <Content />
+    <Routes />
 </main>
