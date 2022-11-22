@@ -2,8 +2,13 @@
     import { JWT } from "../stores/login.store.js";
     let password = "";
 
-    //TODO: Implement functional to work with API call.
+    //TODO: Implement functional JWT auth to work with API call.
     function submitLogin(password) {
+        //Send password to API
+        //let response = await post("http://localhost:5000/api/auth", password);
+        //let jwt = validateJwt(reponse);
+        //if(jwt !== undefined)
+        //    JWT.set(jwt);
         JWT.set(password);
     }
 </script>

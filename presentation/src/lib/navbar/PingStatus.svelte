@@ -38,7 +38,12 @@
         >
             {loggedIn ? "Welcome Admin" : "Not logged in"}
         </button>
-        <p>Service is {alive ? "alive" : "down"}</p>
+        <p>
+            Service is
+            <span class="{alive ? 'text-green-400' : 'text-red-400'} ">
+                {alive ? "alive" : "down"}
+            </span>
+        </p>
         <p>
             Last check: <span class="font-bold"
                 >{new Date(lastCheck).toLocaleTimeString("it-IT")}</span
