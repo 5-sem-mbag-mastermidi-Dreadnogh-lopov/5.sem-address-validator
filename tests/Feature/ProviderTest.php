@@ -25,7 +25,7 @@ test('test ValidateAddress', function () {
 
     $provider = new \App\Integrations\Dawa\DawaProvider();
 
-    $response = $provider->ValidateAddress($address);
+    $response = $provider->ValidateAddress($address, []);
 
     expect($response->category)->toEqual('A');
     expect($response->address_id)->toEqual('77edff31-1517-49ce-93d5-dfe02cc60dab');
