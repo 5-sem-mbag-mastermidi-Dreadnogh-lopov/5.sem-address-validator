@@ -10,28 +10,22 @@ class CacheController extends Controller
 {
     public function index()
     {
-
-        return  AddressResponse::paginate(15);
-
+        return AddressResponse::paginate(15);
     }
 
     public function get($id)
     {
-
         return AddressResponse::where('id', $id)->first();
     }
 
     public function delete($id)
     {
-            $hash_request = AddressResponse::find($id);
-            $hash_request->delete();
+        $hash_request = AddressResponse::find($id);
+        $hash_request->delete();
     }
 
     public function update(Request $request, $id)
     {
-            return AddressResponse::where('id', $id)->update($request->all());
-
-
+        return AddressResponse::where('id', $id)->update($request->all());
     }
-
 }
