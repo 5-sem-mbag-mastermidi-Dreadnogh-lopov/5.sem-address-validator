@@ -19,4 +19,7 @@ use Illuminate\Support\Facades\Route;
 //Version control
 Route::prefix('v1')->group(function () {
     Route::get('/datawash', [AddressController::class, 'index']);
+    Route::get('/alive', function () {
+        return response()->json(['alive' => true]);
+    });
 });
