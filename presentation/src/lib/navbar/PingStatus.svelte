@@ -11,15 +11,12 @@
 
     const pingAPI = async () => {
         //TODO: Make a function to ping API, and update status, to check if service is alive.
-        // let response = await fetch("http://localhost:5000/api/ping");
-        // if (response.ok) {
-        //     alive = true;
-        // } else {
-        //     alive = false;
-        // }
-        // lastCheck = Date.now();
-
-        alive = Math.random() > 0.3 ? true : false;
+        let response = await fetch("http://localhost:80/api/v1/alive");
+        if (response.ok) {
+            alive = true;
+        } else {
+            alive = false;
+        }
         lastCheck = Date.now();
     };
     //goto login page if not logged in
