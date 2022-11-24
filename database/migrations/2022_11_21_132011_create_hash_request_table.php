@@ -16,11 +16,12 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
 
-            $table->string('hash_key')->unique()->index();
+            $table->jsonb('hash_key')->unique();//->index();
 
             $table->foreignId('address_id')->references('id')->on('address')
                 ->cascadeOnDelete();
         });
+        DB::statement('CREATE INDEX hash_index ON hash_request USING HASH (hash_key);');
     }
 
     /**

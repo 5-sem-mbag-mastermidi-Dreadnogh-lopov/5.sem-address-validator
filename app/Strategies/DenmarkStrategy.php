@@ -38,7 +38,6 @@ class DenmarkStrategy implements Strategy
     function ValidateAddress(AddressRequest $address)
     {
         $addresses = $this->Wash($address);
-
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
         }

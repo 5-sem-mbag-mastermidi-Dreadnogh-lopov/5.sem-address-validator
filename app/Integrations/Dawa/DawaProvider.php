@@ -13,20 +13,6 @@ class DawaProvider implements Provider
 {
     protected string $base_url = 'https://api.dataforsyningen.dk/';
 
-    public function __construct()
-    {
-    }
-
-    public function geocodeQuery(object $query): Provider
-    {
-        return "123";
-    }
-
-    public function getName(): string
-    {
-        return 'Dawa';
-    }
-
     function ValidateAddress(AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
     {
         $initial_search = $this->get_closest_match($address, $wash_results);
@@ -80,21 +66,13 @@ class DawaProvider implements Provider
             });
         }
 
+        /*
         $obj = array_reduce($responses, static function ($carry, $item) {
             return $carry === false && $item['resultater'][0]['aktueladresse']['href'] != '' ? $item : $carry;
         }, false);
+        */
 
         return $wash_response;
-    }
-
-    protected function convert_to_category(string $category)
-    {
-        return match ($category) {
-            'A' => 'exact',
-            'B' => 'sure',
-            'C' => 'unsure',
-            default => ''
-        };
     }
 
     protected function get_exact_address(Response $response): Response
