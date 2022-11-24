@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
-use App\Models\Hero;
+use App\Http\Controllers\CacheController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 //Version control
 Route::prefix('v1')->group(function () {
+
     Route::get('/datawash', [AddressController::class, 'index']);
+
+    Route::prefix('address')->group(function (){
+        Route::get("/", [CacheController::class, 'index']);
+        Route::get("/{id}", [CacheController::class, 'get']);
+        Route::put("/{id}", [CacheController::class, 'update']);
+        Route::delete( "/{id}", [CacheController::class, 'delete']);
+    });
+
 });
+
+
