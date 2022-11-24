@@ -22,10 +22,11 @@ class AddressController extends Controller
             'country_code' => 'required|max:2',
             'zip_code' => 'required'
         ]);
-
+        
         // check cache for identical request, else create new instance of hash request class
         $hash = HashRequest::firstOrNew(
-            ['hash_key' => hash('sha256', json_encode($request->all()))],
+        //['hash_key' => hash('sha256', json_encode($request->all()))],
+            ['hash_key' => json_encode($request->all())],
             ['address_id' => null]
         );
 
@@ -33,15 +34,20 @@ class AddressController extends Controller
         if (isset($hash->id)) {
             $res = AddressResponse::find($hash->address_id);
         } else {
-
             // create address instance from request information
             $address = new AddressRequest($request->all());
+
             // get the appropriate country strategy and validate the address instance
             $strategy = AddressController::getStrategy($address);
             $res = $strategy->ValidateAddress($address);
 
             // create result on database and set address id on hash request
-            $address_model = AddressResponse::create($res->attributesToArray());
+            $address_model = AddressResponse::firstOrCreate([
+                'street_name' => $res->street_name,
+                'street_number' => $res->street_number,
+                'zip_code' => $res->zip_code,
+                'city' => $res->city
+            ], $res->attributesToArray());
             $hash->address_id = $address_model->id;
             $hash->save();
         }
