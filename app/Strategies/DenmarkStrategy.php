@@ -29,7 +29,8 @@ class DenmarkStrategy implements Strategy
     }
 
     private $special_rules = [
-        ' stuen' => ' st',
+        'stuen' => 'st',
+        'stuen' => 'st.',
         'ae' => 'æ',
         'aa' => 'å',
         'oe' => "ø",
@@ -60,6 +61,8 @@ class DenmarkStrategy implements Strategy
             $address->street = $washed_street;
             $addresses[] = $new_address;
         }
+
+
 
         //return array_unique($addresses);
         return $addresses;
