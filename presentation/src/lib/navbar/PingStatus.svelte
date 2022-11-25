@@ -57,11 +57,11 @@
     <div
         class="{alive
             ? 'bg-green-400'
-            : 'bg-red-400'} transition-all h-4 w-4 rounded-full absolute top-0 -right-2"
+            : 'bg-red-400'} transition-all h-4 w-4 rounded-full absolute top-1 -right-2"
     />
     <div
         class="{alive
             ? 'bg-green-400'
-            : 'bg-red-400'} transition-all animate-ping h-4 w-4 rounded-full absolute top-0 -right-2"
+            : 'bg-red-400'} transition-all animate-ping h-4 w-4 rounded-full absolute top-1 -right-2"
     />
 </button>
