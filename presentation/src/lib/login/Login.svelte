@@ -13,8 +13,8 @@
     }
 </script>
 
-<div class="flex flex-col items-center pt-12 h-[50vh] justify-around">
-    <p class="text-lg">
+<div class="flex flex-col items-center pt-12 h-[30vh] justify-around">
+    <p class="text-lg pb-6">
         To enter the <span class="font-bold">Admin tool</span>, type the
         <span class="font-bold">masterpassword</span> below
     </p>
@@ -30,7 +30,7 @@
     </div>
     <button
         on:click={() => submitLogin(password)}
-        class="p-2 border text-white hover:text-green-500 shadow rounded bg-green-500 m-2 -mt-16 w-44 transition-all hover:scale-105 hover:bg-white hover:border-green-500"
+        class="p-2 border text-white hover:text-green-500 shadow rounded bg-green-500 m-2 w-44 transition-all hover:scale-105 hover:bg-white hover:border-green-500"
         >Login</button
     >
 </div>
