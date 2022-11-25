@@ -14,7 +14,7 @@
         //TODO: Make a function to ping API, and update status, to check if service is alive.
         try {
             let response = await fetch("http://localhost:80/api/alive");
-            if (response.status == 200) {
+            if (response.ok) {
                 alive = true;
             } else {
                 alive = false;
