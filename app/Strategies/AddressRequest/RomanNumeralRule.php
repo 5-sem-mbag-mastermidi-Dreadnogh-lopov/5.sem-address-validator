@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Strategies;
+namespace App\Strategies\AddressRequest;
 
-class RomanNumeralRule
+use App\Models\AddressRequest;
+use function App\Strategies\str_starts_with;
+
+class RomanNumeralRule implements AddressRequestRuleInterface
 {
-    protected $romans = [
+    protected array $romans = [
         'M' => 1000,
         'CM' => 900,
         'D' => 500,
@@ -21,11 +24,13 @@ class RomanNumeralRule
     ];
 
 
-    public function apply(string $input): string
+    public function apply(AddressRequest $request): AddressRequest
     {
         $exp = "/^[XVIMCDL]*[^s'.´]??/i";
 
-        $exploded = explode(' ', $input);
+        $street = $request->street;
+
+        $exploded = explode(' ', $street);
 
         foreach ($exploded as $string) {
             preg_match($exp, $string, $matches);
@@ -36,7 +41,7 @@ class RomanNumeralRule
         }
 
         if (!isset($roman)) {
-            return false;
+            return $request;
         }
 
         foreach ($roman as $numerals) {
@@ -53,6 +58,10 @@ class RomanNumeralRule
             $exploded[$numerals] = $result;
         }
 
-        return join(' ', $exploded);
+        $replacement = clone $request;
+
+        $replacement->street = join(' ', $exploded);
+
+        return $replacement;
     }
 }
