@@ -17,8 +17,7 @@
             if (response.ok) {
                 alive = true;
             } else {
-                alive = false;
-                notifications.danger("API is not responding", 1000);
+                throw new Error("API is not alive");
             }
         } catch (error) {
             alive = false;
