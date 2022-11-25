@@ -1,15 +1,23 @@
 <script>
     import { JWT } from "../stores/login.store.js";
+    import { activeMenu, ADMIN_TOOL_BTN } from "../stores/page.store.js";
     let password = "";
 
     //TODO: Implement functional JWT auth to work with API call.
-    function submitLogin(password) {
+    async function submitLogin(password) {
         //Send password to API
-        //let response = await post("http://localhost:5000/api/auth", password);
-        //let jwt = validateJwt(reponse);
-        //if(jwt !== undefined)
-        //    JWT.set(jwt);
-        JWT.set(password);
+        let response = await fetch(
+            "http://localhost:80/api/v1/login?password=" + password,
+            {
+                method: "GET",
+            }
+        );
+        let { success } = await response.json();
+        console.log(success);
+        if (success) {
+            activeMenu.set(ADMIN_TOOL_BTN);
+            JWT.set(password);
+        }
     }
 </script>
 
@@ -23,7 +31,7 @@
         <input
             bind:value={password}
             class="p-1 border-2 border-green-500 outline-0 transition-all rounded focus:shadow-md focus:scale-105"
-            type="password"
+            type="text"
             name="Password"
             id="passwordInput"
         />
