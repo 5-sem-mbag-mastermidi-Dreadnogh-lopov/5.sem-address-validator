@@ -27,7 +27,7 @@
             responseJson.date = new Date();
             insertAddressTotable(responseJson);
         } else {
-            //Toast popup functionality here, no data found.
+            //Toast popup functionality here, no data   found.
             console.log("Toast popup");
         }
     }
