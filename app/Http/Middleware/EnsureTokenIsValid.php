@@ -17,7 +17,6 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next)
     {
-        //dd($request->cookie('jwt'));
         $jwt = $request->header('Authorization');
         $isValid = JWT::parse($jwt)->isValid(env('APP_PUBLIC_KEY'));
         if ($isValid) {
