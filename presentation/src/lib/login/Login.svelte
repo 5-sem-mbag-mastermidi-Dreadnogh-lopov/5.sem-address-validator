@@ -8,10 +8,7 @@
     async function submitLogin(password) {
         //Send password to API
         let response = await fetch(
-            "http://localhost:80/api/v1/login?password=" + password,
-            {
-                method: "GET",
-            }
+            "http://localhost:80/api/v1/login?password=" + password
         );
         if (response.ok) {
             errors = false;
