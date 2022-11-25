@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
-use App\Strategies\DenmarkStrategy;
+use App\Strategies\Denmark\DenmarkStrategy;
 use App\Strategies\Strategy;
-use App\Strategies\SwedenStrategy;
+use App\Strategies\Sweden\SwedenStrategy;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ class AddressController extends Controller
             'country_code' => 'required|max:2',
             'zip_code' => 'required'
         ]);
-        
+
         // check cache for identical request, else create new instance of hash request class
         $hash = HashRequest::firstOrNew(
         //['hash_key' => hash('sha256', json_encode($request->all()))],
