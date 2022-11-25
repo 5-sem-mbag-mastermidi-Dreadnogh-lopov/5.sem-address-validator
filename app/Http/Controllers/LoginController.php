@@ -16,17 +16,16 @@ class LoginController extends Controller
         
         //check if password is correct
         if ($password == env('APP_PASSWORD')) {
-            $jwt = JWT::get('penisBoy', ['anything' => 'here']);
-            return response()->json(['success' => true, 'jwt' => $jwt]);
+            $jwt = $this->makeJWT();
+            return response()->json(['jwt' => $jwt]);
         } else {
-            return response()->json(['success' => false], 401,);
+            return response('Unauthorized.', 401);
         }
     }
 
-    public function test(Request $request)
+    private function makeJWT()
     {
-        $jwt = $request->jwt;
-        $isValid = JWT::parse($jwt)->isValid('penisBoy');
-        return response()->json(['isValid' => $isValid]);
+        $jwt = JWT::get(env('APP_PUBLIC_KEY'), ['nonce' => 'this is nonce']);
+        return $jwt;
     }
 }

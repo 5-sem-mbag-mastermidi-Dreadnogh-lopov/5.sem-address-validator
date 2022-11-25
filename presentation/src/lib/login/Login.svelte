@@ -1,7 +1,8 @@
 <script>
-    import { JWT } from "../stores/login.store.js";
-    import { activeMenu, ADMIN_TOOL_BTN } from "../stores/page.store.js";
+    import { pageStore } from "../stores/page.store.js";
+    import { notifications } from "../stores/notifications.js";
     let password = "";
+    let errors = false;
 
     //TODO: Implement functional JWT auth to work with API call.
     async function submitLogin(password) {
@@ -12,11 +13,15 @@
                 method: "GET",
             }
         );
-        let { success } = await response.json();
-        console.log(success);
-        if (success) {
-            activeMenu.set(ADMIN_TOOL_BTN);
-            JWT.set(password);
+        if (response.ok) {
+            errors = false;
+            let { jwt } = await response.json();
+            localStorage.setItem("jwt", jwt);
+            pageStore.adminPage();
+            notifications.success("Login successful", 1000);
+        } else {
+            errors = true;
+            notifications.danger("Login failed, Wrong password", 1000);
         }
     }
 </script>
@@ -30,7 +35,9 @@
         <label class="font-bold" for="passwordInput">Password</label><br />
         <input
             bind:value={password}
-            class="p-1 border-2 border-green-500 outline-0 transition-all rounded focus:shadow-md focus:scale-105"
+            class="p-1 border-2  outline-0 transition-all rounded focus:shadow-md focus:scale-105 {errors
+                ? 'border-red-500 '
+                : 'border-green-500'}"
             type="text"
             name="Password"
             id="passwordInput"

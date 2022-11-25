@@ -1,9 +1,10 @@
 <script>
+    import { pageStore, loggedIn } from "../stores/page.store";
+    import { notifications } from "../stores/notifications";
     let alive = true;
     let lastCheck = Date.now();
-    import { activeMenu, LOGIN_BTN } from "../stores/page.store";
     export let interval;
-    export let loggedIn;
+
     //randomly change status
     setInterval(() => {
         pingAPI();
@@ -17,16 +18,18 @@
                 alive = true;
             } else {
                 alive = false;
+                notifications.danger("API is not responding", 1000);
             }
         } catch (error) {
             alive = false;
+            notifications.danger("API is not responding", 1000);
         }
         lastCheck = Date.now();
     };
     //goto login page if not logged in
     function gotoLogin() {
-        if (!loggedIn) {
-            activeMenu.set(LOGIN_BTN);
+        if (!$loggedIn) {
+            pageStore.loginPage();
         }
     }
 </script>
@@ -34,10 +37,10 @@
 <button class="relative" on:click={pingAPI}>
     <div class="flex flex-col text-xs text-white mr-3">
         <button
-            class="px-4 text-xs {loggedIn ? 'text-white' : 'text-red-500'}"
+            class="px-4 text-xs {$loggedIn ? 'text-white' : 'text-red-500'}"
             on:click={gotoLogin}
         >
-            {loggedIn ? "Welcome Admin" : "Not logged in"}
+            {$loggedIn ? "Welcome Admin" : "Not logged in"}
         </button>
         <p>
             Service is
