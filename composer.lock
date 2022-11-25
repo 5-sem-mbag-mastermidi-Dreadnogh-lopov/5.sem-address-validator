@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d967d27250019510c65a25b670d56226",
+    "content-hash": "e59e1076d7eb7a9029f20b23f75e104b",
     "packages": [
         {
             "name": "brick/math",
@@ -1275,6 +1275,68 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.7.3"
             },
             "time": "2022-11-09T15:11:38+00:00"
+        },
+        {
+            "name": "lcobucci/jwt",
+            "version": "3.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/jwt.git",
+                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/82be04b4753f8b7693b62852b7eab30f97524f9b",
+                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mdanter/ecc": "~0.3.1",
+                "mikey179/vfsstream": "~1.5",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/php-invoker": "~1.1",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "suggest": {
+                "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Otávio Cobucci Oblonczyk",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "support": {
+                "issues": "https://github.com/lcobucci/jwt/issues",
+                "source": "https://github.com/lcobucci/jwt/tree/3.2"
+            },
+            "time": "2018-11-11T12:22:26+00:00"
         },
         {
             "name": "league/commonmark",
@@ -2833,6 +2895,62 @@
                 }
             ],
             "time": "2022-11-05T23:03:38+00:00"
+        },
+        {
+            "name": "stechstudio/laravel-jwt",
+            "version": "1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stechstudio/laravel-jwt.git",
+                "reference": "99f3f1252b3a55800ebc84b5fc6303309349245f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stechstudio/laravel-jwt/zipball/99f3f1252b3a55800ebc84b5fc6303309349245f",
+                "reference": "99f3f1252b3a55800ebc84b5fc6303309349245f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4|^6.0|^7.0|^8.0|^9.0",
+                "lcobucci/jwt": "3.2.*|3.3.*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "STS\\JWT\\JWTServiceProvider"
+                    ],
+                    "aliases": {
+                        "JWT": "STS\\JWT\\JWTFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "STS\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joseph",
+                    "email": "joseph@stechstudio.com"
+                }
+            ],
+            "description": "Simple helper package that makes it easy to generate and consume JWT tokens",
+            "support": {
+                "issues": "https://github.com/stechstudio/laravel-jwt/issues",
+                "source": "https://github.com/stechstudio/laravel-jwt/tree/1.11"
+            },
+            "time": "2022-02-10T15:17:28+00:00"
         },
         {
             "name": "symfony/console",
@@ -8359,5 +8477,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
