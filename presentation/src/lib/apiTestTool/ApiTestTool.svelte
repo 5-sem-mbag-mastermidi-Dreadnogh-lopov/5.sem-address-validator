@@ -73,13 +73,9 @@
     </form>
 
     <div class="p-12">
-        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-            <table
-                class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-            >
-                <thead
-                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                >
+        <div class="relative shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-200 ">
                     <tr>
                         <th scope="col" class="py-3 px-6"> Date </th>
                         <th scope="col" class="py-3 px-6"> Confidence </th>
@@ -93,7 +89,9 @@
                 </thead>
                 <tbody id="resultTableBody">
                     {#each tableData as item}
-                        <tr class="bg-white border-b ">
+                        <tr
+                            class="bg-white border-b hover:shadow-xl hover:scale-100 transition-shadow"
+                        >
                             <td class="py-4 px-6 ">
                                 {item.date.toString().substring(0, 25)}
                             </td>
@@ -108,23 +106,6 @@
                             <td class="py-4 px-6"> {item.country_code} </td>
                         </tr>
                     {/each}
-
-                    <!--<tr
-                        class="bg-gray-50 border-b dark:bg-gray-800 dark:border-gray-700"
-                    >
-                        <th
-                            scope="row"
-                            class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                            Confidence
-                        </th>
-                        <td class="py-4 px-6"> Streetname </td>
-                        <td class="py-4 px-6"> StreetNumber </td>
-                        <td class="py-4 px-6"> Zipcode </td>
-                        <td class="py-4 px-6"> City </td>
-                        <td class="py-4 px-6"> Country </td>
-                        <td class="py-4 px-6"> Country Code </td>
-                    </tr>-->
                 </tbody>
             </table>
         </div>
