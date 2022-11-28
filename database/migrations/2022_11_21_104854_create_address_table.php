@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
 
+            $table->string('confidence');
             $table->string('address_formatted');
             $table->string('street_name');
             $table->string('street_number');
@@ -27,11 +28,14 @@ return new class extends Migration {
             $table->float('latitude');
             $table->float('longitude');
             $table->boolean('mainland');
+            $table->dateTime('expire_date')->nullable();
 
             $table->jsonb('response_json')->index();
 
-            $table->unique(['street_name', 'street_number', 'zip_code', 'city'], 'unique_constraint');
+            $table->unique(['street_name', 'street_number', 'zip_code', 'city'], 'unique_address');
         });
+
+        DB::statement("ALTER TABLE address ALTER COLUMN expire_date SET DEFAULT now() + interval '100 day';");
     }
 
     /**

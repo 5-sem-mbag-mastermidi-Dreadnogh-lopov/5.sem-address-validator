@@ -13,20 +13,24 @@ class DawaProvider implements Provider
 {
     protected string $base_url = 'https://api.dataforsyningen.dk/';
 
-    function ValidateAddress(AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
+    function validateAddress(AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
     {
-        $initial_search = $this->get_closest_match($address, $wash_results);
+        $initial_search = $this->searchForMathces($address, $wash_results);
 
-        $response = $this->get_exact_address($initial_search);
+        $response = $this->getExactAddress($initial_search);
 
-        $address = $this->address_from_response($response);
+        $extra = [
+            'confidence' => $initial_search['kategori']
+        ];
+        $address = $this->addressFromResponse($response, $extra);
 
         return $address;
     }
 
-    protected function address_from_response(Response $response): AddressResponse
+    protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
+            'confidence' => self::convert_confidence($extra['confidence']),
             'address_formatted' => $response['adressebetegnelse'],
             'street_name' => $response['adgangsadresse']['vejstykke']['navn'],
             'street_number' => $response['adgangsadresse']['husnr'] . ', ' . $response['etage'] . '. ' . $response['dør'],
@@ -47,7 +51,7 @@ class DawaProvider implements Provider
      * @param array|AddressRequest $wash_results
      * @return Response
      */
-    public function get_closest_match(AddressRequest $address, array|AddressRequest $wash_results): Response
+    public function searchForMathces(AddressRequest $address, array|AddressRequest $wash_results): Response
     {
         // Attempt to use the original address submitted
         $wash_response = Http::get($this->base_url . 'datavask/adresser', [
@@ -66,16 +70,16 @@ class DawaProvider implements Provider
             });
         }
 
-        /*
+        /* TODO: it should choose the best one here and return that one
         $obj = array_reduce($responses, static function ($carry, $item) {
             return $carry === false && $item['resultater'][0]['aktueladresse']['href'] != '' ? $item : $carry;
         }, false);
         */
 
-        return $wash_response;
+        return $responses[0];
     }
 
-    protected function get_exact_address(Response $response): Response
+    protected function getExactAddress(Response $response): Response
     {
         // Always takes the first address suggestion from the datawash result
         return Http::get($response['resultater'][0]['aktueladresse']['href']);
@@ -84,5 +88,15 @@ class DawaProvider implements Provider
     public static function get_attributes(AddressRequest $address)
     {
         return "{$address->street}, {$address->zip_code} {$address->city}";
+    }
+
+    private static function convert_confidence(string $confidence): string
+    {
+        return match ($confidence) {
+            'A' => 'exact',
+            'B' => 'sure',
+            'C' => 'unsure',
+            default => 'unknown'
+        };
     }
 }
