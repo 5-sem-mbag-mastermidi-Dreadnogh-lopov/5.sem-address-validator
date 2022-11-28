@@ -26,7 +26,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('address')->middleware('checkToken')->group(
         function () {
-            Route::get("/{id}", [CacheController::class, 'get']);
+            Route::get("/", [CacheController::class, 'get']);
             Route::put("/{id}", [CacheController::class, 'update']);
             Route::delete("/{id}", [CacheController::class, 'delete']);
         }
