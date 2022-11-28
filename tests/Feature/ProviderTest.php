@@ -35,7 +35,7 @@ test('test ValidateAddress', function () {
 
     $provider = new \App\Integrations\Dawa\DawaProvider();
 
-    $response = $provider->validateAddress($address, []);
+    $response = $provider->validateAddress($address, collect([]));
 
     expect($response->city)->toEqual('Aalborg');
 });
