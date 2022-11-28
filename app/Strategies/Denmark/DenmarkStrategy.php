@@ -9,7 +9,7 @@ use App\Models\AddressResponse;
 use App\Strategies\AddressRequest\AddressRequestRuleInterface;
 use App\Strategies\AddressRequest\StringReplaceRule;
 use App\Strategies\Strategy;
-use \Illuminate\Support\Collection;
+use Illuminate\Support\Collection;
 
 class DenmarkStrategy implements Strategy
 {
@@ -27,9 +27,9 @@ class DenmarkStrategy implements Strategy
         }
     }
 
-    function ValidateAddress(AddressRequest $address)
+    function validateAddress(AddressRequest $address)
     {
-        $addresses = $this->Wash($address);
+        $addresses = $this->wash($address);
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
         }
@@ -42,7 +42,7 @@ class DenmarkStrategy implements Strategy
         return $provider->ValidateAddress($address, $wash_results);
     }
 
-    private function Wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
+    private function wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
     {
         $addresses = [];
         $rules = $this->ruleset;
