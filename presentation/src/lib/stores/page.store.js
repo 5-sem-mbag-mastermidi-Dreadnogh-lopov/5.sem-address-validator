@@ -1,6 +1,5 @@
 import { writable } from "svelte/store"
 import { notifications } from "./notifications.js";
-import {getCache} from "./cache.store.js";
 
 //Constant
 export const LOGIN_BTN = "Login";
@@ -21,7 +20,6 @@ function createStore() {
         adminPage: () => {
             const jwt = localStorage.getItem("jwt");
             if (jwt) {
-                getCache();
                 return set(ADMIN_TOOL_BTN);
             } else {
                 return set(LOGIN_BTN);
