@@ -8,14 +8,13 @@ use Illuminate\Http\Request;
 
 class CacheController extends Controller
 {
-    public function index()
+    public function get($id, Request $request)
     {
-        return AddressResponse::paginate(15);
-    }
+        if($request->search_field){
+            return AddressResponse::where('id', "LIKE", "%$request->search_field%")->get();
 
-    public function get($id)
-    {
-        return AddressResponse::where('id', $id)->first();
+        }
+        return AddressResponse::all('id', $id);
     }
 
     public function delete($id)
