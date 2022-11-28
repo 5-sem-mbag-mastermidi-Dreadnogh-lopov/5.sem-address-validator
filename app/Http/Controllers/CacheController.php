@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class CacheController extends Controller
 {
-    public function get($id, Request $request)
+    public function get(Request $request)
     {
         if($request->search_field){
-            return AddressResponse::where('id', "LIKE", "%$request->search_field%")->get();
+            return AddressResponse::where('address_formatted', "LIKE", "%$request->search_field%")->get();
 
         }
         return AddressResponse::all('id', $id);
