@@ -15,7 +15,12 @@ class AddressController extends Controller
 {
     protected Strategy $strategy;
 
-    public function index(Request $request)
+    /**
+     * @param Request $request
+     * @return AddressResponse
+     * @throws Exception
+     */
+    public function index(Request $request): AddressResponse
     {
         $request->validate([
             'street' => 'required',
@@ -25,8 +30,15 @@ class AddressController extends Controller
 
         // check cache for identical request, else create new instance of hash request class
         $hash = HashRequest::firstOrNew(
-        //['hash_key' => hash('sha256', json_encode($request->all()))],
-            ['hash_key' => json_encode($request->all())],
+            ['hash_key' => json_encode($request->only(
+                [
+                    'street',
+                    'state',
+                    'zip_code',
+                    'city',
+                    'country_code'
+                ]
+            ))],
             ['address_id' => null]
         );
 
@@ -39,7 +51,7 @@ class AddressController extends Controller
 
             // get the appropriate country strategy and validate the address instance
             $strategy = AddressController::getStrategy($address);
-            $res = $strategy->ValidateAddress($address);
+            $res = $strategy->validateAddress($address);
 
             // create result on database and set address id on hash request
             $address_model = AddressResponse::firstOrCreate([

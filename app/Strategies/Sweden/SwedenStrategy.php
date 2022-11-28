@@ -11,7 +11,7 @@ use App\Strategies\Strategy;
  */
 class SwedenStrategy implements Strategy
 {
-    function ValidateAddress(AddressRequest $address)
+    function validateAddress(AddressRequest $address)
     {
         $provider = new DawaProvider();
         return $provider->ValidateAddress($address);

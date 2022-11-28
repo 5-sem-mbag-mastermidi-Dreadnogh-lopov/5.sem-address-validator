@@ -13,6 +13,7 @@ class AddressResponse extends Model
 
     protected $fillable = [
         'id',
+        'confidence',
         'address_formatted',
         'street_name',
         'street_number',
@@ -28,6 +29,7 @@ class AddressResponse extends Model
     ];
 
     protected $visible = [
+        'confidence',
         'address_formatted',
         'street_name',
         'street_number',
