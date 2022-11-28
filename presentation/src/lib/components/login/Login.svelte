@@ -1,6 +1,6 @@
 <script>
-    import { pageStore } from "../stores/page.store.js";
-    import { notifications } from "../stores/notifications.js";
+    import { pageStore } from "../../stores/page.store.js";
+    import { notifications } from "../../stores/notifications.js";
     let password = "";
     let errors = false;
 

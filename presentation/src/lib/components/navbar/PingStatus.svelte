@@ -1,6 +1,6 @@
 <script>
-    import { pageStore, loggedIn } from "../stores/page.store";
-    import { notifications } from "../stores/notifications";
+    import { pageStore, loggedIn } from "../../stores/page.store";
+    import { notifications } from "../../stores/notifications";
     let alive = true;
     let lastCheck = Date.now();
     export let interval;

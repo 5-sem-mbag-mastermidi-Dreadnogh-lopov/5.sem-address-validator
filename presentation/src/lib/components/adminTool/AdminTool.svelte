@@ -1,6 +1,10 @@
 <script>
     import CacheSearch from "./CacheSearch.svelte";
-    import { cache, removeCache, updateCache } from "../stores/cache.store.js";
+    import {
+        cache,
+        removeCache,
+        updateCache,
+    } from "../../stores/cache.store.js";
 </script>
 
 <div class="flex flex-col ">

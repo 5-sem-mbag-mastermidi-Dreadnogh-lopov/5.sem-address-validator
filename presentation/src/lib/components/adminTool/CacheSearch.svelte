@@ -1,7 +1,7 @@
 <script>
-    import Spinner from "./../Spinner.svelte";
+    import Spinner from "../Spinner.svelte";
 
-    import { getCache } from "../stores/cache.store.js";
+    import { getCache } from "../../stores/cache.store.js";
     let search = "";
     let data;
     const searchCache = async () => {
