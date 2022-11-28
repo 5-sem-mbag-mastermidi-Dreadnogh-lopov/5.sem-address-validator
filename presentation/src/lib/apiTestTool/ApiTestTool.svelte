@@ -1,4 +1,6 @@
 <script>
+    import Spinner from "../Spinner.svelte";
+
     let address = [
         { name: "Street", value: "", key: "street" },
         { name: "Zipcode", value: "", key: "zip_code" },
@@ -8,9 +10,13 @@
     ];
 
     let tableData = [];
-
+    let waiting;
     //TODO: Implement functional to work with API call.
     async function submitRequest() {
+        waiting = fetchAddressWash();
+    }
+
+    const fetchAddressWash = async () => {
         const obj = address.reduce(
             (obj, item) =>
                 Object.assign(
@@ -30,8 +36,7 @@
             //Toast popup functionality here, no data found.
             console.log("Toast popup");
         }
-    }
-
+    };
     function insertAddressTotable(responseJson) {
         tableData = [responseJson, ...tableData];
     }
@@ -41,6 +46,9 @@
     }
 </script>
 
+{#await waiting}
+    <Spinner />
+{/await}
 <div class="flex flex-col items-center pt-12 m-h-[50vh] justify-around">
     <p class="text-lg">
         Enter the <span class="font-bold">Address</span>, to see if it exists in
