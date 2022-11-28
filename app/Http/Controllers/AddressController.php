@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
-use App\Strategies\DenmarkStrategy;
+use App\Strategies\Denmark\DenmarkStrategy;
 use App\Strategies\Strategy;
-use App\Strategies\SwedenStrategy;
+use App\Strategies\Sweden\SwedenStrategy;
 use Exception;
 use Illuminate\Http\Request;
 
