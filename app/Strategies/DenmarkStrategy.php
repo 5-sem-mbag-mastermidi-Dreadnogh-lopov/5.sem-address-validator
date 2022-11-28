@@ -35,9 +35,9 @@ class DenmarkStrategy implements Strategy
         'oe' => "ø",
     ];
 
-    function ValidateAddress(AddressRequest $address)
+    function validateAddress(AddressRequest $address)
     {
-        $addresses = $this->Wash($address);
+        $addresses = $this->wash($address);
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
         }
@@ -47,10 +47,10 @@ class DenmarkStrategy implements Strategy
 
     public function execute(Provider $provider, AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
     {
-        return $provider->ValidateAddress($address, $wash_results);
+        return $provider->validateAddress($address, $wash_results);
     }
 
-    private function Wash(AddressRequest $address): array // TODO implement washing a little better, doesnt work with unique elements
+    private function wash(AddressRequest $address): array // TODO implement washing a little better, doesnt work with unique elements
     {
         $addresses = [];
 

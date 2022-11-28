@@ -6,5 +6,5 @@ use app\models\AddressRequest;
 
 interface Strategy
 {
-    function ValidateAddress(AddressRequest $address);
+    function validateAddress(AddressRequest $address);
 }
