@@ -37,7 +37,7 @@ class DenmarkStrategy implements Strategy
         return $res;
     }
 
-    public function execute(Provider $provider, AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
+    public function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
         return $provider->ValidateAddress($address, $wash_results);
     }
@@ -55,12 +55,10 @@ class DenmarkStrategy implements Strategy
         }
 
         $collection = collect($addresses);
-        $unique = $collection->unique(function (AddressRequest $addressRequest) {
+        return $collection->unique(function (AddressRequest $addressRequest) {
             $attributes = $addressRequest->attributesToArray();
             ksort($attributes);
             return serialize($attributes);
         });
-
-        return $unique;
     }
 }

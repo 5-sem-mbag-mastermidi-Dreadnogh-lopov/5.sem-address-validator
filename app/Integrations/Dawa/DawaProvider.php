@@ -7,13 +7,14 @@ use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
 class DawaProvider implements Provider
 {
     protected string $base_url = 'https://api.dataforsyningen.dk/';
 
-    function validateAddress(AddressRequest $address, array|AddressRequest $wash_results): AddressResponse
+    function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
         $initial_search = $this->searchForMathces($address, $wash_results);
 
@@ -51,7 +52,7 @@ class DawaProvider implements Provider
      * @param array|AddressRequest $wash_results
      * @return Response
      */
-    public function searchForMathces(AddressRequest $address, array|AddressRequest $wash_results): Response
+    public function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response
     {
         // Attempt to use the original address submitted
         $wash_response = Http::get($this->base_url . 'datavask/adresser', [
