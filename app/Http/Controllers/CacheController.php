@@ -10,10 +10,6 @@ use function GuzzleHttp\Promise\all;
 
 class CacheController extends Controller
 {
-    public function index()
-    {
-        return AddressResponse::all();
-    }
 
     public function get(Request $request) : Collection
     {
