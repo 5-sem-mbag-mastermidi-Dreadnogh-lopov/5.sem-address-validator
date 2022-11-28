@@ -7,7 +7,7 @@
         LOGIN_BTN,
         ADMIN_TOOL_BTN,
         API_TEST_BTN,
-    } from "../stores/page.store.js";
+    } from "../../stores/page.store.js";
     //how often to ping API in minutes
     let interval = 1;
     //Methods

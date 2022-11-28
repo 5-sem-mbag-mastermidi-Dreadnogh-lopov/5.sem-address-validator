@@ -1,8 +1,8 @@
 <script>
-    import Login from "./login/Login.svelte";
+    import Login from "./components/login/Login.svelte";
     import { notifications } from "./stores/notifications.js";
-    import AdminTool from "./adminTool/AdminTool.svelte";
-    import ApiTest from "./apiTestTool/ApiTestTool.svelte";
+    import AdminTool from "./components/adminTool/AdminTool.svelte";
+    import ApiTest from "./components/apiTestTool/ApiTestTool.svelte";
     import {
         pageStore,
         LOGIN_BTN,
