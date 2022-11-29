@@ -27,13 +27,12 @@ class DenmarkStrategy implements Strategy
         }
     }
 
-    function validateAddress(AddressRequest $address)
+    public function validateAddress(AddressRequest $address) : AddressResponse
     {
         $addresses = $this->wash($address);
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
         }
-
         return $res;
     }
 
