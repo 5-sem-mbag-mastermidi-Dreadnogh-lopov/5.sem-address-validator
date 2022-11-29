@@ -41,7 +41,7 @@ class DenmarkStrategy implements Strategy
         return $provider->ValidateAddress($address, $wash_results);
     }
 
-    private function wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
+    public function wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
     {
         $addresses = [];
         $rules = $this->ruleset;
@@ -59,5 +59,6 @@ class DenmarkStrategy implements Strategy
             ksort($attributes);
             return serialize($attributes);
         });
+
     }
 }
