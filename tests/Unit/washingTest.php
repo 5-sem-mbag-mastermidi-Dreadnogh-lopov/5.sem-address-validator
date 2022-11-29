@@ -15,12 +15,12 @@ test('Denmark washing - checking object', function () {
 
     $denmark = new DenmarkStrategy();
 
-    $response_type = gettype($denmark->wash($address));
+    $response = $denmark->wash($address)->toArray();
 
-    expect($response_type)->toEqual('object');
+    expect([$response])->toBeArray()->not->toBeEmpty();
 });
 
-test('Denmark washing - check if applying washing rules', function () {
+test('Denmark washing - Checking validating method', function () {
     $address = new AddressRequest([
         'street' => 'Borg vej  xiiis, 1 tv',
         'zip_code' => '9000',
@@ -30,8 +30,18 @@ test('Denmark washing - check if applying washing rules', function () {
 
     $denmark = new DenmarkStrategy();
 
-    $response_array = $denmark->wash($address)->toArray();
-    $response_array_count = count($response_array);
+    $response = $denmark->wash($address)->toArray();
 
-    expect($response_array_count)->toEqual(0 < $response_array_count);
+    expect($response)->toHaveKey('0.state', '');
+
+    expect($response)->toHaveKey('0.city', 'Aalborg');
+    expect($response)->toHaveKey('0.street', 'Borg vej  xiiis, 1 tv');
+    expect($response)->toHaveKey('0.zip_code', '9000');
+    expect($response)->toHaveKey('0.country_code', 'DK');
+
+    expect($response)->toHaveKey('57.state', '');
+    expect($response)->toHaveKey('57.city', 'AalBORGMESTER');
+    expect($response)->toHaveKey('57.street', 'BORGMESTER vej  xiiis, 1 tv');
+    expect($response)->toHaveKey('57.zip_code', '9000');
+    expect($response)->toHaveKey('57.country_code', 'DK');
 });
