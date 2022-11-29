@@ -1,4 +1,5 @@
 <script>
+    import { notifications } from "./../../stores/notifications.js";
     import Spinner from "../Spinner.svelte";
 
     let address = [
@@ -13,7 +14,11 @@
     let waiting;
     //TODO: Implement functional to work with API call.
     async function submitRequest() {
-        waiting = fetchAddressWash();
+        try {
+            waiting = fetchAddressWash();
+        } catch (error) {
+            notifications.danger("failed getting address", 1000);
+        }
     }
 
     const fetchAddressWash = async () => {
@@ -21,20 +26,33 @@
             (obj, item) =>
                 Object.assign(
                     obj,
-                    item.value != "" ? { [item.key]: item.value } : false
+                    item.value ? { [item.key]: item.value } : false
                 ),
             {}
         );
+        console.log("obj", obj);
+
         const data = new URLSearchParams(obj).toString();
-        let response = await fetch("http://localhost/api/v1/datawash?" + data);
+        let response = await fetch("http://localhost/api/v1/datawash?" + data, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+        });
 
         if (response.ok) {
             let responseJson = await response.json();
+
             responseJson.date = new Date();
             insertAddressTotable(responseJson);
+        } else if (response.status === 422) {
+            let responseJson = await response.json();
+            console.log("responseJson", responseJson);
+            Object.values(responseJson.errors).forEach((error) => {
+                notifications.warning(error[0], 2000);
+            });
         } else {
-            //Toast popup functionality here, no data found.
-            console.log("Toast popup");
+            notifications.danger("failed getting address", 2000);
         }
     };
     function insertAddressTotable(responseJson) {

@@ -25,7 +25,7 @@ class LoginController extends Controller
 
     private function makeJWT()
     {
-        $jwt = JWT::get(env('APP_PUBLIC_KEY'), ['nonce' => 'this is nonce']);
+        $jwt = JWT::get(env('APP_PUBLIC_KEY'), ['nonce' => 'this is nonce'],intval(env('JWT_EXP')));
         return $jwt;
     }
 }
