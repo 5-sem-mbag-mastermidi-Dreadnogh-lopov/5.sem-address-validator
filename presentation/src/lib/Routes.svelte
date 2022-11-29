@@ -27,5 +27,6 @@
     });
 </script>
 
+<div class="max-w-[100vw] overflow-hidden" />
 <svelte:component this={activeComponent} />
 <Toast />

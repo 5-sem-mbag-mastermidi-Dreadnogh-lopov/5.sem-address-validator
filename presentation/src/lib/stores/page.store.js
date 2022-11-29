@@ -59,8 +59,6 @@ function isTokenExpired(token) {
     const decoded = parseJwt(token);
     const expirationTime = decoded.exp;
     const currentTime = Date.now() / 1000;
-    console.log(decoded, expirationTime - currentTime);
-    
     if (currentTime < expirationTime) {
         return true;
     } else {
