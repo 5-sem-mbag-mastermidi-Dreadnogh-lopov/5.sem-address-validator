@@ -1,6 +1,7 @@
 <script>
     import { notifications } from "./../../stores/notifications.js";
     import Spinner from "../Spinner.svelte";
+    import { slide } from "svelte/transition";
 
     let address = [
         { name: "Street", value: "", key: "street" },
@@ -67,7 +68,10 @@
 {#await waiting}
     <Spinner />
 {/await}
-<div class="flex flex-col items-center pt-12 m-h-[50vh] justify-around">
+<div
+    class="flex flex-col items-center pt-12 m-h-[50vh] justify-around"
+    out:slide={{ duration: 300 }}
+>
     <p class="text-lg">
         Enter the <span class="font-bold">Address</span>, to see if it exists in
         the cache database or can be verified elsewhere
