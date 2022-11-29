@@ -16,4 +16,5 @@ class HashRequest extends Model
         'address_id',
         'created_at',
     ];
+
 }

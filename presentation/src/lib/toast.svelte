@@ -6,13 +6,13 @@
     export let themes = {
         danger: "bg-red-500 text-white",
         success: "bg-green-500 text-white",
-        warning: "bg-yellow-500",
+        warning: "bg-yellow-300",
         info: "bg-blue-500 text-white",
         default: "bg-gray-500",
     };
 </script>
 
-<div class="fixed right-10 top-20 flex flex-col items-center select-none">
+<div class="fixed right-10 top-20 flex flex-col items-end select-none">
     {#each $notifications as notification (notification.id)}
         <div
             animate:flip

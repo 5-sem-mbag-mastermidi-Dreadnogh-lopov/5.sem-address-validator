@@ -11,7 +11,7 @@
 
 <form
     on:submit|preventDefault={searchCache}
-    class="border-4 border-green-500 m-3 rounded-md p-1 overflow-hidden flex shadow-lg "
+    class="border-4 border-green-500 m-3 rounded-md p-1 overflow-hidden flex shadow-lg"
 >
     <input
         type="text"

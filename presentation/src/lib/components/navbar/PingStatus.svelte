@@ -1,5 +1,5 @@
 <script>
-    import { pageStore, loggedIn } from "../../stores/page.store";
+    import { pageStore, JWT } from "../../stores/page.store";
     import { notifications } from "../../stores/notifications";
     let alive = true;
     let lastCheck = Date.now();
@@ -27,7 +27,7 @@
     };
     //goto login page if not logged in
     function gotoLogin() {
-        if (!$loggedIn) {
+        if (!$JWT) {
             pageStore.loginPage();
         }
     }
@@ -36,10 +36,10 @@
 <button class="relative" on:click={pingAPI}>
     <div class="flex flex-col text-xs text-white mr-3">
         <button
-            class="px-4 text-xs {$loggedIn ? 'text-white' : 'text-red-500'}"
+            class="px-4 text-xs {$JWT ? 'text-white' : 'text-red-500'}"
             on:click={gotoLogin}
         >
-            {$loggedIn ? "Welcome Admin" : "Not logged in"}
+            {$JWT ? "Welcome Admin" : "Not logged in"}
         </button>
         <p>
             Service is

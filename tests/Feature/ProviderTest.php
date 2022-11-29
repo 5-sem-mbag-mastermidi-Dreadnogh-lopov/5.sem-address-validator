@@ -1,5 +1,7 @@
 <?php
 
+use App\Integrations\Dawa\DawaProvider;
+
 test('test ValidateAddress', function () {
     $address = new \App\Models\AddressRequest([
         'street' => 'urbansgade 23, 1 tv',
@@ -33,7 +35,7 @@ test('test ValidateAddress', function () {
         ], 200),
     ]);
 
-    $provider = new \App\Integrations\Dawa\DawaProvider();
+    $provider = new DawaProvider();
 
     $response = $provider->validateAddress($address, collect([]));
 
