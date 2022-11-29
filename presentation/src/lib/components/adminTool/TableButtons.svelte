@@ -1,13 +1,18 @@
 <script>
+    import { slide } from "svelte/transition";
     import {
         cache,
         removeCache,
         updateCache,
+        JSONToDisplay,
     } from "../../stores/cache.store.js";
     export let item;
 </script>
 
-<div class="flex flex-col p-2 bg-white border rounded gap-3">
+<div
+    class="flex flex-col p-2 bg-white border rounded gap-3"
+    transition:slide={{ duration: 300 }}
+>
     <button
         on:click={() => updateCache(item)}
         class="hover:bg-green-500 stroke-green-500 hover:stroke-white px-1 rounded-sm flex items-center cursor-pointer text-green-500 hover:text-white gap-1 transition-colors"
@@ -81,6 +86,33 @@
             <circle cx="12" cy="11" r="3" />
             <path
                 d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"
+            />
+        </svg>
+    </button>
+    <button
+        on:click={() => {
+            JSONToDisplay.set(JSON.parse(item.response_json));
+        }}
+        class="hover:bg-green-500 stroke-green-500 hover:stroke-white px-1 rounded-sm flex items-center cursor-pointer text-green-500 hover:text-white gap-1 transition-colors"
+    >
+        <p>JSON</p>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-layers-linked"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+                d="M19 8.268a2 2 0 0 1 1 1.732v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h3"
+            />
+            <path
+                d="M5.003 15.734a2 2 0 0 1 -1.003 -1.734v-8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-3"
             />
         </svg>
     </button>

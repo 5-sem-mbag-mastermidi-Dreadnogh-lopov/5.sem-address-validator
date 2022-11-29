@@ -1,6 +1,7 @@
 <script>
     import { pageStore } from "../../stores/page.store.js";
     import { notifications } from "../../stores/notifications.js";
+    import { slide } from "svelte/transition";
     let password = "";
     let errors = false;
 
@@ -23,7 +24,10 @@
     }
 </script>
 
-<div class="flex flex-col items-center pt-12 h-[50vh] justify-around">
+<div
+    class="flex flex-col items-center pt-12 h-[50vh] justify-around"
+    out:slide={{ duration: 300 }}
+>
     <p class="text-lg">
         To enter the <span class="font-bold">Admin tool</span>, type the
         <span class="font-bold">masterpassword</span> below

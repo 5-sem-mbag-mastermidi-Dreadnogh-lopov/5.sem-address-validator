@@ -3,13 +3,19 @@
     import CacheSearch from "./CacheSearch.svelte";
     import {
         cache,
-        removeCache,
         updateCache,
+        JSONToDisplay,
     } from "../../stores/cache.store.js";
-    import { fly } from "svelte/transition";
+    import JSONEditor from "./JSONedit/JSONEditor.svelte";
+    import { clickOutside } from "../../util/clickOutside.js";
+    import { fly, slide } from "svelte/transition";
+
+    const closeJSONEditor = () => {
+        JSONToDisplay.set(null);
+    };
 </script>
 
-<div class="flex flex-col">
+<div class="flex flex-col z-1" out:slide={{ duration: 300 }}>
     <CacheSearch />
     <table
         class="text-sm text-left text-gray-500 w-1/2 mx-auto shadow overflow-visible"
@@ -27,12 +33,13 @@
                 <th scope="col" class="py-3 px-1"> Gade Navn </th>
                 <th scope="col" class="py-3 px-1"> Gade Nummer </th>
                 <th scope="col" class="py-3 px-1"> Post Nr. </th>
+                <th />
             </tr>
         </thead>
         <tbody id="resultTableBody">
             {#each $cache as item}
                 <tr
-                    class="bg-white border-b hover:shadow-xl transition-shadow group/item relative overflow-visible hover:z-5"
+                    class="bg-white border-b hover:shadow-xl transition-shadow relative overflow-visible hover:z-5"
                 >
                     <td class="py-4 px-1"
                         ><input
@@ -116,13 +123,77 @@
                             bind:value={item.zip_code}
                         />
                     </td>
-                    <div
-                        class="absolute z-10 scale-100 right-6 -bottom-16 invisible group-hover/item:visible transition-all duration-600"
-                    >
-                        <TableButtons {item} />
-                    </div>
+                    <td class="flex gap-2 items-center relative mr-10">
+                        <button
+                            on:click={() => updateCache(item)}
+                            class="stroke-green-500"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-device-floppy"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    stroke="none"
+                                    d="M0 0h24v24H0z"
+                                    fill="none"
+                                />
+                                <path
+                                    d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
+                                />
+                                <circle cx="12" cy="14" r="2" />
+                                <polyline points="14 4 14 8 8 8 8 4" />
+                            </svg>
+                        </button>
+                        <div class="group/item">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-dots "
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="#22c55e"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    stroke="none"
+                                    d="M0 0h24v24H0z"
+                                    fill="none"
+                                />
+                                <circle cx="5" cy="12" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="19" cy="12" r="1" />
+                            </svg>
+                            <div
+                                class="absolute z-10 scale-100 -bottom-[125px] -left-8 hidden group-hover/item:block transition-all duration-600 shadow-xl"
+                            >
+                                <TableButtons {item} />
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             {/each}
         </tbody>
     </table>
 </div>
+
+{#if $JSONToDisplay}
+    <div
+        use:clickOutside
+        on:click_outside={closeJSONEditor}
+        transition:slide={{ duration: 500 }}
+        class="absolute z-100 scale-100 top-40 left-1/4 p-2 bg-green-500 rounded
+        shadow-xl"
+    >
+        <JSONEditor />
+    </div>
+{/if}

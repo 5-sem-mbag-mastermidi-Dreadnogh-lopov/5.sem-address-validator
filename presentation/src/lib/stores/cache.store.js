@@ -67,3 +67,5 @@ export async function updateCache(address) {
     }
     //cache.set(data.data);
 }
+
+export const JSONToDisplay = writable(null);
