@@ -3,7 +3,7 @@
     //Constants
     import {
         pageStore,
-        loggedIn,
+        JWT,
         LOGIN_BTN,
         ADMIN_TOOL_BTN,
         API_TEST_BTN,
@@ -28,7 +28,7 @@
 
 <div class="flex items-center navbar overflow-hidden bg-zinc-700 shadow-xl">
     {#each pages as page}
-        {#if !$loggedIn || ($loggedIn && page !== LOGIN_BTN)}
+        {#if !$JWT || ($JWT && page !== LOGIN_BTN)}
             <button
                 class="p-4 text-white {$pageStore == page
                     ? 'bg-green-500 font-bold'

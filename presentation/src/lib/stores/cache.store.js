@@ -1,17 +1,17 @@
+import { get } from 'svelte/store';
 import { writable } from 'svelte/store';
 import { notifications } from './notifications';
-import { pageStore } from './page.store';
+import { pageStore, JWT } from './page.store';
 
 export const cache = writable([]);
 
 export async function getCache(addressString) {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) return;
+    if (!get(JWT)) return;
     const response = await fetch(`http://localhost:80/api/v1/address?search_field=${addressString}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': jwt,
+            'Authorization': get(JWT),
         }
     });
     if (response.ok) {
@@ -30,13 +30,12 @@ export async function getCache(addressString) {
 }
 
 export async function removeCache(address) {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) return;
+    if (!get(JWT)) return;
     const response = await fetch(`http://localhost:80/api/v1/address/${address.id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': jwt,
+            'Authorization': get(JWT),
         },
         body: JSON.stringify(address)
     });
@@ -50,13 +49,12 @@ export async function removeCache(address) {
 }
  
 export async function updateCache(address) {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) return;
+    if (!get(JWT)) return;
     const response = await fetch(`http://localhost:80/api/v1/address/${address.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': jwt,
+            'Authorization': get(JWT),
         },
         body: JSON.stringify(address)
     });

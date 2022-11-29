@@ -28,7 +28,7 @@ function createStore() {
         apiTestPage: () => set(API_TEST_BTN),
         logout: () => { 
             localStorage.removeItem("jwt");
-            notifications.info("Logged out", 1000);
+            notifications.info("Logged out", 2000);
             return set(LOGIN_BTN);
         },
         reset: () => set(LOGIN_BTN),
@@ -37,9 +37,34 @@ function createStore() {
 }
 export const pageStore = createStore();
 
-export const loggedIn = writable(false);
+export const JWT = writable(null);
 
 setInterval(() => { 
-    const jwt = localStorage.getItem("jwt") ? true : false
-    loggedIn.set(jwt)
+    const jwt = localStorage.getItem("jwt");
+    if (!jwt) JWT.set(undefined);
+    else JWT.set(isTokenExpired(jwt) ? jwt : undefined);
 }, 300);
+
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+//function to compare the expiration time of the token to the current time
+function isTokenExpired(token) {
+    const decoded = parseJwt(token);
+    const expirationTime = decoded.exp;
+    const currentTime = Date.now() / 1000;
+    console.log(decoded, expirationTime - currentTime);
+    
+    if (currentTime < expirationTime) {
+        return true;
+    } else {
+        pageStore.logout();
+        return false;
+    }
+}
