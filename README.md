@@ -12,4 +12,7 @@ php artisan migration
 DB_CONNECTION=pgsql
 
 Run Tests:
-php artisan test --parallel
+Install the following:
+- sudo apt-get install php-sqlite3 
+Run below command to test:
+- php artisan test --parallel
