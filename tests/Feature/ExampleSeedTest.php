@@ -20,9 +20,9 @@ class ExampleSeedTest extends TestCase
        $this->seed();
 
        //Test that there is one entry in hash request
-       $this->assertDatabaseCount('hash_request', 1);
+       $this->assertDatabaseCount('hash_request', 2);
 
        //Test that there is one entry in address
-       $this->assertDatabaseCount('address', 1);
+       $this->assertDatabaseCount('address', 2);
     }
 }
