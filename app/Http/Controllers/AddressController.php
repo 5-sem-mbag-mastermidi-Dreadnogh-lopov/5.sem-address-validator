@@ -20,6 +20,7 @@ class AddressController extends Controller
      * @return AddressResponse
      * @throws Exception
      */
+
     public function index(Request $request): AddressResponse
     {
         $request->validate([
