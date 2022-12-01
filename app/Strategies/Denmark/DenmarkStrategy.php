@@ -16,20 +16,15 @@ class DenmarkStrategy implements Strategy
     private $providers = [DawaProvider::class];
 
     /** @var AddressRequestRuleInterface[] */
-    private array $ruleset = [];
-
     public function __construct()
     {
-        $rules = WashRules::index();
 
-        foreach ($rules as $rule => $value) {
-            $this->ruleset[] = new StringReplaceRule($rule, $value);
-        }
     }
 
     public function validateAddress(AddressRequest $address) : AddressResponse
     {
         $addresses = $this->wash($address);
+        $res = new AddressResponse();
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
         }
@@ -41,10 +36,22 @@ class DenmarkStrategy implements Strategy
         return $provider->ValidateAddress($address, $wash_results);
     }
 
+    public function getRules() : array
+    {
+        $rules = WashRules::index();
+
+
+        $ruleset = [];
+        foreach ($rules as $rule => $value) {
+            $ruleset[] = new StringReplaceRule($rule, $value);
+        }
+        return $ruleset;
+    }
+
     public function wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
     {
         $addresses = [];
-        $rules = $this->ruleset;
+        $rules = $this->getRules();
         foreach ($rules as $rule) {
             if (!$rule instanceof AddressRequestRuleInterface) {
                 throw new \Exception('Rules for AddressRequest must implement the ' . AddressRequestRuleInterface::class);
