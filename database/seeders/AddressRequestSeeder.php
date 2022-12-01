@@ -15,19 +15,22 @@ class AddressRequestSeeder extends Seeder
      */
     public function run()
     {
-        $records = [
-            $this->createAddressRequest(1, '{"city": "Aalborg", "state": "Danmark", "street": "Fyrkildevej 104 1. tv.", "zip_code": "9220", "country_code": "DK"}', 1),
-            $this->createAddressRequest(2, '{"city": "Aalborg", "state": "Danmark", "street": "Aalborgvej 100", "zip_code": "9000", "country_code": "DK"}', 2)
-        ];
-        HashRequest::insert($records);
+        HashRequest::insert($this->createAddressRequestSeed());
     }
 
-    public function createAddressRequest (int $id, string $hash_key, int $address_id ): array
+    public function createAddressRequestSeed (): array
     {
         return [
-            'id' => $id,
-            'hash_key' => $hash_key,
-            'address_id' => $address_id
+            [
+             'id' => 1,
+             'hash_key' => '{"city": "Aalborg", "state": "Danmark", "street": "Fyrkildevej 104 1. tv.", "zip_code": "9220", "country_code": "DK"}',
+             'address_id' => 1
+            ],
+            [
+             'id' => 2,
+             'hash_key' => '{"city": "København K", "state": "Danmark", "street": "Pilestræde 1", "zip_code": "1112", "country_code": "DK"}',
+             'address_id' => 2
+            ]
         ];
     }
 
