@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 
 class CacheController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request) : Collection
     {
         if($request->search_field){
-            return AddressResponse::where('address_formatted', "iLIKE", "$request->search_field%")->get();
+            return AddressResponse::where('address_formatted', "LIKE", "$request->search_field%")->get();
 
         }
-        return AddressResponse::all('id', $id);
+        return AddressResponse::all();
     }
 
     public function delete($id)
