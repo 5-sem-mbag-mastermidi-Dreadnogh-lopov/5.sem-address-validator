@@ -9,7 +9,7 @@ class CacheControllerTest extends  TestCase
 {
     use RefreshDatabase;
 
-    public function test_the_cacheController_index()
+    public function success_should_return_address()
     {
 
             $this->seed();
@@ -23,7 +23,7 @@ class CacheControllerTest extends  TestCase
 
     }
 
-    public function test_the_cacheController_update()
+    public function success_should_update_address()
     {
 
         $this->seed();
@@ -43,7 +43,7 @@ class CacheControllerTest extends  TestCase
 
     }
 
-    public function test_the_cacheController_delete()
+    public function success_should_delete_address()
     {
 
         $this->seed();
