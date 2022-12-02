@@ -8,14 +8,16 @@
     } from "../../stores/cache.store.js";
     import JSONEditor from "./JSONedit/JSONEditor.svelte";
     import { clickOutside } from "../../util/clickOutside.js";
-    import { fly, slide } from "svelte/transition";
+    import { fly } from "svelte/transition";
 
     const closeJSONEditor = () => {
         JSONToDisplay.set(null);
     };
 </script>
-
-<div class="flex flex-col z-1" out:slide={{ duration: 300 }}>
+<svelte:head>
+    <title>AdminTool</title>
+</svelte:head>
+<div class="flex flex-col z-1" in:fly={{x:-500, duration: 300 }}>
     <CacheSearch />
     <table
         class="text-sm text-left text-gray-500 w-1/2 mx-auto shadow overflow-visible"
@@ -190,7 +192,7 @@
     <div
         use:clickOutside
         on:click_outside={closeJSONEditor}
-        transition:slide={{ duration: 500 }}
+        transition:fly={{x:-500, duration: 500 }}
         class="absolute z-100 scale-100 top-40 left-1/4 p-2 bg-green-500 rounded
         shadow-xl"
     >

@@ -23,7 +23,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/datawash', [AddressController::class, 'index']);
 
-
     Route::prefix('address')->middleware('checkToken')->group(
         function () {
             Route::get("/", [CacheController::class, 'index']);

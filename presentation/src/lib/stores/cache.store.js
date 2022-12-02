@@ -7,7 +7,7 @@ export const cache = writable([]);
 
 export async function getCache(addressString) {
     if (!get(JWT)) return;
-    const response = await fetch(`http://localhost:80/api/v1/address?search_field=${addressString}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_HOST}api/v1/address?search_field=${addressString}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export async function getCache(addressString) {
 
 export async function removeCache(address) {
     if (!get(JWT)) return;
-    const response = await fetch(`http://localhost:80/api/v1/address/${address.id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_HOST}api/v1/address/${address.id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export async function removeCache(address) {
  
 export async function updateCache(address) {
     if (!get(JWT)) return;
-    const response = await fetch(`http://localhost:80/api/v1/address/${address.id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_HOST}api/v1/address/${address.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

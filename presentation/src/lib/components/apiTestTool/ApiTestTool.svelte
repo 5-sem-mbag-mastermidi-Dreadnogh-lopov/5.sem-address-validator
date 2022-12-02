@@ -1,7 +1,7 @@
 <script>
     import { notifications } from "./../../stores/notifications.js";
     import Spinner from "../Spinner.svelte";
-    import { slide } from "svelte/transition";
+    import { fly } from "svelte/transition";
 
     let address = [
         { name: "Street", value: "", key: "street" },
@@ -70,7 +70,7 @@
 {/await}
 <div
     class="flex flex-col items-center pt-12 m-h-[50vh] justify-around"
-    out:slide={{ duration: 300 }}
+    in:fly={{x:500, duration: 300 }}
 >
     <p class="text-lg">
         Enter the <span class="font-bold">Address</span>, to see if it exists in

@@ -13,7 +13,7 @@
     const pingAPI = async () => {
         //TODO: Make a function to ping API, and update status, to check if service is alive.
         try {
-            let response = await fetch("http://localhost:80/api/alive");
+            let response = await fetch(import.meta.env.VITE_API_HOST + "api/alive");
             if (response.ok) {
                 alive = true;
             } else {
