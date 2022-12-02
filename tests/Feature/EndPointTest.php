@@ -84,7 +84,7 @@ class EndPointTest extends TestCase
 
         /* Faked data wash */
         Http::fake([
-            $url => Http::response([
+            DawaProvider::WASH_ENDPOINT . '*' => Http::response([
                 "kategori" => $dawa_response_data['confidence'],
                 "resultater" => [
                     0 => [

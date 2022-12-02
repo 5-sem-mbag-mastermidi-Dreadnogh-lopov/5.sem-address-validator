@@ -22,9 +22,7 @@ class StringReplaceRule implements AddressRequestRuleInterface
 
         foreach ($attributes as $key => $value) {
             $replacement->{$key} = match ($key) {
-                'state',
-                'street',
-                'city' => str_ireplace($this->pattern, $this->replace, $value),
+                'street' => $value != null ? str_ireplace($this->pattern, $this->replace, $value) : "",
                 default => $value
             };
         }
