@@ -55,6 +55,8 @@ class EndPointTest extends TestCase
     public function test_should_return_address_from_response()
     {
         // Arrange
+        Http::preventStrayRequests();
+
         $address = new AddressRequest([
             "street" => "Kollegievej 2B",
             "zip_code" => "9000",
