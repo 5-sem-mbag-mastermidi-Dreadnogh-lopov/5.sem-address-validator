@@ -28,17 +28,21 @@ class AddressController extends Controller
             'zip_code' => 'required'
         ]);
 
+        // Get all attributes and sort them, so they can match in the cache DB
+        $request_attributes = $request->only(
+            [
+                'street',
+                'state',
+                'zip_code',
+                'city',
+                'country_code'
+            ]
+        );
+        ksort($request_attributes);
+
         // check cache for identical request, else create new instance of hash request class
         $hash = HashRequest::firstOrNew(
-            ['hash_key' => json_encode($request->only(
-                [
-                    'street',
-                    'state',
-                    'zip_code',
-                    'city',
-                    'country_code'
-                ]
-            ))],
+            ['hash_key' => json_encode($request_attributes)],
             ['address_id' => null]
         );
 
@@ -76,7 +80,6 @@ class AddressController extends Controller
     {
         return match ($address->country_code) {
             'DK' => new DenmarkStrategy(),
-            'SE' => new SwedenStrategy(),
             default => throw new Exception('Country not supported'), // or return generic strategy using global services like google-maps
         };
     }

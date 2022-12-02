@@ -14,6 +14,7 @@ class WashRules
     {
         return [
             'alle' => 'allé',
+            'allé' => 'alle',
             'gammel' => 'gl',
             'kgs' => 'kongens',
             'kgs.' => 'kongens',
