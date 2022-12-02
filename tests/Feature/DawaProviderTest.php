@@ -1,16 +1,8 @@
 <?php
 
-use App\Integrations\BaseProvider;
 use App\Integrations\Dawa\DawaProvider;
-use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
-
-
-function getProvider(mixed $provider): Provider
-{
-    return new $provider();
-}
 
 test('test should return exact match', function () {
     // Arrange
@@ -102,14 +94,6 @@ test('test should return exact match', function () {
 
 test('test should return sure match', function () {
     // Arrange
-    $providers = array_values(
-        array_filter(
-            get_declared_classes(),
-            function ($className) {
-                return is_subclass_of($className, BaseProvider::class);
-            }
-        )); // TODO make generic tests for all providers for common functionality and results
-    $provider = getProvider($providers[0]);
     $provider = new DawaProvider();
 
     $address = new AddressRequest([
@@ -195,14 +179,6 @@ test('test should return sure match', function () {
 
 test('test should return unsure match', function () {
     // Arrange
-    $providers = array_values(
-        array_filter(
-            get_declared_classes(),
-            function ($className) {
-                return is_subclass_of($className, BaseProvider::class);
-            }
-        )); // TODO make generic tests for all providers for common functionality and results
-    $provider = getProvider($providers[0]);
     $provider = new DawaProvider();
 
     $address = new AddressRequest([
