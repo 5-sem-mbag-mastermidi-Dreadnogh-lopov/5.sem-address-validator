@@ -1,15 +1,14 @@
 <script>
     import { pageStore } from "../../stores/page.store.js";
     import { notifications } from "../../stores/notifications.js";
-    import { slide } from "svelte/transition";
+    import { fly } from "svelte/transition";
     let password = "";
     let errors = false;
 
-    //TODO: Implement functional JWT auth to work with API call.
     async function submitLogin(password) {
         //Send password to API
         let response = await fetch(
-            "http://localhost:80/api/v1/login?password=" + password
+            import.meta.env.VITE_API_HOST + "api/v1/login?password=" + password
         );
         if (response.ok) {
             errors = false;
@@ -26,7 +25,7 @@
 
 <div
     class="flex flex-col items-center pt-12 h-[50vh] justify-around"
-    out:slide={{ duration: 300 }}
+    in:fly={{x:-500, duration: 300 }}
 >
     <p class="text-lg">
         To enter the <span class="font-bold">Admin tool</span>, type the

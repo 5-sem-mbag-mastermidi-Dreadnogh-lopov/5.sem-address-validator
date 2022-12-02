@@ -6,9 +6,7 @@
     };
 </script>
 
-<svelte:head>
-    <title>JSONEditor</title>
-</svelte:head>
+
 <div class="editor my-json-editor">
     <JSONEditor bind:content />
 </div>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use STS\JWT\JWTFacade as JWT;
@@ -11,7 +10,6 @@ class LoginController extends Controller
 {
     public function index(Request $request)
     {
-        //get request cookies
         $password = $request->password;
         
         //check if password is correct
