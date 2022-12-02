@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\AddressResponse;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AddressSeeder extends Seeder
 {
@@ -42,7 +41,7 @@ class AddressSeeder extends Seeder
                 'confidence' => 'sure',
                 'address_formatted' => 'Pilestræde 1, 1112 København K',
                 'street_name' => 'Pilestræde',
-                'street_number' => '1, . ',
+                'street_number' => '1',
                 'zip_code' => '1112',
                 'city' => 'København K',
                 'state' => '',

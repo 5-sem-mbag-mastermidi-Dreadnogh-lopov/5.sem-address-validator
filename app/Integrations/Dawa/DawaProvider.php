@@ -2,7 +2,7 @@
 
 namespace App\Integrations\Dawa;
 
-use App\Integrations\Provider;
+use App\Integrations\BaseProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Http\Client\Pool;
@@ -10,11 +10,12 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
-class DawaProvider implements Provider
+class DawaProvider extends BaseProvider
 {
-    protected string $base_url = 'https://api.dataforsyningen.dk/';
+    public const WASH_ENDPOINT = 'https://api.dataforsyningen.dk/datavask/adresser';
+    public const WASH_ENDPOINT_PARAMS = ['betegnelse'];
 
-    function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
+    public function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
         $initial_search = $this->searchForMathces($address, $wash_results);
 
@@ -34,7 +35,7 @@ class DawaProvider implements Provider
             'confidence' => self::convert_confidence($extra['confidence']),
             'address_formatted' => $response['adressebetegnelse'],
             'street_name' => $response['adgangsadresse']['vejstykke']['navn'],
-            'street_number' => $response['adgangsadresse']['husnr'] . ', ' . $response['etage'] . '. ' . $response['dør'],
+            'street_number' => self::format_street_number($response->json()),
             'zip_code' => $response['adgangsadresse']['postnummer']['nr'],
             'city' => $response['adgangsadresse']['postnummer']['navn'],
             'state' => '',
@@ -52,30 +53,29 @@ class DawaProvider implements Provider
      * @param array|AddressRequest $wash_results
      * @return Response
      */
-    public function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response
+    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response
     {
         // Attempt to use the original address submitted
-        $wash_response = Http::get($this->base_url . 'datavask/adresser', [
-            'betegnelse' => $this->get_attributes($address)
+        $wash_response = Http::get($this::WASH_ENDPOINT, [
+            'betegnelse' => $this::format_address_attributes($address)
         ]);
 
         // if not an exact match is found, attempt to use the different variations
         $responses = [$wash_response];
         if ($wash_response['kategori'] != 'A') {
-            $responses[] = Http::pool(function (Pool $pool) use ($wash_results, $address) {
+            $responses += Http::pool(function (Pool $pool) use ($wash_results, $address) {
                 foreach ($wash_results as $wash_result) {
-                    $pool->get($this->base_url . 'datavask/adresser', [
-                        'betegnelse' => $this->get_attributes($wash_result)
+                    $pool->get($this::WASH_ENDPOINT, [
+                        'betegnelse' => $this::format_address_attributes($wash_result)
                     ]);
                 }
             });
         }
 
-        /* TODO: it should choose the best one here and return that one
-        $obj = array_reduce($responses, static function ($carry, $item) {
-            return $carry === false && $item['resultater'][0]['aktueladresse']['href'] != '' ? $item : $carry;
-        }, false);
-        */
+        // TODO: it should choose the best one here and return that one
+        usort($responses, function ($a, $b) {
+            return strcmp($a['kategori'], $b['kategori']);
+        });
 
         return $responses[0];
     }
@@ -86,18 +86,36 @@ class DawaProvider implements Provider
         return Http::get($response['resultater'][0]['aktueladresse']['href']);
     }
 
-    public static function get_attributes(AddressRequest $address)
+    public static function format_address_attributes(AddressRequest $address): string
     {
         return "{$address->street}, {$address->zip_code} {$address->city}";
     }
 
-    private static function convert_confidence(string $confidence): string
+    protected static function convert_confidence(mixed $determinant): string
     {
-        return match ($confidence) {
+        return match ($determinant) {
             'A' => 'exact',
             'B' => 'sure',
             'C' => 'unsure',
             default => 'unknown'
         };
+    }
+
+    protected static function format_street_number(mixed $input): string
+    {
+        if (!array_key_exists('adgangsadresse', $input) && array_key_exists('husnr', $input['adgangsadresse'])) {
+            throw new \Exception("no arguments given for street number");
+        }
+
+        $formatted = $input['adgangsadresse']['husnr'];
+        if (isset($input['etage'])) {
+            $formatted .= " {$input['etage']}.";
+        }
+
+        if (isset($input['dør'])) {
+            $formatted .= " {$input['dør']}";
+        }
+
+        return $formatted;
     }
 }

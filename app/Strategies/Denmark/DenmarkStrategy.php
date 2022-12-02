@@ -13,7 +13,9 @@ use Illuminate\Support\Collection;
 
 class DenmarkStrategy implements Strategy
 {
-    private $providers = [DawaProvider::class];
+    private $providers = [
+        DawaProvider::class,
+    ];
 
     /** @var AddressRequestRuleInterface[] */
     public function __construct()
@@ -21,7 +23,7 @@ class DenmarkStrategy implements Strategy
 
     }
 
-    public function validateAddress(AddressRequest $address) : AddressResponse
+    public function validateAddress(AddressRequest $address): AddressResponse
     {
         $addresses = $this->wash($address);
         $res = new AddressResponse();
