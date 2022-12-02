@@ -1,21 +1,19 @@
 <script>
     import Spinner from "../Spinner.svelte";
-
     import { getCache } from "../../stores/cache.store.js";
     let search = "";
-    let data;
-    const searchCache = async () => {
-        data = getCache(search);
-    };
+    let promise;
 </script>
 
 <form
-    on:submit|preventDefault={searchCache}
+    on:submit|preventDefault={() => {
+        promise = getCache(search);
+    }}
     class="border-4 border-green-500 m-3 rounded-md p-1 overflow-hidden flex shadow-lg"
 >
     <input
         type="text"
-        name="seach"
+        name="search"
         id="search"
         class="outline-0 border-0 w-full pl-2 text-gray-700"
         bind:value={search}
@@ -38,9 +36,7 @@
             <line x1="21" y1="21" x2="15" y2="15" />
         </svg></button
     >
-    {#await data}
+    {#await promise}
         <Spinner />
-    {:catch error}
-        error
     {/await}
 </form>
