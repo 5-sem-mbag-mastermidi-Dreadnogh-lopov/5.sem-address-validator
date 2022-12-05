@@ -17,10 +17,10 @@
 <svelte:head>
     <title>AdminTool</title>
 </svelte:head>
-<div class="flex flex-col overflow-visible" in:fly={{x:-500, duration: 300 }}>
+<div class="flex flex-col overflow-visible pb-32" in:fly={{x:-500, duration: 300 }}>
     <CacheSearch />
     <table
-        class="text-sm text-left text-gray-500 w-1/2 mx-auto shadow overflow-visible"
+        class="text-sm text-left text-gray-500 w-1/2 mx-auto shadow"
     >
         <thead class="text-xs text-gray-700 uppercase bg-gray-200">
             <tr>
@@ -41,7 +41,7 @@
         <tbody id="resultTableBody">
             {#each $cache as item}
                 <tr
-                    class="bg-white border-b hover:shadow-xl transition-shadow relative overflow-visible hover:z-5"
+                    class="bg-white border-b hover:shadow-xl transition-shadow relative hover:z-5"
                 >
                     <td class="py-4 px-1"
                         ><input
@@ -132,7 +132,7 @@
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-device-floppy overflow-visible"
+                                class="icon icon-tabler icon-tabler-device-floppy"
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -153,7 +153,7 @@
                                 <polyline points="14 4 14 8 8 8 8 4" />
                             </svg>
                         </button>
-                        <div class="group/item overflow-visible">
+                        <div class="group/item">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-dots "
