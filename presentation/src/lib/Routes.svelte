@@ -12,7 +12,15 @@
         ADMIN_TOOL_BTN,
         API_TEST_BTN,
     } from "./stores/page.store";
+
     import { onMount } from "svelte";
+
+    onMount(() => {
+        const jwt = localStorage.getItem("jwt");
+        if (jwt) {
+            pageStore.apiTestPage();
+        }
+    });
 
     let options = [
         { name: LOGIN_BTN, component: Login },
@@ -24,17 +32,9 @@
         (option) => option.name === $pageStore
     ).component;
 
-    onMount(() => {
-        const jwt = localStorage.getItem("jwt");
-        if (jwt) {
-            pageStore.apiTestPage();
-        }
-    });
-
 </script>
 
-
-<div class="max-w-[100vw] overflow-hidden"> 
+<div class="max-w-[100vw] min-h-[70vh] overflow-hidden"> 
     <svelte:component this={activeComponent} />
     <Toast />
 </div>

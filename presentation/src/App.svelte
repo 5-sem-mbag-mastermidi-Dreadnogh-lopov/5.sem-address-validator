@@ -7,7 +7,7 @@
     <title>Address Validator</title>
 </svelte:head>
 
-<main>
+<main class="min-h-[100vh]">
     <Navbar />
     <Routes />
 </main>

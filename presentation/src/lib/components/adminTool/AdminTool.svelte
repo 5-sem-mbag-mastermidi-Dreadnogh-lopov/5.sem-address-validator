@@ -17,7 +17,7 @@
 <svelte:head>
     <title>AdminTool</title>
 </svelte:head>
-<div class="flex flex-col z-1" in:fly={{x:-500, duration: 300 }}>
+<div class="flex flex-col overflow-visible" in:fly={{x:-500, duration: 300 }}>
     <CacheSearch />
     <table
         class="text-sm text-left text-gray-500 w-1/2 mx-auto shadow overflow-visible"
@@ -132,7 +132,7 @@
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-tabler icon-tabler-device-floppy"
+                                class="icon icon-tabler icon-tabler-device-floppy overflow-visible"
                                 width="24"
                                 height="24"
                                 viewBox="0 0 24 24"
@@ -153,7 +153,7 @@
                                 <polyline points="14 4 14 8 8 8 8 4" />
                             </svg>
                         </button>
-                        <div class="group/item">
+                        <div class="group/item overflow-visible">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-dots "
