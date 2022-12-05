@@ -38,3 +38,6 @@ Route::prefix('v1')->group(function () {
 Route::get('/alive', function () {
     return response()->json(['alive' => true]);
 });
+
+
+Route::get("/test", [\App\Integrations\Kartverket\KartverketProvider::class, 'validateAddress']);

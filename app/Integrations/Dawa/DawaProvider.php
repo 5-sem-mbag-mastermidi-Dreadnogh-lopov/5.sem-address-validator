@@ -79,7 +79,6 @@ class DawaProvider extends BaseProvider
         usort($responses, function ($a, $b) {
             return strcmp($a['kategori'], $b['kategori']);
         });
-
         return $responses[0];
     }
 
