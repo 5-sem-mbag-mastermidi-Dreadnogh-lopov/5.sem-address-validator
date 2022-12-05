@@ -19,6 +19,8 @@
         </include>
         <exclude>
             <directory suffix=".php">./app/Http/Middleware</directory>
+            <directory suffix=".php">./app/Providers</directory>
+            <directory suffix=".php">./app/Console</directory>
         </exclude>
     </coverage>
     <php>

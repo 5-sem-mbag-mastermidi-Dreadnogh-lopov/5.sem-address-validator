@@ -12,8 +12,4 @@ abstract class BaseProvider implements Provider
     protected abstract function addressFromResponse(Response $response, array $extra = null): AddressResponse;
 
     protected abstract function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response;
-
-    protected abstract static function convert_confidence(mixed $determinant): string;
-
-    protected abstract static function format_street_number(mixed $input): string;
 }
