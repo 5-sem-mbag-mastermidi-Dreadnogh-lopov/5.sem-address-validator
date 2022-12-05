@@ -19,7 +19,9 @@ class DawaProvider extends BaseProvider
     {
         $initial_search = $this->searchForMathces($address, $wash_results);
 
-        $response = $this->getExactAddress($initial_search);
+        if (!isset($response['resultater'][0]['aktueladresse']['href'])) {
+            $response = $this->getExactAddress($initial_search);
+        }
 
         $extra = [
             'confidence' => $initial_search['kategori']
@@ -32,19 +34,19 @@ class DawaProvider extends BaseProvider
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence' => self::convert_confidence($extra['confidence']),
+            'confidence'        => self::convert_confidence($extra['confidence']),
             'address_formatted' => $response['adressebetegnelse'],
-            'street_name' => $response['adgangsadresse']['vejstykke']['navn'],
-            'street_number' => self::format_street_number($response->json()),
-            'zip_code' => $response['adgangsadresse']['postnummer']['nr'],
-            'city' => $response['adgangsadresse']['postnummer']['navn'],
-            'state' => '',
-            'country_code' => 'DK',
-            'country_name' => 'Denmark',
-            'longitude' => $response['adgangsadresse']['vejpunkt']['koordinater'][0],
-            'latitude' => $response['adgangsadresse']['vejpunkt']['koordinater'][1],
-            'mainland' => $response['adgangsadresse']['brofast'],
-            'response_json' => json_encode($response->json()),
+            'street_name'       => $response['adgangsadresse']['vejstykke']['navn'],
+            'street_number'     => self::format_street_number($response->json()),
+            'zip_code'          => $response['adgangsadresse']['postnummer']['nr'],
+            'city'              => $response['adgangsadresse']['postnummer']['navn'],
+            'state'             => '',
+            'country_code'      => 'DK',
+            'country_name'      => 'Denmark',
+            'longitude'         => $response['adgangsadresse']['vejpunkt']['koordinater'][0],
+            'latitude'          => $response['adgangsadresse']['vejpunkt']['koordinater'][1],
+            'mainland'          => $response['adgangsadresse']['brofast'],
+            'response_json'     => json_encode($response->json()),
         ]);
     }
 
@@ -63,7 +65,7 @@ class DawaProvider extends BaseProvider
         // if not an exact match is found, attempt to use the different variations
         $responses = [$wash_response];
         if ($wash_response['kategori'] != 'A') {
-            $responses += Http::pool(function (Pool $pool) use ($wash_results, $address) {
+            $responses += Http::pool(function (Pool $pool) use ($wash_results) {
                 foreach ($wash_results as $wash_result) {
                     $pool->get($this::WASH_ENDPOINT, [
                         'betegnelse' => $this::format_address_attributes($wash_result)
@@ -101,19 +103,19 @@ class DawaProvider extends BaseProvider
         };
     }
 
-    protected static function format_street_number(mixed $input): string
+    protected static function format_street_number(mixed $response): string
     {
-        if (!array_key_exists('adgangsadresse', $input) && array_key_exists('husnr', $input['adgangsadresse'])) {
+        if (!array_key_exists('adgangsadresse', $response) && array_key_exists('husnr', $response['adgangsadresse'])) {
             throw new \Exception("no arguments given for street number");
         }
 
-        $formatted = $input['adgangsadresse']['husnr'];
-        if (isset($input['etage'])) {
-            $formatted .= " {$input['etage']}.";
+        $formatted = $response['adgangsadresse']['husnr'];
+        if (isset($response['etage'])) {
+            $formatted .= " {$response['etage']}.";
         }
 
-        if (isset($input['dør'])) {
-            $formatted .= " {$input['dør']}";
+        if (isset($response['dør'])) {
+            $formatted .= " {$response['dør']}";
         }
 
         return $formatted;

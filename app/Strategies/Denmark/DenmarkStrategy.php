@@ -3,6 +3,7 @@
 namespace App\Strategies\Denmark;
 
 use App\Integrations\Dawa\DawaProvider;
+use App\Integrations\Google\GoogleMapsProvider;
 use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
@@ -15,6 +16,7 @@ class DenmarkStrategy implements Strategy
 {
     private $providers = [
         DawaProvider::class,
+        GoogleMapsProvider::class,
     ];
 
     /** @var AddressRequestRuleInterface[] */
@@ -29,6 +31,9 @@ class DenmarkStrategy implements Strategy
         $res = new AddressResponse();
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
+            if ($res['confidence'] == 'exact') {
+                break;
+            }
         }
         return $res;
     }
@@ -38,7 +43,7 @@ class DenmarkStrategy implements Strategy
         return $provider->ValidateAddress($address, $wash_results);
     }
 
-    public function getRules() : array
+    public function getRules(): array
     {
         $rules = WashRules::index();
 

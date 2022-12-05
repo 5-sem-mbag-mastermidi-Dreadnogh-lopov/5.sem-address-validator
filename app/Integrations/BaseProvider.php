@@ -15,5 +15,5 @@ abstract class BaseProvider implements Provider
 
     protected abstract static function convert_confidence(mixed $determinant): string;
 
-    protected abstract static function format_street_number(mixed $input): string;
+    protected abstract static function format_street_number(Response $response): string;
 }

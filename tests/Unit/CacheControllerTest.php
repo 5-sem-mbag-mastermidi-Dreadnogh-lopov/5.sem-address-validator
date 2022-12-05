@@ -1,29 +1,28 @@
 <?php
 
-use App\Models\AddressRequest;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
-use \Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CacheControllerTest extends  TestCase
+class CacheControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function success_should_return_address()
+    public function test_success_should_return_address()
     {
 
-            $this->seed();
+        $this->seed();
 
-            $request = new Request([ "search_field" => "FyrKildevej",]);
+        $request = new Request(["search_field" => "FyrKildevej",]);
 
-            $result =  (new App\Http\Controllers\CacheController)->index($request)->toArray();
+        $result = (new App\Http\Controllers\CacheController)->index($request)->toArray();
 
-            $this->assertNotNull($result);
-            expect($result[0])->toMatchArray(['address_formatted' => 'Fyrkildevej 104, 1. tv, 9220 Aalborg']);
+        $this->assertNotNull($result);
+        expect($result[0])->toMatchArray(['address_formatted' => 'Fyrkildevej 104, 1. tv, 9220 Aalborg']);
 
     }
 
-    public function success_should_update_address()
+    public function test_success_should_update_address()
     {
 
         $this->seed();
@@ -43,14 +42,14 @@ class CacheControllerTest extends  TestCase
 
     }
 
-    public function success_should_delete_address()
+    public function test_success_should_delete_address()
     {
 
         $this->seed();
 
         $id = "1";
 
-        $request = new Request([ ]);
+        $request = new Request([]);
 
         (new App\Http\Controllers\CacheController)->delete($id);
 

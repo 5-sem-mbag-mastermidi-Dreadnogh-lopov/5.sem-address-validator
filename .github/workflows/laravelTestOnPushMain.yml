@@ -25,4 +25,4 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
       - name: Run test with coverage
-        run: vendor/bin/pest --coverage-html reports/
+        run: php artisan test --coverage-html reports/
