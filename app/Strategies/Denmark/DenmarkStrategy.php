@@ -2,6 +2,7 @@
 
 namespace App\Strategies\Denmark;
 
+use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Integrations\Google\GoogleMapsProvider;
 use App\Integrations\Provider;
@@ -31,7 +32,7 @@ class DenmarkStrategy implements Strategy
         $res = new AddressResponse();
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
-            if ($res['confidence'] == 'exact') {
+            if ($res['confidence'] == Confidence::Exact) {
                 break;
             }
         }

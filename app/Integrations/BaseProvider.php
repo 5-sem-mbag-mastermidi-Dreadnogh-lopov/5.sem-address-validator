@@ -13,7 +13,7 @@ abstract class BaseProvider implements Provider
 
     protected abstract function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response;
 
-    protected abstract static function convert_confidence(mixed $determinant): string;
+    protected abstract static function convert_confidence(mixed $determinant): Confidence;
 
     protected abstract static function format_street_number(Response $response): string;
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Integrations\Confidence;
 use App\Integrations\Google\GoogleMapsProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
@@ -135,7 +136,7 @@ class GoogleMapsProviderTest extends TestCase
         // Assert
         expect($response)->toBeInstanceOf(AddressResponse::class);
         expect($response->attributesToArray())->toMatchArray([
-            'confidence'        => 'sure',
+            'confidence'        => Confidence::Sure,
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B, 3. 9",

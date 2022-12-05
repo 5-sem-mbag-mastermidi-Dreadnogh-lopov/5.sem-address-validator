@@ -295,7 +295,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->get(
-            url('api/v1/datawash?' . http_build_query($address->attributesToArray()))
+            url('api/v1/datawash?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
         )->withHeaders([
             "Accept" => "application/json"
         ]);

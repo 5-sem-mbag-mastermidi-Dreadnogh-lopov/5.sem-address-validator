@@ -3,6 +3,7 @@
 namespace App\Integrations\Google;
 
 use App\Integrations\BaseProvider;
+use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Http\Client\Pool;
@@ -24,18 +25,20 @@ class GoogleMapsProvider extends BaseProvider
         return $address;
     }
 
-    protected static function convert_confidence(mixed $determinant): string
+    protected static function convert_confidence(mixed $determinant): Confidence
     {
-        $verdict = 'unknown';
+        $verdict = Confidence::Unknown;
 
         if (!isset($determinant['result']['verdict']['hasInferredComponents'])
             && !isset($determinant['result']['verdict']['hasUnconfirmedComponents'])
-            && !isset($determinant['result']['verdict']['hasReplacedComponents'])) {
-            $verdict = 'exact';
-        } elseif (count(array_keys(array_column($determinant['result']['address']['addressComponents'], 'confirmationLevel'), 'UNCONFIRMED_AND_SUSPICIOUS')) > 0) {
-            $verdict = 'unsure';
+            && !isset($determinant['result']['verdict']['hasReplacedComponents'])
+            && isset($determinant['result']['verdict']['addressComplete'])){
+            $verdict = Confidence::Exact;
+        } elseif (self::get_component_text($determinant, 'confirmationLevel', 'UNCONFIRMED_AND_SUSPICIOUS') != null
+            || !isset($determinant['result']['verdict']['addressComplete'])) {
+            $verdict = Confidence::Unsure;
         } else {
-            $verdict = 'sure';
+            $verdict = Confidence::Sure;
         }
 
         return $verdict;
@@ -46,13 +49,13 @@ class GoogleMapsProvider extends BaseProvider
         return new AddressResponse([
             'confidence'        => self::convert_confidence($response),
             'address_formatted' => $response['result']['address']['formattedAddress'] ?? null,
-            'street_name'       => self::get_component_text($response, 'route') ?? null,
+            'street_name'       => self::get_component_text($response, 'componentType','route') ?? null,
             'street_number'     => self::format_street_number($response),
             'zip_code'          => $response['result']['address']['postalAddress']['postalCode'] ?? null,
             'city'              => $response['result']['address']['postalAddress']['locality'] ?? null,
             'state'             => $response['result']['address']['postalAddress']['administrativeArea'] ?? null,
             'country_code'      => $response['result']['address']['postalAddress']['regionCode'] ?? null,
-            'country_name'      => self::get_component_text($response, 'country'),
+            'country_name'      => self::get_component_text($response, 'componentType','country'),
             'longitude'         => $response['result']['geocode']['location']['longitude'] ?? null,
             'latitude'          => $response['result']['geocode']['location']['latitude'] ?? null,
             'response_json'     => json_encode($response->json()),
@@ -83,9 +86,9 @@ class GoogleMapsProvider extends BaseProvider
 
     protected static function format_street_number(Response $response): string
     {
-        $street_number = self::get_component_text($response, 'street_number');
+        $street_number = self::get_component_text($response,'componentType','street_number'); // TODO same problem as subpremise, just returns the input without formatting
 
-        $subpremise = self::get_component_text($response, 'subpremise');
+        $subpremise = self::get_component_text($response,'componentType','subpremise'); // TODO google doesnt format for you, so if your input is 'urbansgade 23 1 tv' you'll get '1 tv' and not '1. tv' as if formatted (like Dawa does)
         if (isset($subpremise)) {
             $street_number .= ', ' . $subpremise;
         }
@@ -93,10 +96,10 @@ class GoogleMapsProvider extends BaseProvider
         return $street_number;
     }
 
-    protected static function get_component_text(Response $response, string $value)
+    protected static function get_component_text(Response $response, string $component_columnn, string $value)
     {
         $components = $response['result']['address']['addressComponents'];
-        $component_types = array_column($components, 'componentType');
+        $component_types = array_column($components, $component_columnn);
 
         $search_res = array_search($value, $component_types);
         if ($search_res !== false) {

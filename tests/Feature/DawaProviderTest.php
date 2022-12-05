@@ -1,5 +1,6 @@
 <?php
 
+use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
@@ -29,7 +30,7 @@ test('test should return exact match', function () {
         'mainland'          => true,
     ];
 
-    $url = DawaProvider::WASH_ENDPOINT . '*';
+    $url = DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . rawurlencode(DawaProvider::format_address_attributes($address));
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
@@ -80,7 +81,7 @@ test('test should return exact match', function () {
     // Assert
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response->attributesToArray())->toMatchArray([
-        'confidence'        => 'exact',
+        'confidence'        => Confidence::Exact,
         'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
         'street_name'       => "Kollegievej",
         'street_number'     => "2B",
@@ -115,7 +116,7 @@ test('test should return sure match', function () {
         'mainland'          => true,
     ];
 
-    $url = DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . urlencode(DawaProvider::format_address_attributes($address));
+    $url = DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . rawurlencode(DawaProvider::format_address_attributes($address));
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
@@ -165,7 +166,7 @@ test('test should return sure match', function () {
     // Assert
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response)->toMatchArray([
-        'confidence'        => 'sure',
+        'confidence'        => Confidence::Sure,
         'address_formatted' => "Allevej 57, 2635 Ishøj",
         'street_name'       => "Allevej",
         'street_number'     => "57",
@@ -203,7 +204,7 @@ test('test should return unsure match', function () {
         'mainland'          => true,
     ];
 
-    $url = DawaProvider::WASH_ENDPOINT . '*';
+    $url = DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . rawurlencode(DawaProvider::format_address_attributes($address));
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
@@ -252,8 +253,8 @@ test('test should return unsure match', function () {
 
     // Assert
     expect($response)->toBeInstanceOf(AddressResponse::class);
-    expect($response)->toMatchArray([
-        'confidence'        => 'unsure',
+    expect($response->attributesToArray())->toMatchArray([
+        'confidence'        => Confidence::Unsure,
         'address_formatted' => "Allevej 57, 2635 Ishøj",
         'street_name'       => "Allevej",
         'street_number'     => "57",

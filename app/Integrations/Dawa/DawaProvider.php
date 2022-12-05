@@ -5,6 +5,7 @@ namespace App\Integrations\Dawa;
 use App\Integrations\BaseProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
+use App\Integrations\Confidence;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -93,13 +94,13 @@ class DawaProvider extends BaseProvider
         return "{$address->street}, {$address->zip_code} {$address->city}";
     }
 
-    protected static function convert_confidence(mixed $determinant): string
+    protected static function convert_confidence(mixed $determinant): Confidence
     {
         return match ($determinant) {
-            'A' => 'exact',
-            'B' => 'sure',
-            'C' => 'unsure',
-            default => 'unknown'
+            'A' => Confidence::Exact,
+            'B' => Confidence::Sure,
+            'C' => Confidence::Unsure,
+            default => Confidence::Unknown
         };
     }
 
