@@ -4,6 +4,7 @@ use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
+use Illuminate\Support\Facades\Http;
 
 test('test should return exact match', function () {
     // Arrange
