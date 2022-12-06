@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function () {
         }
     );
 
-    Route::get('/login', [LoginController::class, 'index']);
+    Route::get('/user', [LoginController::class, 'index']);
 });
 
 Route::get('/alive', function () {
