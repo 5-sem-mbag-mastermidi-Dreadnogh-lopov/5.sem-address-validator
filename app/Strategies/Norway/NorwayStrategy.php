@@ -51,7 +51,7 @@ class NorwayStrategy implements Strategy
         return $ruleset;
     }
 
-    public function wash(AddressRequest $address): Collection // TODO implement washing a little better, doesnt work with unique elements
+    public function wash(AddressRequest $address): Collection
     {
         $addresses = [];
         $rules = $this->getRules();
