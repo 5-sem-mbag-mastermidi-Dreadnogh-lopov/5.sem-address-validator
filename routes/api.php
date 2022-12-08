@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 //Version control
 Route::prefix('v1')->group(function () {
 
-    Route::get('/datawash', [AddressController::class, 'index']);
+    Route::get('/address', [AddressController::class, 'index']);
 
-    Route::prefix('address')->middleware('checkToken')->group(
+    Route::prefix('cache')->middleware('checkToken')->group(
         function () {
             Route::get("/", [CacheController::class, 'index']);
             Route::put("/{id}", [CacheController::class, 'update']);
@@ -31,8 +31,7 @@ Route::prefix('v1')->group(function () {
         }
     );
 
-    Route::get('/login', [LoginController::class, 'index']);
-    Route::get('/test', [LoginController::class, 'test']);
+    Route::get('/user', [LoginController::class, 'index']);
 });
 
 Route::get('/alive', function () {

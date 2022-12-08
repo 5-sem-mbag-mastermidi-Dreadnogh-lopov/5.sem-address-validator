@@ -36,7 +36,7 @@ class EndPointTest extends TestCase
     public function test_the_application_returns_a_bad_response_to_api_v1_login()
     {
         //arrange
-        $uri = '/api/v1/login?password=test';
+        $uri = '/api/v1/user?password=test';
         //act
         $response = $this->get($uri);
         //assert
@@ -46,7 +46,7 @@ class EndPointTest extends TestCase
     public function test_the_application_returns_a_successful_response_to_api_v1_login()
     {
         //arrange
-        $uri = '/api/v1/login?password=' . env('APP_PASSWORD');
+        $uri = '/api/v1/user?password=' . env('APP_PASSWORD');
         //act
         $response = $this->get($uri);
         //assert
@@ -129,7 +129,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->get(
-            url('api/v1/datawash?' . http_build_query($address->attributesToArray()))
+            url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -295,7 +295,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->get(
-            url('api/v1/datawash?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
+            url('api/v1/address?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -329,7 +329,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->get(
-            url('api/v1/datawash?' . http_build_query($address->attributesToArray()))
+            url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
