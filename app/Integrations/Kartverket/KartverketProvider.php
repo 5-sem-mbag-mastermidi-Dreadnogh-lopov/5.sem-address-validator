@@ -29,9 +29,8 @@ class KartverketProvider extends BaseProvider
 
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
-
         return new AddressResponse([
-            'confidence' => "",
+            'confidence' => "exact",
             'address_formatted' => $response['adresser'][0]['adressenavn'] . $response['adresser'][0]['nummer'] . $response['adresser'][0]['postnummer'] . $response['adresser'][0]['poststed'] . "Norge" ?? null,
             'street_name' => $response['adresser'][0]['adressenavn'] ?? null,
             'street_number' => $response['adresser'][0]['nummer'] ?? null,
@@ -70,7 +69,7 @@ class KartverketProvider extends BaseProvider
         $parameters = http_build_query([
             "adressetekst" => $address->street ?? null,
             "kommunenavn" => $address->state ?? null,
-            "kommunenummer" => $address->zip_code ?? null,
+            "postnummer" => $address->zip_code ?? null,
             "poststed" => $address->city ?? null
         ]);
 

@@ -12,6 +12,7 @@ use App\Strategies\AddressRequest\AddressRequestRuleInterface;
 use App\Strategies\AddressRequest\StringReplaceRule;
 use App\Strategies\Strategy;
 use Illuminate\Support\Collection;
+use App\Integrations\Confidence;
 
 class NorwayStrategy implements Strategy
 {
@@ -33,6 +34,9 @@ class NorwayStrategy implements Strategy
         $res = new AddressResponse();
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
+            if ($res['exact'] !== \App\Integrations\Confidence::Exact) {
+                break;
+            }
         }
         return $res;
     }
@@ -50,6 +54,7 @@ class NorwayStrategy implements Strategy
         $ruleset = [];
         foreach ($rules as $rule => $value) {
             $ruleset[] = new StringReplaceRule($rule, $value);
+
         }
         return $ruleset;
     }
