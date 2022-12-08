@@ -34,7 +34,7 @@
 
 </script>
 
-<div class="max-w-[100vw]"> 
+<div class="max-w-[100vw] overflow-x-hidden"> 
     <svelte:component this={activeComponent} />
     <Toast />
 </div>

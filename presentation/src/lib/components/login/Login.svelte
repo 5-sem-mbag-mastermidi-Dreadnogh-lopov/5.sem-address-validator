@@ -8,7 +8,7 @@
     async function submitLogin(password) {
         //Send password to API
         let response = await fetch(
-            import.meta.env.VITE_API_HOST + "api/v1/login?password=" + password
+            import.meta.env.VITE_API_HOST + "api/v1/user?password=" + password
         );
         if (response.ok) {
             errors = false;

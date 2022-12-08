@@ -34,7 +34,7 @@
         console.log("obj", obj);
 
         const data = new URLSearchParams(obj).toString();
-        let response = await fetch("http://localhost/api/v1/datawash?" + data, {
+        let response = await fetch("http://localhost/api/v1/address?" + data, {
             method: "GET",
             headers: {
                 Accept: "application/json",
