@@ -3,6 +3,7 @@
 namespace App\Strategies\Norway;
 
 use App\Integrations\Dawa\DawaProvider;
+use App\Integrations\Google\GoogleMapsProvider;
 use App\Integrations\Kartverket\KartverketProvider;
 use App\Integrations\Provider;
 use App\Models\AddressRequest;
@@ -15,7 +16,9 @@ use Illuminate\Support\Collection;
 class NorwayStrategy implements Strategy
 {
     private $providers = [
-         KartverketProvider::class,
+        KartverketProvider::class,
+        GoogleMapsProvider::class,
+
     ];
 
     /** @var AddressRequestRuleInterface[] */
@@ -39,7 +42,7 @@ class NorwayStrategy implements Strategy
         return $provider->ValidateAddress($address, $wash_results);
     }
 
-    public function getRules() : array
+    public function getRules(): array
     {
         $rules = WashRules::index();
 

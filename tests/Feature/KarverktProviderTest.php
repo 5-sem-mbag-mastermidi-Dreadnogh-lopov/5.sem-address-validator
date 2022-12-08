@@ -15,8 +15,7 @@ test('test should return exact match', function () {
         'country_code' => 'DK'
     ]);
 
-
-    $dawa_response_data = [
+    $kartverkt_response_data = [
         'id'                => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
         'confidence'        => 'A',
         'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
@@ -33,17 +32,16 @@ test('test should return exact match', function () {
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
-            "kategori"   => $dawa_response_data['confidence'],
             "resultater" => [
                 0 => [
                     "aktueladresse" => [
-                        "vejnavn"             => $dawa_response_data['street_name'],
-                        "adresseringsvejnavn" => $dawa_response_data['street_name'],
-                        "husnr"               => $dawa_response_data['street_number'],
-                        "postnr"              => $dawa_response_data['zip_code'],
-                        "postnrnavn"          => $dawa_response_data['city'],
-                        "adgangsadresseid"    => $dawa_response_data['id'],
-                        "href"                => "https://api.dataforsyningen.dk/adresser/" . $dawa_response_data['id']
+                        "vejnavn"             => $kartverkt_response_data['street_name'],
+                        "adresseringsvejnavn" => $kartverkt_response_data['street_name'],
+                        "husnr"               => $kartverkt_response_data['street_number'],
+                        "postnr"              => $kartverkt_response_data['zip_code'],
+                        "postnrnavn"          => $kartverkt_response_data['city'],
+                        "adgangsadresseid"    => $kartverkt_response_data['id'],
+                        "href"                => "https://api.dataforsyningen.dk/adresser/" . $kartverkt_response_data['id']
                     ]
                 ]
             ]
@@ -51,24 +49,24 @@ test('test should return exact match', function () {
     ]);
     /* Faked id lookup */
     Http::fake([
-        'https://api.dataforsyningen.dk/adresser/' . $dawa_response_data['id'] => Http::response([
-            "adressebetegnelse" => $dawa_response_data['address_formatted'],
+        'https://api.dataforsyningen.dk/adresser/' . $kartverkt_response_data['id'] => Http::response([
+            "adressebetegnelse" => $kartverkt_response_data['address_formatted'],
             "adgangsadresse"    => [
                 "vejstykke"  => [
-                    "navn" => $dawa_response_data['street_name']
+                    "navn" => $kartverkt_response_data['street_name']
                 ],
-                "husnr"      => $dawa_response_data['street_number'],
+                "husnr"      => $kartverkt_response_data['street_number'],
                 "postnummer" => [
-                    "nr"   => $dawa_response_data['zip_code'],
-                    "navn" => $dawa_response_data['city']
+                    "nr"   => $kartverkt_response_data['zip_code'],
+                    "navn" => $kartverkt_response_data['city']
                 ],
                 "vejpunkt"   => [
                     "koordinater" => [
-                        0 => $dawa_response_data['longitude'],
-                        1 => $dawa_response_data['latitude']
+                        0 => $kartverkt_response_data['longitude'],
+                        1 => $kartverkt_response_data['latitude']
                     ]
                 ],
-                "brofast"    => $dawa_response_data['mainland']
+                "brofast"    => $kartverkt_response_data['mainland']
             ]
         ], 200)
     ]);
@@ -252,7 +250,7 @@ test('test should return unsure match', function () {
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response->attributesToArray())->toMatchArray([
         'address_formatted' => "Allevej 57, 2635 Ishøj",
-        'street_name'       => "Allevej",
+        'street_name'       => "c",
         'street_number'     => "57",
         'zip_code'          => "2635",
         'city'              => "Ishøj",
