@@ -39,7 +39,7 @@ class GoogleMapsProviderTest extends TestCase
 
         $dawa_response_data = [
             'id'                => "6a9d33c6-c93f-419e-b030-b8de53eaa7c0",
-            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
+            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
             'subpremise'        => "3. 9",
@@ -137,7 +137,7 @@ class GoogleMapsProviderTest extends TestCase
         expect($response)->toBeInstanceOf(AddressResponse::class);
         expect($response->attributesToArray())->toMatchArray([
             'confidence'        => Confidence::Sure,
-            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
+            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B, 3. 9",
             'zip_code'          => "9000",

@@ -18,7 +18,7 @@ class CacheControllerTest extends TestCase
         $result = (new App\Http\Controllers\CacheController)->index($request)->toArray();
 
         $this->assertNotNull($result);
-        expect($result[0])->toMatchArray(['address_formatted' => 'Fyrkildevej 104, 1. tv, 9220 Aalborg']);
+        expect($result[0])->toMatchArray(['address_formatted' => 'Fyrkildevej 104, 1. tv, 9220 Aalborg, Danmark']);
 
     }
 

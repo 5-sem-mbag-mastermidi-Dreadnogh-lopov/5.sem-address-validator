@@ -138,7 +138,7 @@ class EndPointTest extends TestCase
         expect($response->status())->toBe(200);
         $this->assertDatabaseHas('address', [
             'confidence'        => 'exact',
-            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
+            'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
             'zip_code'          => "9000",
@@ -165,7 +165,7 @@ class EndPointTest extends TestCase
             'dawa_id'           => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
             'google_id'         => "6a9d33c6-c93f-419e-b030-b8de53eaa7c0",
             'confidence'        => "B",
-            'address_formatted' => "Kollegievej 2B, 9000 Aalborg",
+            'address_formatted' => "Kollegievej 2B, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
             'zip_code'          => "9000",
@@ -304,7 +304,7 @@ class EndPointTest extends TestCase
         expect($response->status())->toBe(200);
         expect($response->getData())->toMatchArray([
             'confidence'        => 'sure',
-            'address_formatted' => "Kollegievej 2B, 9000 Aalborg",
+            'address_formatted' => "Kollegievej 2B, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
             'zip_code'          => "9000",
@@ -336,6 +336,6 @@ class EndPointTest extends TestCase
 
         // Assert
         expect($response->status())->toBe(200);
-        expect($response->getData())->toHaveKey('address_formatted', 'Fyrkildevej 104, 1. tv, 9220 Aalborg');
+        expect($response->getData())->toHaveKey('address_formatted', 'Fyrkildevej 104, 1. tv, 9220 Aalborg, Danmark');
     }
 }

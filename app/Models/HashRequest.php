@@ -13,6 +13,7 @@ class HashRequest extends Model
 
     protected $fillable = [
         'hash_key',
+        'request',
         'address_id',
         'created_at',
     ];
