@@ -30,13 +30,13 @@ return new class extends Migration {
             $table->boolean('mainland');
             $table->dateTime('expire_date')->nullable();
 
-            $table->jsonb('response_json')->index();
+            $table->jsonb('response_json');
 
-            $table->unique(['street_name', 'street_number', 'zip_code', 'city'], 'unique_address');
+            $table->unique(['street_name', 'street_number', 'zip_code'], 'unique_address');
         });
 
-        if(env('APP_ENV') != "testing")
-        DB::statement("ALTER TABLE address ALTER COLUMN expire_date SET DEFAULT now() + interval '100 day';");
+        if (env('APP_ENV') != "testing")
+            DB::statement("ALTER TABLE address ALTER COLUMN expire_date SET DEFAULT now() + interval '100 day';");
     }
 
     /**

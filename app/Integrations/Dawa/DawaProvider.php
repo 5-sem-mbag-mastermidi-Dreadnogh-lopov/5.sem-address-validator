@@ -3,9 +3,9 @@
 namespace App\Integrations\Dawa;
 
 use App\Integrations\BaseProvider;
+use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
-use App\Integrations\Confidence;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
@@ -36,14 +36,13 @@ class DawaProvider extends BaseProvider
     {
         return new AddressResponse([
             'confidence'        => self::convert_confidence($extra['confidence']),
-            'address_formatted' => $response['adressebetegnelse'],
+            'address_formatted' => $response['adressebetegnelse'] . ", Danmark",
             'street_name'       => $response['adgangsadresse']['vejstykke']['navn'],
             'street_number'     => self::format_street_number($response->json()),
             'zip_code'          => $response['adgangsadresse']['postnummer']['nr'],
             'city'              => $response['adgangsadresse']['postnummer']['navn'],
-            'state'             => '',
             'country_code'      => 'DK',
-            'country_name'      => 'Denmark',
+            'country_name'      => 'Danmark',
             'longitude'         => $response['adgangsadresse']['vejpunkt']['koordinater'][0],
             'latitude'          => $response['adgangsadresse']['vejpunkt']['koordinater'][1],
             'mainland'          => $response['adgangsadresse']['brofast'],
