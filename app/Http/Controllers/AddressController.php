@@ -24,9 +24,9 @@ class AddressController extends Controller
     public function index(Request $request): AddressResponse
     {
         $request->validate([
-            'street' => 'required',
+            'street'       => 'required',
             'country_code' => 'required|max:2',
-            'zip_code' => 'required'
+            'zip_code'     => 'required'
         ]);
 
         // Get all attributes and sort them, so they can match in the cache DB
@@ -43,13 +43,16 @@ class AddressController extends Controller
 
         // check cache for identical request, else create new instance of hash request class
         $hash = HashRequest::firstOrNew(
-            ['hash_key' => json_encode($request_attributes)],
+            [
+                'hash_key' => hash(env('HASH_ALGO'), json_encode($request_attributes)),
+                'request'  => json_encode($request_attributes)
+            ],
             ['address_id' => null]
         );
 
         // verify if there was a record in the database
-        if (isset($hash->id)) {
-            $res = AddressResponse::find($hash->address_id);
+        if (isset($hash['id'])) {
+            $res = AddressResponse::find($hash['address_id']);
         } else {
             // create address instance from request information
             $address = new AddressRequest($request->all());
@@ -60,12 +63,12 @@ class AddressController extends Controller
 
             // create result on database and set address id on hash request
             $address_model = AddressResponse::firstOrCreate([
-                'street_name' => $res->street_name,
+                'street_name'   => $res->street_name,
                 'street_number' => $res->street_number,
-                'zip_code' => $res->zip_code,
-                'city' => $res->city
+                'zip_code'      => $res->zip_code,
+                'city'          => $res->city
             ], $res->attributesToArray());
-            $hash->address_id = $address_model->id;
+            $hash['address_id'] = $address_model['id'];
             $hash->save();
         }
 

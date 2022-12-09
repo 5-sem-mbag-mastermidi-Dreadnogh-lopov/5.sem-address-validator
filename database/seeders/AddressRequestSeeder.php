@@ -21,13 +21,15 @@ class AddressRequestSeeder extends Seeder
     {
         return [
             [
-                'id' => 1,
-                'hash_key' => '{"city":"Aalborg","country_code":"DK","street":"Fyrkildevej 104, 1. tv","zip_code":"9220"}',
+                'id'         => 1,
+                'hash_key'   => hash('sha256', '{"city":"Aalborg","country_code":"DK","street":"Fyrkildevej 104, 1. tv","zip_code":"9220"}'),
+                'request'    => '{"city":"Aalborg","country_code":"DK","street":"Fyrkildevej 104, 1. tv","zip_code":"9220"}',
                 'address_id' => 1
             ],
             [
-                'id' => 2,
-                'hash_key' => '{"city": "København K", "country_code": "DK", "street": "Pilestræde 1", "zip_code": "1112"}',
+                'id'         => 2,
+                'hash_key'   => hash('sha256', '{"city": "København K", "country_code": "DK", "street": "Pilestræde 1", "zip_code": "1112"}'),
+                'request'    => '{"city": "København K", "country_code": "DK", "street": "Pilestræde 1", "zip_code": "1112"}',
                 'address_id' => 2
             ]
         ];

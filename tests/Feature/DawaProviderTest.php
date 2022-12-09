@@ -4,6 +4,7 @@ use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
+use Illuminate\Support\Facades\Http;
 
 test('test should return exact match', function () {
     // Arrange
@@ -82,7 +83,7 @@ test('test should return exact match', function () {
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response->attributesToArray())->toMatchArray([
         'confidence'        => Confidence::Exact,
-        'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
+        'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
         'street_name'       => "Kollegievej",
         'street_number'     => "2B",
         'zip_code'          => "9000",
@@ -167,7 +168,7 @@ test('test should return sure match', function () {
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response)->toMatchArray([
         'confidence'        => Confidence::Sure,
-        'address_formatted' => "Allevej 57, 2635 Ishøj",
+        'address_formatted' => "Allevej 57, 2635 Ishøj, Danmark",
         'street_name'       => "Allevej",
         'street_number'     => "57",
         'zip_code'          => "2635",
@@ -255,7 +256,7 @@ test('test should return unsure match', function () {
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response->attributesToArray())->toMatchArray([
         'confidence'        => Confidence::Unsure,
-        'address_formatted' => "Allevej 57, 2635 Ishøj",
+        'address_formatted' => "Allevej 57, 2635 Ishøj, Danmark",
         'street_name'       => "Allevej",
         'street_number'     => "57",
         'zip_code'          => "2635",

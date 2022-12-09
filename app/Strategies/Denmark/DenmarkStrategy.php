@@ -3,6 +3,7 @@
 namespace App\Strategies\Denmark;
 
 use App\Integrations\Confidence;
+use App\Integrations\Dao\DaoProvider;
 use App\Integrations\Dawa\DawaProvider;
 use App\Integrations\Google\GoogleMapsProvider;
 use App\Integrations\Provider;
@@ -16,15 +17,10 @@ use Illuminate\Support\Collection;
 class DenmarkStrategy implements Strategy
 {
     private $providers = [
+        DaoProvider::class,
         DawaProvider::class,
         GoogleMapsProvider::class,
     ];
-
-    /** @var AddressRequestRuleInterface[] */
-    public function __construct()
-    {
-
-    }
 
     public function validateAddress(AddressRequest $address): AddressResponse
     {
