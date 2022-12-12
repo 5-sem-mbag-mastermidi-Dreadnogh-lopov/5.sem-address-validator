@@ -18,24 +18,24 @@ class DawaProvider extends BaseProvider
 
     public function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
-        $initial_search = $this->searchForMatches($address, $wash_results);
-
-        if (!isset($response['resultater'][0]['aktueladresse']['href'])) {
-            $response = $this->getExactAddress($initial_search);
-        }
+        $response = $this->searchForMatches($address, $wash_results);
 
         $extra = [
-            'confidence' => $initial_search['kategori']
+            'confidence' => $response['kategori']
         ];
 
-        return $this->addressFromResponse($response, $extra);
+        if (isset($response['resultater'][0]['aktueladresse']['href'])) {
+            $exact_response = $this->getExactAddress($response);
+            return $this->addressFromResponse($exact_response, $extra);
+        }
 
+        return $this->addressFromResponse($response, $extra);
     }
 
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence'        => self::convert_confidence($extra['confidence']),
+            'confidence'        => self::convert_confidence($extra['confidence']) ?? null,
             'address_formatted' => $response['adressebetegnelse'] . ", Danmark",
             'street_name'       => $response['adgangsadresse']['vejstykke']['navn'],
             'street_number'     => self::format_street_number($response->json()),

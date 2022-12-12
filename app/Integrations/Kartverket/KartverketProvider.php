@@ -14,20 +14,17 @@ use Illuminate\Support\Facades\Http;
 class KartverketProvider extends BaseProvider
 {
     public const WASH_ENDPOINT = 'https://ws.geonorge.no/adresser/v1/sok?fuzzy=true&';
-    public const WASH_ENDPOINT_PARAMS = ['betegnelse'];
 
     public function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
 
         $initial_search = $this->searchForMatches($address, $wash_results);
 
-        if (isset($response['adresser'][0])) {
-            $response = $this->getExactAddress($initial_search);
+        if (isset($initial_search['adresser'][0])) {
             $extra = [
                 'confidence' => Confidence::Exact
             ];
-
-            return $this->addressFromResponse($response, $extra);
+            return $this->addressFromResponse($initial_search, $extra);
         }
 
         return new AddressResponse([
@@ -35,16 +32,13 @@ class KartverketProvider extends BaseProvider
         ]);
     }
 
-
-
-
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
             'confidence' => "exact",
-            'address_formatted' => $response['adresser'][0]['adressenavn'] . $response['adresser'][0]['nummer'] . $response['adresser'][0]['postnummer'] . $response['adresser'][0]['poststed'] . "Norge" ?? null,
+            'address_formatted' => $response['adresser'][0]['adressetekst'] . ", " . $response['adresser'][0]['postnummer'] . " " . $response['adresser'][0]['poststed'] . ", " . "Norge" ?? null,
             'street_name' => $response['adresser'][0]['adressenavn'] ?? null,
-            'street_number' => $response['adresser'][0]['nummer'] ?? null,
+            'street_number' => $response['adresser'][0]['nummer'] . $response['adresser'][0]['bokstav'] ?? null,
             'zip_code' => $response['adresser'][0]['postnummer'] ?? null,
             'city' => $response['adresser'][0]['poststed'] ?? null,
             'state' =>  $response['adresser'][0]['kommunenavn'] ?? null,
@@ -62,14 +56,6 @@ class KartverketProvider extends BaseProvider
         return "{$address->street}, {$address->zip_code} {$address->city}";
     }
 
-
-    protected function getExactAddress(Response $response): Response
-    {
-        if(isset($response['adresser'][0]))
-            return $response['adresser'][0];
-
-        return $response;
-    }
     /**
      * @param AddressRequest $address
      * @param array|AddressRequest $wash_results
@@ -79,7 +65,7 @@ class KartverketProvider extends BaseProvider
     {
 
         $parameters = http_build_query([
-            "adressetekst" => $address->street ?? null,
+            "sok" => $address->street ?? null,
             "kommunenavn" => $address->state ?? null,
             "postnummer" => $address->zip_code ?? null,
             "poststed" => $address->city ?? null
