@@ -3,6 +3,7 @@
 namespace App\Integrations\Kartverket;
 
 use App\Integrations\BaseProvider;
+use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Http\Client\Pool;
@@ -18,14 +19,24 @@ class KartverketProvider extends BaseProvider
     public function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
 
-        $initial_search = $this->searchForMathces($address, $wash_results);
+        $initial_search = $this->searchForMatches($address, $wash_results);
 
-        if(isset($initial_search['adresser'][0])){
-            return $this->addressFromResponse($initial_search);
-         }
+        if (isset($response['adresser'][0])) {
+            $response = $this->getExactAddress($initial_search);
+            $extra = [
+                'confidence' => Confidence::Exact
+            ];
 
-        return $this->emptyAddressFromResponse();
+            return $this->addressFromResponse($response, $extra);
+        }
+
+        return new AddressResponse([
+            'confidence' => Confidence::Unknown
+        ]);
     }
+
+
+
 
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
@@ -46,24 +57,25 @@ class KartverketProvider extends BaseProvider
         ]);
     }
 
-    protected function emptyAddressFromResponse(): AddressResponse
-    {
-
-        return new AddressResponse([
-            'confidence' => "Unkown",
-        ]);
-    }
-
     public static function format_address_attributes(AddressRequest $address): string
     {
         return "{$address->street}, {$address->zip_code} {$address->city}";
+    }
+
+
+    protected function getExactAddress(Response $response): Response
+    {
+        if(isset($response['adresser'][0]))
+            return $response['adresser'][0];
+
+        return $response;
     }
     /**
      * @param AddressRequest $address
      * @param array|AddressRequest $wash_results
      * @return Response
      */
-    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results) : Response
+    protected function searchForMatches(AddressRequest $address, Collection|AddressRequest $wash_results) : Response
     {
 
         $parameters = http_build_query([

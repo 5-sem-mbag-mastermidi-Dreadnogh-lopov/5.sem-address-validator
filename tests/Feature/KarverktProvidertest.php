@@ -9,10 +9,10 @@ test('test should return exact match', function () {
     $provider = new KartverketProvider();
 
     $address = new AddressRequest([
-        'street'       => 'Kollegievej 2B, 3. 9',
-        'zip_code'     => '9000',
-        'city'         => 'Aalborg',
-        'country_code' => 'DK'
+        'street'       => 'Kampengata 18',
+        'zip_code'     => '0654',
+        'city'         => '',
+        'country_code' => 'NO'
     ]);
 
     $kartverkt_response_data = [

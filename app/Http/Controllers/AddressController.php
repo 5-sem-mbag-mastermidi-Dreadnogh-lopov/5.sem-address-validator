@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
@@ -61,16 +62,18 @@ class AddressController extends Controller
             // get the appropriate country strategy and validate the address instance
             $strategy = AddressController::getStrategy($address);
             $res = $strategy->validateAddress($address);
-
+            if($res->confidence !== Confidence::Unknown){
+                $address_model = AddressResponse::firstOrCreate([
+                    'street_name'   => $res->street_name,
+                    'street_number' => $res->street_number,
+                    'zip_code'      => $res->zip_code,
+                    'city'          => $res->city
+                ], $res->attributesToArray());
+                $hash['address_id'] = $address_model['id'];
+                $hash->save();
+            }
             // create result on database and set address id on hash request
-            $address_model = AddressResponse::firstOrCreate([
-                'street_name'   => $res->street_name,
-                'street_number' => $res->street_number,
-                'zip_code'      => $res->zip_code,
-                'city'          => $res->city
-            ], $res->attributesToArray());
-            $hash['address_id'] = $address_model['id'];
-            $hash->save();
+
         }
 
         return $res;

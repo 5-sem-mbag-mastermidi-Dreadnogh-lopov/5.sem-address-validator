@@ -11,5 +11,5 @@ abstract class BaseProvider implements Provider
 {
     protected abstract function addressFromResponse(Response $response, array $extra = null): AddressResponse;
 
-    protected abstract function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response;
+    protected abstract function searchForMatches(AddressRequest $address, Collection|AddressRequest $wash_results): Response;
 }

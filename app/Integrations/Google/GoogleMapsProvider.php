@@ -17,7 +17,7 @@ class GoogleMapsProvider extends BaseProvider
 
     function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
-        $response = $this->searchForMathces($address, $wash_results);
+        $response = $this->searchForMatches($address, $wash_results);
 
 
         $address = $this->addressFromResponse($response);
@@ -34,7 +34,7 @@ class GoogleMapsProvider extends BaseProvider
             && !isset($determinant['result']['verdict']['hasReplacedComponents'])
             && isset($determinant['result']['verdict']['addressComplete'])){
             $verdict = Confidence::Exact;
-        } elseif (self::get_component_text($determinant, 'confirmationLevel', 'UNCONFIRMED_AND_SUSPICIOUS') != null
+        } elseif (self::getComponentText($determinant, 'confirmationLevel', 'UNCONFIRMED_AND_SUSPICIOUS') != null
             || !isset($determinant['result']['verdict']['addressComplete'])) {
             $verdict = Confidence::Unsure;
         } else {
@@ -49,24 +49,23 @@ class GoogleMapsProvider extends BaseProvider
         return new AddressResponse([
             'confidence'        => self::convert_confidence($response),
             'address_formatted' => $response['result']['address']['formattedAddress'] ?? null,
-            'street_name'       => self::get_component_text($response, 'componentType','route') ?? null,
-            'street_number'     => self::format_street_number($response),
+            'street_name'       => self::getComponentText($response, 'componentType','route') ?? null,
+            'street_number'     => self::formatStreetNumber($response),
             'zip_code'          => $response['result']['address']['postalAddress']['postalCode'] ?? null,
             'city'              => $response['result']['address']['postalAddress']['locality'] ?? null,
             'state'             => $response['result']['address']['postalAddress']['administrativeArea'] ?? null,
             'country_code'      => $response['result']['address']['postalAddress']['regionCode'] ?? null,
-            'country_name'      => self::get_component_text($response, 'componentType','country'),
+            'country_name'      => self::getComponentText($response, 'componentType','country'),
             'longitude'         => $response['result']['geocode']['location']['longitude'] ?? null,
             'latitude'          => $response['result']['geocode']['location']['latitude'] ?? null,
             'response_json'     => json_encode($response->json()),
         ]);
     }
 
-    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response
+    protected function searchForMatches(AddressRequest $address, Collection|AddressRequest $wash_results): Response
     {
         // Attempt to use the original address submitted
-        $wash_response = Http::post($this::ENDPOINT . env('GOOGLE_API_KEY'), self::format_request_to_body($address));
-
+        $wash_response = Http::post($this::ENDPOINT . env('GOOGLE_API_KEY'), self::formatRequestToBody($address));
         // if not an exact match is found, attempt to use the different variations
         $responses = [$wash_response];
         if (isset($wash_response['result']['verdict']['hasInferredComponents'])
@@ -74,21 +73,19 @@ class GoogleMapsProvider extends BaseProvider
             || isset($wash_response['result']['verdict']['hasReplacedComponents'])) {
             $responses += Http::pool(function (Pool $pool) use ($wash_results) {
                 foreach ($wash_results as $wash_result) {
-                    $pool->post($this::ENDPOINT . env('GOOGLE_API_KEY'), self::format_request_to_body($wash_result));
+                    $pool->post($this::ENDPOINT . env('GOOGLE_API_KEY'), self::formatRequestToBody($wash_result));
                 }
             });
         }
-
         // TODO: it should choose the best one here and return that one
-
         return $responses[0];
     }
 
-    protected static function format_street_number(Response $response): string
+    protected static function formatStreetNumber(Response $response): string
     {
-        $street_number = self::get_component_text($response,'componentType','street_number'); // TODO same problem as subpremise, just returns the input without formatting
+        $street_number = self::getComponentText($response,'componentType','street_number'); // TODO same problem as subpremise, just returns the input without formatting
 
-        $subpremise = self::get_component_text($response,'componentType','subpremise'); // TODO google doesnt format for you, so if your input is 'urbansgade 23 1 tv' you'll get '1 tv' and not '1. tv' as if formatted (like Dawa does)
+        $subpremise = self::getComponentText($response,'componentType','subpremise'); // TODO google doesnt format for you, so if your input is 'urbansgade 23 1 tv' you'll get '1 tv' and not '1. tv' as if formatted (like Dawa does)
         if (isset($subpremise)) {
             $street_number .= ', ' . $subpremise;
         }
@@ -96,20 +93,20 @@ class GoogleMapsProvider extends BaseProvider
         return $street_number;
     }
 
-    protected static function get_component_text(Response $response, string $component_columnn, string $value)
+    protected static function getComponentText(Response $response, string $component_columnn, string $value)
     {
         $components = $response['result']['address']['addressComponents'];
         $component_types = array_column($components, $component_columnn);
 
         $search_res = array_search($value, $component_types);
         if ($search_res !== false) {
-            $res = $components[$search_res]['componentName']['text'];
+            $res = $components["$search_res"]['componentName']['text'] ?? null;
         }
 
         return $res ?? null;
     }
 
-    protected static function format_request_to_body(AddressRequest $address): array
+    protected static function formatRequestToBody(AddressRequest $address): array
     {
         return [
             'address' => [

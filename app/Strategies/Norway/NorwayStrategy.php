@@ -18,8 +18,6 @@ class NorwayStrategy implements Strategy
 {
     private $providers = [
         KartverketProvider::class,
-        GoogleMapsProvider::class,
-
     ];
 
     /** @var AddressRequestRuleInterface[] */
@@ -34,10 +32,11 @@ class NorwayStrategy implements Strategy
         $res = new AddressResponse();
         foreach ($this->providers as $provider) {
             $res = $this->execute(new $provider(), $address, $addresses);
-            if ($res['exact'] !== \App\Integrations\Confidence::Exact) {
+            if ($res['confidence'] == Confidence::Exact) {
                 break;
             }
         }
+
         return $res;
     }
 
