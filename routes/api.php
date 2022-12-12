@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //Version control
 Route::prefix('v1')->group(function () {
 
-    Route::get('/address', [AddressController::class, 'index']);
+    Route::post('/address', [AddressController::class, 'index']);
 
     Route::prefix('cache')->middleware('checkToken')->group(
         function () {
@@ -37,3 +37,6 @@ Route::prefix('v1')->group(function () {
 Route::get('/alive', function () {
     return response()->json(['alive' => true]);
 });
+
+
+Route::get("/test", [\App\Integrations\Kartverket\KartverketProvider::class, 'validateAddress']);

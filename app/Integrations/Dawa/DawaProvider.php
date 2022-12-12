@@ -18,24 +18,24 @@ class DawaProvider extends BaseProvider
 
     public function validateAddress(AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
-        $initial_search = $this->searchForMathces($address, $wash_results);
-
-        if (!isset($response['resultater'][0]['aktueladresse']['href'])) {
-            $response = $this->getExactAddress($initial_search);
-        }
+        $response = $this->searchForMatches($address, $wash_results);
 
         $extra = [
-            'confidence' => $initial_search['kategori']
+            'confidence' => $response['kategori']
         ];
-        $address = $this->addressFromResponse($response, $extra);
 
-        return $address;
+        if (isset($response['resultater'][0]['aktueladresse']['href'])) {
+            $exact_response = $this->getExactAddress($response);
+            return $this->addressFromResponse($exact_response, $extra);
+        }
+
+        return $this->addressFromResponse($response, $extra);
     }
 
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence'        => self::convert_confidence($extra['confidence']),
+            'confidence'        => self::convert_confidence($extra['confidence']) ?? null,
             'address_formatted' => $response['adressebetegnelse'] . ", Danmark",
             'street_name'       => $response['adgangsadresse']['vejstykke']['navn'],
             'street_number'     => self::format_street_number($response->json()),
@@ -55,13 +55,12 @@ class DawaProvider extends BaseProvider
      * @param array|AddressRequest $wash_results
      * @return Response
      */
-    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): Response
+    protected function searchForMatches(AddressRequest $address, Collection|AddressRequest $wash_results): Response
     {
         // Attempt to use the original address submitted
         $wash_response = Http::get($this::WASH_ENDPOINT, [
             'betegnelse' => $this::format_address_attributes($address)
         ]);
-
         // if not an exact match is found, attempt to use the different variations
         $responses = [$wash_response];
         if ($wash_response['kategori'] != 'A') {
@@ -78,14 +77,16 @@ class DawaProvider extends BaseProvider
         usort($responses, function ($a, $b) {
             return strcmp($a['kategori'], $b['kategori']);
         });
-
         return $responses[0];
     }
 
     protected function getExactAddress(Response $response): Response
     {
         // Always takes the first address suggestion from the datawash result
-        return Http::get($response['resultater'][0]['aktueladresse']['href']);
+        if(isset($response['resultater'][0]['aktueladresse']['href']))
+            return Http::get($response['resultater'][0]['aktueladresse']['href']);
+
+        return $response;
     }
 
     public static function format_address_attributes(AddressRequest $address): string
