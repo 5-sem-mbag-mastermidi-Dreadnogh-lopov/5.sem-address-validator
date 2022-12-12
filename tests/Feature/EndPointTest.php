@@ -128,7 +128,7 @@ class EndPointTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get(
+        $response = $this->post(
             url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
@@ -294,7 +294,7 @@ class EndPointTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get(
+        $response = $this->post(
             url('api/v1/address?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
         )->withHeaders([
             "Accept" => "application/json"
@@ -328,13 +328,12 @@ class EndPointTest extends TestCase
         ]);
 
         // Act
-        $response = $this->get(
+        $response = $this->post(
             url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
 
-        // Assert
         expect($response->status())->toBe(200);
         expect($response->getData())->toHaveKey('address_formatted', 'Fyrkildevej 104, 1. tv, 9220 Aalborg, Danmark');
     }
