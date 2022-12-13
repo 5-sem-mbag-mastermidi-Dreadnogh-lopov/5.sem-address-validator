@@ -20,11 +20,11 @@ class KartverketProvider extends BaseProvider
 
         $initial_search = $this->searchForMatches($address, $wash_results);
 
-        if (isset($initial_search['adresser'][0])) {
-            $extra = [
-                'confidence' => Confidence::Exact
-            ];
-            return $this->addressFromResponse($initial_search, $extra);
+        if (isset($initial_search['metadata']['totaltAntallTreff']) && $initial_search['metadata']['totaltAntallTreff'] == 1) {
+            return $this->addressFromResponse($initial_search, ['confidence' => Confidence::Exact]);
+        }
+        elseif (isset($initial_search['metadata']['totaltAntallTreff']) && $initial_search['metadata']['totaltAntallTreff'] >= 2) {
+            return $this->addressFromResponse($initial_search, ['confidence' => Confidence::Sure]);
         }
 
         return new AddressResponse([
