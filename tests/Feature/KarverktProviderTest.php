@@ -72,3 +72,41 @@ test('test should return exact match', function () {
 });
 
 
+test('test should return unknown match', function () {
+    // Arrange
+    Http::preventStrayRequests();
+    Http::clearResolvedInstances();
+
+    $provider = new KartverketProvider();
+
+    $address = new AddressRequest([
+        'street' => 'Kampengata 18A',
+        'zip_code' => '0654',
+        'country_code' => 'NO'
+    ]);
+
+    $kartverkt_response_data = [];
+
+    $parameters = http_build_query([
+        "sok" => $address->street ?? null,
+        "postnummer" => $address->zip_code ?? null,
+    ]);
+
+    $url = KartverketProvider::WASH_ENDPOINT . $parameters;
+
+    /* Faked data wash */
+    Http::fake([
+        $url => Http::response([
+            "adresser" => [],
+        ])
+    ]);
+
+    // Act
+    $response = $provider->validateAddress($address, collect([]));
+
+    // Assert
+    // Assert
+    expect($response)->toBeInstanceOf(AddressResponse::class);
+    expect($response->attributesToArray())->toMatchArray([]);
+});
+
