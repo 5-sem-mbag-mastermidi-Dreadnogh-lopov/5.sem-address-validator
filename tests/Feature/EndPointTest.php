@@ -61,23 +61,23 @@ class EndPointTest extends TestCase
         $this->seed();
 
         $address = new AddressRequest([
-            "street" => "Kollegievej 2B",
-            "zip_code" => "9000",
-            "city" => "Aalborg",
+            "street"       => "Kollegievej 2B",
+            "zip_code"     => "9000",
+            "city"         => "Aalborg",
             "country_code" => "DK",
         ]);
 
         $dawa_response_data = [
-            'id' => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
-            'confidence' => 'A',
+            'id'                => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
+            'confidence'        => 'A',
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg",
-            'street_name' => "Kollegievej",
-            'street_number' => "2B",
-            'zip_code' => "9000",
-            'city' => "Aalborg",
-            'longitude' => 9.94332025,
-            'latitude' => 57.02471574,
-            'mainland' => true,
+            'street_name'       => "Kollegievej",
+            'street_number'     => "2B",
+            'zip_code'          => "9000",
+            'city'              => "Aalborg",
+            'longitude'         => 9.94332025,
+            'latitude'          => 57.02471574,
+            'mainland'          => true,
         ];
 
         $url = url(DawaProvider::WASH_ENDPOINT . '?' . http_build_query([
@@ -88,17 +88,17 @@ class EndPointTest extends TestCase
         /* Faked data wash */
         Http::fake([
             DawaProvider::WASH_ENDPOINT . '*' => Http::response([
-                "kategori" => $dawa_response_data['confidence'],
+                "kategori"   => $dawa_response_data['confidence'],
                 "resultater" => [
                     0 => [
                         "aktueladresse" => [
-                            "vejnavn" => $dawa_response_data['street_name'],
+                            "vejnavn"             => $dawa_response_data['street_name'],
                             "adresseringsvejnavn" => $dawa_response_data['street_name'],
-                            "husnr" => $dawa_response_data['street_number'],
-                            "postnr" => $dawa_response_data['zip_code'],
-                            "postnrnavn" => $dawa_response_data['city'],
-                            "adgangsadresseid" => $dawa_response_data['id'],
-                            "href" => "https://api.dataforsyningen.dk/adresser/" . $dawa_response_data['id']
+                            "husnr"               => $dawa_response_data['street_number'],
+                            "postnr"              => $dawa_response_data['zip_code'],
+                            "postnrnavn"          => $dawa_response_data['city'],
+                            "adgangsadresseid"    => $dawa_response_data['id'],
+                            "href"                => "https://api.dataforsyningen.dk/adresser/" . $dawa_response_data['id']
                         ]
                     ]
                 ]
@@ -108,22 +108,22 @@ class EndPointTest extends TestCase
         Http::fake([
             'https://api.dataforsyningen.dk/adresser/' . $dawa_response_data['id'] => Http::response([
                 "adressebetegnelse" => $dawa_response_data['address_formatted'],
-                "adgangsadresse" => [
-                    "vejstykke" => [
+                "adgangsadresse"    => [
+                    "vejstykke"  => [
                         "navn" => $dawa_response_data['street_name']
                     ],
-                    "husnr" => $dawa_response_data['street_number'],
+                    "husnr"      => $dawa_response_data['street_number'],
                     "postnummer" => [
-                        "nr" => $dawa_response_data['zip_code'],
+                        "nr"   => $dawa_response_data['zip_code'],
                         "navn" => $dawa_response_data['city']
                     ],
-                    "vejpunkt" => [
+                    "vejpunkt"   => [
                         "koordinater" => [
                             0 => $dawa_response_data['longitude'],
                             1 => $dawa_response_data['latitude']
                         ]
                     ],
-                    "brofast" => $dawa_response_data['mainland']
+                    "brofast"    => $dawa_response_data['mainland']
                 ]
             ], 200)
         ]);
@@ -138,15 +138,15 @@ class EndPointTest extends TestCase
         // Assert
         expect($response->status())->toBe(200);
         $this->assertDatabaseHas('address', [
-            'confidence' => 'exact',
+            'confidence'        => 'exact',
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
-            'street_name' => "Kollegievej",
-            'street_number' => "2B",
-            'zip_code' => "9000",
-            'city' => "Aalborg",
-            'longitude' => 9.94332025,
-            'latitude' => 57.02471574,
-            'mainland' => true,
+            'street_name'       => "Kollegievej",
+            'street_number'     => "2B",
+            'zip_code'          => "9000",
+            'city'              => "Aalborg",
+            'longitude'         => 9.94332025,
+            'latitude'          => 57.02471574,
+            'mainland'          => true,
         ]);
     }
 
@@ -156,26 +156,26 @@ class EndPointTest extends TestCase
         Http::preventStrayRequests();
 
         $address = new AddressRequest([
-            "street" => "Kollegievej 2B",
-            "zip_code" => "9000",
-            "city" => "Aalborg",
+            "street"       => "Kollegievej 2B",
+            "zip_code"     => "9000",
+            "city"         => "Aalborg",
             "country_code" => "DK",
         ]);
 
         $dawa_response_data = [
-            'dawa_id' => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
-            'google_id' => "6a9d33c6-c93f-419e-b030-b8de53eaa7c0",
-            'confidence' => "B",
+            'dawa_id'           => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
+            'google_id'         => "6a9d33c6-c93f-419e-b030-b8de53eaa7c0",
+            'confidence'        => "B",
             'address_formatted' => "Kollegievej 2B, 9000 Aalborg, Danmark",
-            'street_name' => "Kollegievej",
-            'street_number' => "2B",
-            'zip_code' => "9000",
-            'country_code' => "DK",
-            'country' => "Danmark",
-            'city' => "Aalborg",
-            'longitude' => 9.9437139,
-            'latitude' => 57.0247396,
-            'mainland' => true,
+            'street_name'       => "Kollegievej",
+            'street_number'     => "2B",
+            'zip_code'          => "9000",
+            'country_code'      => "DK",
+            'country'           => "Danmark",
+            'city'              => "Aalborg",
+            'longitude'         => 9.9437139,
+            'latitude'          => 57.0247396,
+            'mainland'          => true,
         ];
 
         $dawa_url = DawaProvider::WASH_ENDPOINT . '*';
@@ -184,17 +184,17 @@ class EndPointTest extends TestCase
         /* Faked dawa data wash */
         Http::fake([
             $dawa_url => Http::response([
-                "kategori" => $dawa_response_data['confidence'],
+                "kategori"   => $dawa_response_data['confidence'],
                 "resultater" => [
                     0 => [
                         "aktueladresse" => [
-                            "vejnavn" => $dawa_response_data['street_name'],
+                            "vejnavn"             => $dawa_response_data['street_name'],
                             "adresseringsvejnavn" => $dawa_response_data['street_name'],
-                            "husnr" => $dawa_response_data['street_number'],
-                            "postnr" => $dawa_response_data['zip_code'],
-                            "postnrnavn" => $dawa_response_data['city'],
-                            "adgangsadresseid" => $dawa_response_data['dawa_id'],
-                            "href" => "https://api.dataforsyningen.dk/adresser/" . $dawa_response_data['dawa_id']
+                            "husnr"               => $dawa_response_data['street_number'],
+                            "postnr"              => $dawa_response_data['zip_code'],
+                            "postnrnavn"          => $dawa_response_data['city'],
+                            "adgangsadresseid"    => $dawa_response_data['dawa_id'],
+                            "href"                => "https://api.dataforsyningen.dk/adresser/" . $dawa_response_data['dawa_id']
                         ]
                     ]
                 ]
@@ -204,78 +204,78 @@ class EndPointTest extends TestCase
         Http::fake([
             'https://api.dataforsyningen.dk/adresser/' . $dawa_response_data['dawa_id'] => Http::response([
                 "adressebetegnelse" => $dawa_response_data['address_formatted'],
-                "adgangsadresse" => [
-                    "vejstykke" => [
+                "adgangsadresse"    => [
+                    "vejstykke"  => [
                         "navn" => $dawa_response_data['street_name']
                     ],
-                    "husnr" => $dawa_response_data['street_number'],
+                    "husnr"      => $dawa_response_data['street_number'],
                     "postnummer" => [
-                        "nr" => $dawa_response_data['zip_code'],
+                        "nr"   => $dawa_response_data['zip_code'],
                         "navn" => $dawa_response_data['city']
                     ],
-                    "vejpunkt" => [
+                    "vejpunkt"   => [
                         "koordinater" => [
                             0 => $dawa_response_data['longitude'],
                             1 => $dawa_response_data['latitude']
                         ]
                     ],
-                    "brofast" => $dawa_response_data['mainland']
+                    "brofast"    => $dawa_response_data['mainland']
                 ]
             ], 200)
         ]);
         // Faked google maps lookup
         Http::fake([
             $google_url => Http::response([
-                "result" => [
+                "result"     => [
                     "verdict" => [
-                        "inputGranularity" => "SUB_PREMISE",
-                        "validationGranularity" => "PREMISE",
-                        "geocodeGranularity" => "PREMISE",
-                        "addressComplete" => true,
+                        "inputGranularity"         => "SUB_PREMISE",
+                        "validationGranularity"    => "PREMISE",
+                        "geocodeGranularity"       => "PREMISE",
+                        "addressComplete"          => true,
                         "hasUnconfirmedComponents" => true
                     ],
                     "address" => [
-                        "formattedAddress" => $dawa_response_data['address_formatted'],
-                        "postalAddress" => [
+                        "formattedAddress"          => $dawa_response_data['address_formatted'],
+                        "postalAddress"             => [
                             "regionCode" => $dawa_response_data['country_code'],
                             "postalCode" => $dawa_response_data['zip_code'],
-                            "locality" => $dawa_response_data['city'],
+                            "locality"   => $dawa_response_data['city'],
 
                         ],
-                        "addressComponents" => [
+                        "addressComponents"         => [
                             [
-                                "componentName" => [
+                                "componentName"     => [
                                     "text" => $dawa_response_data['street_name'],
                                 ],
-                                "componentType" => "route",
+                                "componentType"     => "route",
                                 "confirmationLevel" => "CONFIRMED"
                             ],
                             [
-                                "componentName" => [
+                                "componentName"     => [
                                     "text" => $dawa_response_data['street_number'],
                                 ],
-                                "componentType" => "street_number",
+                                "componentType"     => "street_number",
                                 "confirmationLevel" => "CONFIRMED"
                             ],
                             [
-                                "componentName" => [
+                                "componentName"     => [
                                     "text" => $dawa_response_data['zip_code']
                                 ],
-                                "componentType" => "postal_code",
+                                "componentType"     => "postal_code",
                                 "confirmationLevel" => "CONFIRMED"
                             ],
                             [
-                                "componentName" => [
+                                "componentName"     => [
                                     "text" => $dawa_response_data['city'],
                                 ],
-                                "componentType" => "locality",
+                                "componentType"     => "locality",
                                 "confirmationLevel" => "CONFIRMED"
                             ],
                             [
-                                "componentName" => [
+                                "componentName"     => [
                                     "text" => $dawa_response_data['country'],
                                 ],
-                                "componentType" => "country",
+                                "componentType"     => "country",
                                 "confirmationLevel" => "CONFIRMED"
                             ]
                         ],
@@ -285,7 +285,7 @@ class EndPointTest extends TestCase
                     ],
                     "geocode" => [
                         "location" => [
-                            "latitude" => $dawa_response_data['latitude'],
+                            "latitude"  => $dawa_response_data['latitude'],
                             "longitude" => $dawa_response_data['longitude']
                         ],
                     ]
@@ -304,14 +304,14 @@ class EndPointTest extends TestCase
         // Assert
         expect($response->status())->toBe(200);
         expect($response->getData())->toMatchArray([
-            'confidence' => 'sure',
+            'confidence'        => 'sure',
             'address_formatted' => "Kollegievej 2B, 9000 Aalborg, Danmark",
-            'street_name' => "Kollegievej",
-            'street_number' => "2B",
-            'zip_code' => "9000",
-            'city' => "Aalborg",
-            'longitude' => 9.9437139,
-            'latitude' => 57.0247396,
+            'street_name'       => "Kollegievej",
+            'street_number'     => "2B",
+            'zip_code'          => "9000",
+            'city'              => "Aalborg",
+            'longitude'         => 9.9437139,
+            'latitude'          => 57.0247396,
         ]);
     }
 
@@ -322,9 +322,9 @@ class EndPointTest extends TestCase
         $this->seed();
 
         $address = new AddressRequest([
-            "street" => "Fyrkildevej 104, 1. tv",
-            "zip_code" => "9220",
-            "city" => "Aalborg",
+            "street"       => "Fyrkildevej 104, 1. tv",
+            "zip_code"     => "9220",
+            "city"         => "Aalborg",
             "country_code" => "DK",
         ]);
 
@@ -347,28 +347,28 @@ class EndPointTest extends TestCase
         $this->seed();
 
         $address = new AddressRequest([
-            'street' => 'Kampengata 18A',
-            'zip_code' => '0654',
-            'city' => 'OSLO',
+            'street'       => 'Kampengata 18A',
+            'zip_code'     => '0654',
+            'city'         => 'OSLO',
             'country_code' => 'NO'
         ]);
 
         $kartverkt_response_data = [
-            'street_name' => "Kampengata",
+            'street_name'   => "Kampengata",
             'street_number' => "18A",
-            'zip_code' => "0654",
-            'city' => "OSLO",
-            'nummer' => "18",
-            'bokstav' => "A",
-            'longitude' => 10.780512503077,
-            'latitude' => 59.912643213965,
+            'zip_code'      => "0654",
+            'city'          => "OSLO",
+            'nummer'        => "18",
+            'bokstav'       => "A",
+            'longitude'     => 10.780512503077,
+            'latitude'      => 59.912643213965,
         ];
 
         $parameters = http_build_query([
-            "sok" => $address->street ?? null,
+            "sok"         => $address->street ?? null,
             "kommunenavn" => $address->state ?? null,
-            "postnummer" => $address->zip_code ?? null,
-            "poststed" => $address->city ?? null
+            "postnummer"  => $address->zip_code ?? null,
+            "poststed"    => $address->city ?? null
         ]);
 
         $url = KartverketProvider::WASH_ENDPOINT . $parameters;
@@ -376,22 +376,22 @@ class EndPointTest extends TestCase
         Http::fake([
             $url => Http::response([
                 "metadata" => [
-                    "sokeStreng" => "fuzzy=true&sok=Kampengata+18A&postnummer=0654&poststed=OSLO",
-                    "viserTil" => 10,
-                    "side" => 0,
-                    "asciiKompatibel" => true,
-                    "viserFra" => 0,
-                    "treffPerSide" => 10,
+                    "sokeStreng"        => "fuzzy=true&sok=Kampengata+18A&postnummer=0654&poststed=OSLO",
+                    "viserTil"          => 10,
+                    "side"              => 0,
+                    "asciiKompatibel"   => true,
+                    "viserFra"          => 0,
+                    "treffPerSide"      => 10,
                     "totaltAntallTreff" => 1
                 ],
                 "adresser" => [
                     0 => [
-                        "adressenavn" => $kartverkt_response_data['street_name'],
-                        "adressetekst" => $kartverkt_response_data['street_name'] . " " . $kartverkt_response_data['street_number'],
-                        "poststed" => $kartverkt_response_data['city'],
-                        "nummer" => $kartverkt_response_data['nummer'],
-                        "bokstav" => $kartverkt_response_data['bokstav'],
-                        "postnummer" => $kartverkt_response_data['zip_code'],
+                        "adressenavn"          => $kartverkt_response_data['street_name'],
+                        "adressetekst"         => $kartverkt_response_data['street_name'] . " " . $kartverkt_response_data['street_number'],
+                        "poststed"             => $kartverkt_response_data['city'],
+                        "nummer"               => $kartverkt_response_data['nummer'],
+                        "bokstav"              => $kartverkt_response_data['bokstav'],
+                        "postnummer"           => $kartverkt_response_data['zip_code'],
                         "representasjonspunkt" => [
                             "lat" => $kartverkt_response_data['latitude'],
                             "lon" => $kartverkt_response_data['longitude'],
@@ -412,12 +412,12 @@ class EndPointTest extends TestCase
         // Assert
         expect($response->status())->toBe(200);
         $this->assertDatabaseHas('address', [
-            'street_name' => "Kampengata",
+            'street_name'       => "Kampengata",
             'address_formatted' => "Kampengata 18A, 0654 OSLO, Norge",
-            'zip_code' => "0654",
-            'city' => "OSLO",
-            'longitude' => 10.780512503077,
-            'latitude' => 59.912643213965,
+            'zip_code'          => "0654",
+            'city'              => "OSLO",
+            'longitude'         => 10.780512503077,
+            'latitude'          => 59.912643213965,
         ]);
     }
 }
