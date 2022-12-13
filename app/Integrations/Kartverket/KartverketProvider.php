@@ -51,11 +51,6 @@ class KartverketProvider extends BaseProvider
         ]);
     }
 
-    public static function format_address_attributes(AddressRequest $address): string
-    {
-        return "{$address->street}, {$address->zip_code} {$address->city}";
-    }
-
     /**
      * @param AddressRequest $address
      * @param array|AddressRequest $wash_results
