@@ -39,26 +39,35 @@ test('test should return exact match', function () {
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
-                "adresser" => [
-                    0 => [
-                        "adressenavn" => $kartverkt_response_data['street_name'],
-                        "adressetekst" => $kartverkt_response_data['street_name'] . " " . $kartverkt_response_data['street_number'],
-                        "poststed" => $kartverkt_response_data['city'],
-                        "nummer" => $kartverkt_response_data['nummer'],
-                        "bokstav" => $kartverkt_response_data['bokstav'],
-                        "postnummer" => $kartverkt_response_data['zip_code'],
-                        "representasjonspunkt" => [
-                            "lat" => $kartverkt_response_data['latitude'],
-                            "lon" => $kartverkt_response_data['longitude'],
-                        ]
-                    ],
-                ],]
-        )]);
+            "metadata" => [
+                "sokeStreng" => "fuzzy=true&sok=Kampengata+18A&postnummer=0654&poststed=OSLO",
+                "viserTil" => 10,
+                "side" => 0,
+                "asciiKompatibel" => true,
+                "viserFra" => 0,
+                "treffPerSide" => 10,
+                "totaltAntallTreff" => 1
+            ],
+            "adresser" => [
+                0 => [
+                    "adressenavn" => $kartverkt_response_data['street_name'],
+                    "adressetekst" => $kartverkt_response_data['street_name'] . " " . $kartverkt_response_data['street_number'],
+                    "poststed" => $kartverkt_response_data['city'],
+                    "nummer" => $kartverkt_response_data['nummer'],
+                    "bokstav" => $kartverkt_response_data['bokstav'],
+                    "postnummer" => $kartverkt_response_data['zip_code'],
+                    "representasjonspunkt" => [
+                        "lat" => $kartverkt_response_data['latitude'],
+                        "lon" => $kartverkt_response_data['longitude'],
+                    ]
+                ],
+            ],
+        ])
+    ]);
 
     // Act
     $response = $provider->validateAddress($address, collect([]));
 
-    // Assert
     // Assert
     expect($response)->toBeInstanceOf(AddressResponse::class);
     expect($response->attributesToArray())->toMatchArray([
