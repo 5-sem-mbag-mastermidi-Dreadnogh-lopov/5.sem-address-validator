@@ -97,9 +97,7 @@ test('test should return unknown match', function () {
     /* Faked data wash */
     Http::fake([
         $url => Http::response([
-            "adresser" => [
-
-            ],
+            "adresser" => [],
         ])
     ]);
 
