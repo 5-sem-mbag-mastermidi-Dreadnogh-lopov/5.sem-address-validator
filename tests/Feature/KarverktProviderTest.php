@@ -80,7 +80,6 @@ test('test should return exact match', function () {
     ]);
 });
 
-
 test('test should return unknown match', function () {
     // Arrange
     Http::preventStrayRequests();
