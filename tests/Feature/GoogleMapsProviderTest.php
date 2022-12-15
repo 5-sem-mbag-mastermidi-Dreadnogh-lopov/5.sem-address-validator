@@ -135,8 +135,8 @@ class GoogleMapsProviderTest extends TestCase
 
         // Assert
         expect($response)->toBeInstanceOf(AddressResponse::class);
-        expect($response->attributesToArray())->toMatchArray([
-            'confidence'        => Confidence::Sure,
+        expect($response)->toMatchArray([
+            'confidence'        => Confidence::Sure->value,
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B, 3. 9",
