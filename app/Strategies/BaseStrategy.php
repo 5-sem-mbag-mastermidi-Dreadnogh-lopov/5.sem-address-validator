@@ -8,6 +8,7 @@ use App\Integrations\Provider;
 use app\models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Strategies\AddressRequest\AddressRequestRuleInterface;
+use App\Strategies\AddressRequest\ArabicToRomanRule;
 use App\Strategies\AddressRequest\StringReplaceRule;
 use Illuminate\Support\Collection;
 
@@ -64,6 +65,10 @@ abstract class BaseStrategy implements Strategy
         foreach ($this->rules as $rule => $value) {
             $ruleset[] = new StringReplaceRule($rule, $value);
         }
+
+        //Extra rules
+        $ruleset[] = new ArabicToRomanRule();
+
         return $ruleset;
     }
 }
