@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string('country_name');
             $table->float('latitude');
             $table->float('longitude');
-            $table->boolean('mainland');
+            $table->boolean('mainland')->nullable();
             $table->dateTime('expire_date')->nullable();
 
             $table->jsonb('response_json');

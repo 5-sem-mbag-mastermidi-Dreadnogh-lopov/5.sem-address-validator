@@ -47,11 +47,10 @@ class AddressController extends Controller
         $hash = HashRequest::firstOrNew(
             [
                 'hash_key' => hash(env('HASH_ALGO'), json_encode($request_attributes)),
-
             ],
             [
                 'address_id' => null,
-                'request'  => json_encode($request_attributes)
+                'request'    => json_encode($request_attributes)
             ]
         );
 
@@ -60,12 +59,12 @@ class AddressController extends Controller
             $res = AddressResponse::find($hash['address_id']);
         } else {
             // create address instance from request information
-            $address = new AddressRequest($request->all());
+            $address = new AddressRequest($request_attributes);
 
             // get the appropriate country strategy and validate the address instance
             $strategy = $this->getStrategy($address);
             $res = $strategy->validateAddress($address);
-            if($res->confidence !== Confidence::Unknown){
+            if ($res->confidence !== Confidence::Unknown) {
 
                 $address_model = AddressResponse::firstOrCreate([
                     'street_name'   => $res->street_name,
