@@ -47,9 +47,12 @@ class AddressController extends Controller
         $hash = HashRequest::firstOrNew(
             [
                 'hash_key' => hash(env('HASH_ALGO'), json_encode($request_attributes)),
-                'request'  => json_encode($request_attributes)
+
             ],
-            ['address_id' => null]
+            [
+                'address_id' => null,
+                'request'  => json_encode($request_attributes)
+            ]
         );
 
         // verify if there was a record in the database
@@ -60,15 +63,18 @@ class AddressController extends Controller
             $address = new AddressRequest($request->all());
 
             // get the appropriate country strategy and validate the address instance
-            $strategy = AddressController::getStrategy($address);
+            $strategy = $this->getStrategy($address);
             $res = $strategy->validateAddress($address);
             if($res->confidence !== Confidence::Unknown){
+
                 $address_model = AddressResponse::firstOrCreate([
                     'street_name'   => $res->street_name,
                     'street_number' => $res->street_number,
                     'zip_code'      => $res->zip_code,
                     'city'          => $res->city
                 ], $res->attributesToArray());
+
+
                 $hash['address_id'] = $address_model['id'];
                 $hash->save();
             }
