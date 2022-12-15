@@ -89,7 +89,7 @@ class DawaProvider extends BaseProvider
         return $response;
     }
 
-    public static function format_address_attributes(AddressRequest $address): string
+    private static function format_address_attributes(AddressRequest $address): string
     {
         return "{$address->street}, {$address->zip_code} {$address->city}";
     }

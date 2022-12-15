@@ -40,12 +40,12 @@ class NorwayStrategy implements Strategy
         return $res;
     }
 
-    public function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
+    private function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
     {
         return $provider->ValidateAddress($address, $wash_results);
     }
 
-    public function getRules(): array
+    private function getRules(): array
     {
         $rules = WashRules::index();
 
@@ -58,7 +58,7 @@ class NorwayStrategy implements Strategy
         return $ruleset;
     }
 
-    public function wash(AddressRequest $address): Collection
+    private function wash(AddressRequest $address): Collection
     {
         $addresses = [];
         $rules = $this->getRules();
