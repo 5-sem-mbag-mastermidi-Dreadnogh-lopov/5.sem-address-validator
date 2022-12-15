@@ -6,6 +6,7 @@ use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
+use App\Strategies\BaseStrategy;
 use App\Strategies\Denmark\DenmarkStrategy;
 use App\Strategies\Norway\NorwayStrategy;
 use App\Strategies\Strategy;
@@ -94,7 +95,7 @@ class AddressController extends Controller
         return match ($address->country_code) {
             'DK' => new DenmarkStrategy(),
             'NO' => new NorwayStrategy(),
-            default => throw new Exception('Country not supported'), // or return generic strategy using global services like google-maps
+            default => new BaseStrategy()
         };
     }
 }

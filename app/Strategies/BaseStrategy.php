@@ -12,7 +12,7 @@ use App\Strategies\AddressRequest\ArabicToRomanRule;
 use App\Strategies\AddressRequest\StringReplaceRule;
 use Illuminate\Support\Collection;
 
-abstract class BaseStrategy implements Strategy
+class BaseStrategy implements Strategy
 {
     protected array $providers = [
         GoogleMapsProvider::class,
@@ -23,15 +23,30 @@ abstract class BaseStrategy implements Strategy
     public function validateAddress(AddressRequest $address): AddressResponse
     {
         $addresses = $this->wash($address);
-        $res = new AddressResponse();
+
+        $res = [];
         foreach ($this->providers as $provider) {
-            $res = $this->execute(new $provider(), $address, $addresses);
-            if ($res['confidence'] == Confidence::Exact) {
+            $tmp = $this->execute(new $provider(), $address, $addresses);
+            if ($tmp['confidence'] == Confidence::Exact) {
                 break;
             }
+            $res[] = $tmp;
         }
 
-        return $res;
+        //dump($res);
+        usort($res, function ($a, $b) {
+            $order = [
+                1 => Confidence::Exact,
+                2 => Confidence::Sure,
+                3 => Confidence::Unsure,
+                4 => Confidence::Unknown
+            ];
+
+            return $order[array_search($a['confidence'], $order)] > $order[array_search($a['confidence'], $order)];
+        });
+        //dd($res);
+
+        return $res[0];
     }
 
     public function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
