@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Integrations\Google\GoogleMapsProvider;
 use App\Integrations\Kartverket\KartverketProvider;
@@ -80,14 +81,11 @@ class EndPointTest extends TestCase
             'mainland'          => true,
         ];
 
-        $url = url(DawaProvider::WASH_ENDPOINT . '?' . http_build_query([
-                DawaProvider::WASH_ENDPOINT_PARAMS[0] => urlencode(DawaProvider::format_address_attributes($address))
-            ])
-        );
-
+        $url = url(DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . rawurlencode(DawaProvider::format_address_attributes($address)));
+        //dd($url);
         /* Faked data wash */
         Http::fake([
-            DawaProvider::WASH_ENDPOINT . '*' => Http::response([
+            $url => Http::response([
                 "kategori"   => $dawa_response_data['confidence'],
                 "resultater" => [
                     0 => [
@@ -138,7 +136,7 @@ class EndPointTest extends TestCase
         // Assert
         expect($response->status())->toBe(200);
         $this->assertDatabaseHas('address', [
-            'confidence'        => 'exact',
+            'confidence'        => Confidence::Exact->value,
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",

@@ -35,7 +35,7 @@ class DawaProvider extends BaseProvider
     protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence'        => self::convert_confidence($extra['confidence']) ?? null,
+            'confidence'        => self::convert_confidence($extra['confidence'] ?? null),
             'address_formatted' => $response['adressebetegnelse'] . ", Danmark",
             'street_name'       => $response['adgangsadresse']['vejstykke']['navn'],
             'street_number'     => self::format_street_number($response->json()),
@@ -83,7 +83,7 @@ class DawaProvider extends BaseProvider
     protected function getExactAddress(Response $response): Response
     {
         // Always takes the first address suggestion from the datawash result
-        if(isset($response['resultater'][0]['aktueladresse']['href']))
+        if (isset($response['resultater'][0]['aktueladresse']['href']))
             return Http::get($response['resultater'][0]['aktueladresse']['href']);
 
         return $response;

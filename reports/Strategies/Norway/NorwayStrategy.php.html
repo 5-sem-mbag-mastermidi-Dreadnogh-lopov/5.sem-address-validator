@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Code Coverage for /home/michael/5.sem-address-validator/app/Strategies/Denmark/DenmarkStrategy.php</title>
+  <title>Code Coverage for /home/michael/5.sem-address-validator/app/Strategies/Norway/NorwayStrategy.php</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../_css/octicons.css" rel="stylesheet" type="text/css">
@@ -18,8 +18,8 @@
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../../index.html">/home/michael/5.sem-address-validator/app</a></li>
          <li class="breadcrumb-item"><a href="../index.html">Strategies</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Denmark</a></li>
-         <li class="breadcrumb-item active">DenmarkStrategy.php</li>
+         <li class="breadcrumb-item"><a href="index.html">Norway</a></li>
+         <li class="breadcrumb-item active">NorwayStrategy.php</li>
 
        </ol>
       </nav>
@@ -73,7 +73,7 @@
       </tr>
 
       <tr>
-       <td class="success"><abbr title="App\Strategies\Denmark\DenmarkStrategy">DenmarkStrategy</abbr></td>
+       <td class="success"><abbr title="App\Strategies\Norway\NorwayStrategy">NorwayStrategy</abbr></td>
        <td class="success big">       <div class="progress">
          <div class="progress-bar bg-success" role="progressbar" aria-valuenow="100.00" aria-valuemin="0" aria-valuemax="100" style="width: 100.00%">
            <span class="sr-only">100.00% covered (success)</span>
@@ -102,7 +102,7 @@
       </tr>
 
       <tr>
-       <td class="success">&nbsp;<a href="#18"><abbr title="__construct()">__construct</abbr></a></td>
+       <td class="success">&nbsp;<a href="#14"><abbr title="__construct()">__construct</abbr></a></td>
        <td class="success big">       <div class="progress">
          <div class="progress-bar bg-success" role="progressbar" aria-valuenow="100.00" aria-valuemin="0" aria-valuemax="100" style="width: 100.00%">
            <span class="sr-only">100.00% covered (success)</span>
@@ -131,26 +131,22 @@
 <tbody>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="1" href="#1">1</a></td><td class="col-11 codeLine"><span class="default">&lt;?php</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="2" href="#2">2</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="3" href="#3">3</a></td><td class="col-11 codeLine"><span class="keyword">namespace</span><span class="default">&nbsp;</span><span class="default">App\Strategies\Denmark</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="3" href="#3">3</a></td><td class="col-11 codeLine"><span class="keyword">namespace</span><span class="default">&nbsp;</span><span class="default">App\Strategies\Norway</span><span class="keyword">;</span></td></tr>
     <tr class=" d-flex"><td  class="col-1 text-right"><a id="4" href="#4">4</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="5" href="#5">5</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Integrations\Dao\DaoProvider</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="6" href="#6">6</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Integrations\Dawa\DawaProvider</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="7" href="#7">7</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Integrations\Google\GoogleMapsProvider</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="8" href="#8">8</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Strategies\BaseStrategy</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="9" href="#9">9</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="10" href="#10">10</a></td><td class="col-11 codeLine"><span class="keyword">class</span><span class="default">&nbsp;</span><span class="default">DenmarkStrategy</span><span class="default">&nbsp;</span><span class="keyword">extends</span><span class="default">&nbsp;</span><span class="default">BaseStrategy</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="11" href="#11">11</a></td><td class="col-11 codeLine"><span class="keyword">{</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="12" href="#12">12</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">protected</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="default">&nbsp;</span><span class="default">$providers</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">[</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="13" href="#13">13</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">DaoProvider</span><span class="default">::</span><span class="keyword">class</span><span class="keyword">,</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="14" href="#14">14</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">DawaProvider</span><span class="default">::</span><span class="keyword">class</span><span class="keyword">,</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="15" href="#15">15</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">GoogleMapsProvider</span><span class="default">::</span><span class="keyword">class</span><span class="keyword">,</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="16" href="#16">16</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="17" href="#17">17</a></td><td class="col-11 codeLine"></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="18" href="#18">18</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">__construct</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="19" href="#19">19</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
-    <tr class="covered-by-large-tests popin d-flex"><td  data-title="4 tests cover line 20" data-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Feature\EndPointTest::test_should_return_address_from_dk_dawa&lt;/li&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Feature\EndPointTest::test_should_return_address_from_dk_google_maps&lt;/li&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;P\Tests\Unit\washingTest::Denmark washing - checking object&lt;/li&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;P\Tests\Unit\washingTest::Denmark washing - Checking validating method&lt;/li&gt;&lt;/ul&gt;" data-placement="top" data-html="true" class="col-1 text-right"><a id="20" href="#20">20</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">rules</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">include</span><span class="default">&nbsp;</span><span class="default">'WashRules.php'</span><span class="keyword">;</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="21" href="#21">21</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
-    <tr class=" d-flex"><td  class="col-1 text-right"><a id="22" href="#22">22</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="5" href="#5">5</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Integrations\Kartverket\KartverketProvider</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="6" href="#6">6</a></td><td class="col-11 codeLine"><span class="keyword">use</span><span class="default">&nbsp;</span><span class="default">App\Strategies\BaseStrategy</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="7" href="#7">7</a></td><td class="col-11 codeLine"></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="8" href="#8">8</a></td><td class="col-11 codeLine"><span class="keyword">class</span><span class="default">&nbsp;</span><span class="default">NorwayStrategy</span><span class="default">&nbsp;</span><span class="keyword">extends</span><span class="default">&nbsp;</span><span class="default">BaseStrategy</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="9" href="#9">9</a></td><td class="col-11 codeLine"><span class="keyword">{</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="10" href="#10">10</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">protected</span><span class="default">&nbsp;</span><span class="keyword">array</span><span class="default">&nbsp;</span><span class="default">$providers</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">[</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="11" href="#11">11</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">KartverketProvider</span><span class="default">::</span><span class="keyword">class</span><span class="keyword">,</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="12" href="#12">12</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">]</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="13" href="#13">13</a></td><td class="col-11 codeLine"></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="14" href="#14">14</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">__construct</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="15" href="#15">15</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+    <tr class="covered-by-large-tests popin d-flex"><td  data-title="1 test covers line 16" data-content="&lt;ul&gt;&lt;li class=&quot;covered-by-large-tests&quot;&gt;Tests\Feature\EndPointTest::test_should_return_address_from_no_karverkt&lt;/li&gt;&lt;/ul&gt;" data-placement="top" data-html="true" class="col-1 text-right"><a id="16" href="#16">16</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">rules</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="keyword">include</span><span class="default">&nbsp;</span><span class="default">'WashRules.php'</span><span class="keyword">;</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="17" href="#17">17</a></td><td class="col-11 codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+    <tr class=" d-flex"><td  class="col-1 text-right"><a id="18" href="#18">18</a></td><td class="col-11 codeLine"><span class="keyword">}</span></td></tr>
 
 </tbody>
 </table>
