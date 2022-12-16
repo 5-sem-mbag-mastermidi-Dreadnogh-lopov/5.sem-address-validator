@@ -34,12 +34,15 @@
         console.log("obj", obj);
 
         const data = new URLSearchParams(obj).toString();
-        let response = await fetch("http://localhost/api/v1/address?" + data, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-            },
-        });
+        let response = await fetch(
+            import.meta.env.VITE_API_HOST + "/api/v1/address?" + data,
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                },
+            }
+        );
 
         if (response.ok) {
             let responseJson = await response.json();
@@ -70,7 +73,7 @@
 {/await}
 <div
     class="flex flex-col items-center pt-12 m-h-[50vh] justify-around"
-    in:fly={{x:500, duration: 300 }}
+    in:fly={{ x: 500, duration: 300 }}
 >
     <p class="text-lg">
         Enter the <span class="font-bold">Address</span>, to see if it exists in
