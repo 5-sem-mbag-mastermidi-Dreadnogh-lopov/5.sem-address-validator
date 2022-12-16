@@ -31,7 +31,6 @@
                 ),
             {}
         );
-        console.log("obj", obj);
 
         const data = new URLSearchParams(obj).toString();
         let response = await fetch(
