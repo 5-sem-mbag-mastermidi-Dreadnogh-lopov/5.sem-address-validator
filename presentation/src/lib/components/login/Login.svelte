@@ -5,7 +5,7 @@
     let password = "";
     let errors = false;
 
-    async function submitLogin(password) {
+    async function submitLogin() {
         //Send password to API
         let response = await fetch(
             import.meta.env.VITE_API_HOST + "api/v1/user?password=" + password
@@ -23,9 +23,10 @@
     }
 </script>
 
+<svelte:window on:keydown={submitLogin} />
 <div
     class="flex flex-col items-center pt-12 h-[50vh] justify-around"
-    in:fly={{x:-500, duration: 300 }}
+    in:fly={{ x: -500, duration: 300 }}
 >
     <p class="text-lg">
         To enter the <span class="font-bold">Admin tool</span>, type the
@@ -44,7 +45,7 @@
         />
     </div>
     <button
-        on:click={() => submitLogin(password)}
+        on:click={submitLogin}
         class="p-2 border text-white hover:text-green-500 shadow rounded bg-green-500 m-2 -mt-16 w-44 transition-all hover:scale-105 hover:bg-white hover:border-green-500"
         >Login</button
     >
