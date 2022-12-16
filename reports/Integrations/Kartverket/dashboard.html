@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /home/michael/5.sem-address-validator/app/Integrations/Google</title>
+  <title>Dashboard for /home/michael/5.sem-address-validator/app/Integrations/Kartverket</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
@@ -18,7 +18,7 @@
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../../index.html">/home/michael/5.sem-address-validator/app</a></li>
          <li class="breadcrumb-item"><a href="../index.html">Integrations</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Google</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Kartverket</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -112,7 +112,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="GoogleMapsProvider.php.html#28"><abbr title="App\Integrations\Google\GoogleMapsProvider::convert_confidence">convert_confidence</abbr></a></td><td class="text-right">81%</td></tr>
+       <tr><td><a href="KartverketProvider.php.html#18"><abbr title="App\Integrations\Kartverket\KartverketProvider::validateAddress">validateAddress</abbr></a></td><td class="text-right">83%</td></tr>
 
        </tbody>
       </table>
@@ -129,7 +129,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="GoogleMapsProvider.php.html#28"><abbr title="App\Integrations\Google\GoogleMapsProvider::convert_confidence">convert_confidence</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="KartverketProvider.php.html#18"><abbr title="App\Integrations\Kartverket\KartverketProvider::validateAddress">validateAddress</abbr></a></td><td class="text-right">5</td></tr>
 
        </tbody>
       </table>
@@ -176,7 +176,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,1,0,6], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,1,1,1], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -226,7 +226,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[96.07843137254902,19,"<a href=\"GoogleMapsProvider.php.html#14\">App\\Integrations\\Google\\GoogleMapsProvider<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[92.85714285714286,9,"<a href=\"KartverketProvider.php.html#14\">App\\Integrations\\Kartverket\\KartverketProvider<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -250,7 +250,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"GoogleMapsProvider.php.html#18\">App\\Integrations\\Google\\GoogleMapsProvider::validateAddress<\/a>"],[81.81818181818183,7,"<a href=\"GoogleMapsProvider.php.html#28\">App\\Integrations\\Google\\GoogleMapsProvider::convert_confidence<\/a>"],[100,1,"<a href=\"GoogleMapsProvider.php.html#47\">App\\Integrations\\Google\\GoogleMapsProvider::addressFromResponse<\/a>"],[100,5,"<a href=\"GoogleMapsProvider.php.html#65\">App\\Integrations\\Google\\GoogleMapsProvider::searchForMatches<\/a>"],[100,2,"<a href=\"GoogleMapsProvider.php.html#84\">App\\Integrations\\Google\\GoogleMapsProvider::formatStreetNumber<\/a>"],[100,2,"<a href=\"GoogleMapsProvider.php.html#96\">App\\Integrations\\Google\\GoogleMapsProvider::getComponentText<\/a>"],[100,1,"<a href=\"GoogleMapsProvider.php.html#109\">App\\Integrations\\Google\\GoogleMapsProvider::formatRequestToBody<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[83.33333333333334,5,"<a href=\"KartverketProvider.php.html#18\">App\\Integrations\\Kartverket\\KartverketProvider::validateAddress<\/a>"],[100,1,"<a href=\"KartverketProvider.php.html#35\">App\\Integrations\\Kartverket\\KartverketProvider::addressFromResponse<\/a>"],[91.66666666666666,3,"<a href=\"KartverketProvider.php.html#59\">App\\Integrations\\Kartverket\\KartverketProvider::searchForMatches<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);

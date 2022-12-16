@@ -21,6 +21,8 @@
             <directory suffix=".php">./app/Http/Middleware</directory>
             <directory suffix=".php">./app/Providers</directory>
             <directory suffix=".php">./app/Console</directory>
+            <directory suffix=".php">./app/Models</directory>
+            <file>.app/Strategies/AddressRequest/RomanNumeralRule.php</file>
         </exclude>
     </coverage>
     <php>

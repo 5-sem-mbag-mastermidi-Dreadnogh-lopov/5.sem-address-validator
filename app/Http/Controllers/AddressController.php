@@ -6,6 +6,7 @@ use App\Integrations\Confidence;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Models\HashRequest;
+use App\Strategies\BaseStrategy;
 use App\Strategies\Denmark\DenmarkStrategy;
 use App\Strategies\Norway\NorwayStrategy;
 use App\Strategies\Strategy;
@@ -47,9 +48,11 @@ class AddressController extends Controller
         $hash = HashRequest::firstOrNew(
             [
                 'hash_key' => hash(env('HASH_ALGO'), json_encode($request_attributes)),
-                'request'  => json_encode($request_attributes)
             ],
-            ['address_id' => null]
+            [
+                'address_id' => null,
+                'request'    => json_encode($request_attributes)
+            ]
         );
 
         // verify if there was a record in the database
@@ -57,18 +60,21 @@ class AddressController extends Controller
             $res = AddressResponse::find($hash['address_id']);
         } else {
             // create address instance from request information
-            $address = new AddressRequest($request->all());
+            $address = new AddressRequest($request_attributes);
 
             // get the appropriate country strategy and validate the address instance
-            $strategy = AddressController::getStrategy($address);
+            $strategy = $this->getStrategy($address);
             $res = $strategy->validateAddress($address);
-            if($res->confidence !== Confidence::Unknown){
+            if ($res->confidence !== Confidence::Unknown) {
+
                 $address_model = AddressResponse::firstOrCreate([
                     'street_name'   => $res->street_name,
                     'street_number' => $res->street_number,
                     'zip_code'      => $res->zip_code,
                     'city'          => $res->city
                 ], $res->attributesToArray());
+
+
                 $hash['address_id'] = $address_model['id'];
                 $hash->save();
             }
@@ -89,7 +95,7 @@ class AddressController extends Controller
         return match ($address->country_code) {
             'DK' => new DenmarkStrategy(),
             'NO' => new NorwayStrategy(),
-            default => throw new Exception('Country not supported'), // or return generic strategy using global services like google-maps
+            default => new BaseStrategy()
         };
     }
 }

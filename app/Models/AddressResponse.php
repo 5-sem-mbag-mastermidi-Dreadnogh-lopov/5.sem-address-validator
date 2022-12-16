@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Integrations\Confidence;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,5 +42,9 @@ class AddressResponse extends Model
         'longitude',
         'mainland',
         'response_json'
+    ];
+
+    protected $casts = [
+        'confidence' => Confidence::class
     ];
 }

@@ -20,11 +20,12 @@ class KartverketProvider extends BaseProvider
 
         $initial_search = $this->searchForMatches($address, $wash_results);
 
-        if (isset($initial_search['adresser'][0])) {
-            $extra = [
-                'confidence' => Confidence::Exact
-            ];
-            return $this->addressFromResponse($initial_search, $extra);
+        if ($initial_search['metadata']['totaltAntallTreff'] == 1) {
+            return $this->addressFromResponse($initial_search,Confidence::Exact);
+        }
+
+        if ($initial_search['metadata']['totaltAntallTreff'] >= 2) {
+            return $this->addressFromResponse($initial_search, Confidence::Sure);
         }
 
         return new AddressResponse([
@@ -32,10 +33,10 @@ class KartverketProvider extends BaseProvider
         ]);
     }
 
-    protected function addressFromResponse(Response $response, array $extra = null): AddressResponse
+    protected function addressFromResponse(Response $response, $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence' => "exact",
+            'confidence' => $extra,
             'address_formatted' => $response['adresser'][0]['adressetekst'] . ", " . $response['adresser'][0]['postnummer'] . " " . $response['adresser'][0]['poststed'] . ", " . "Norge" ?? null,
             'street_name' => $response['adresser'][0]['adressenavn'] ?? null,
             'street_number' => $response['adresser'][0]['nummer'] . $response['adresser'][0]['bokstav'] ?? null,
@@ -46,14 +47,8 @@ class KartverketProvider extends BaseProvider
             'country_name' => 'Norge',
             'longitude' => $response['adresser'][0]['representasjonspunkt']['lon']  ?? null,
             'latitude' => $response['adresser'][0]['representasjonspunkt']['lat']  ?? null,
-            'mainland' => null,
             'response_json' => json_encode($response->json()) ?? null,
         ]);
-    }
-
-    public static function format_address_attributes(AddressRequest $address): string
-    {
-        return "{$address->street}, {$address->zip_code} {$address->city}";
     }
 
     /**

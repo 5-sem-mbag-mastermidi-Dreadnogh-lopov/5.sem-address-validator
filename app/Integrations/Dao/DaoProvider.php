@@ -40,22 +40,40 @@ class DaoProvider implements Provider
 
     protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
     {
-        $matches = [];
+        $wash_results[] = $address;
+        $results = [];
+
         // Explain: (street_name)(street_number)(opgang) first match is all together
         $exp = "/(^\D*\d??)(\d*\w??)(\w*\D??)/";
-        preg_match($exp, $address->street, $matches);
-        $matches = array_filter(array_map('trim', $matches));
-        //dump($matches);
-        $raw_query = DaoAddress::firstOrNew([
-            'post_nr'          => $address->zip_code ?? null,
-            'post_distrikt'    => $address['city'] ?? null,
-            'gadenavn_synonym' => $matches[1] ?? null,
-            'hus_nr'           => $matches[2] ?? null,
-            'opgang'           => $matches[3] ?? null,
-        ], [
-            'confidence' => Confidence::Unknown
-        ]);
-        /*
+
+        foreach ($wash_results as $wash) {
+            $matches = [];
+            preg_match($exp, $address['street'], $matches);
+            $matches = array_filter(array_map('trim', $matches));
+
+            $search_data = array_filter([
+                'post_nr'          => $wash['zip_code'] ?? null,
+                'post_distrikt'    => $wash['city'] ?? null,
+                'gadenavn_synonym' => $matches[1] ?? null,
+                'hus_nr'           => $matches[2] ?? null,
+                'opgang'           => $matches[3] ?? null,
+            ]);
+
+            $results[] = DaoAddress::firstOrNew($search_data, [
+                'confidence' => Confidence::Unknown
+            ]);
+        }
+
+        // Filter out any result that couldn't be found
+        array_filter($results, function ($obj) {
+            return ($obj['confidence'] ?? Confidence::Unknown) != Confidence::Unknown;
+        });
+
+        return $results[0];
+    }
+
+    protected function searchForMathcesLevensthein(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
+    {
         $formatted_address = self::address_formatted($address);
         //dump($formatted_address);
         $raw_query = DB::raw(<<<pgsql
@@ -77,8 +95,6 @@ pgsql
         $new_res = new DaoAddress((array)($query_select[0] ?? null));
 
         return $new_res;
-        */
-        return $raw_query;
     }
 
     protected static function address_formatted(AddressRequest $address)

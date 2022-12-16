@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Integrations\Confidence;
 use App\Integrations\Dawa\DawaProvider;
 use App\Integrations\Google\GoogleMapsProvider;
+use App\Integrations\Kartverket\KartverketProvider;
 use App\Models\AddressRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -79,14 +81,11 @@ class EndPointTest extends TestCase
             'mainland'          => true,
         ];
 
-        $url = url(DawaProvider::WASH_ENDPOINT . '?' . http_build_query([
-                DawaProvider::WASH_ENDPOINT_PARAMS[0] => urlencode(DawaProvider::format_address_attributes($address))
-            ])
-        );
-
+        $url = url(DawaProvider::WASH_ENDPOINT . '?' . DawaProvider::WASH_ENDPOINT_PARAMS[0] . '=' . rawurlencode(DawaProvider::format_address_attributes($address)));
+        //dd($url);
         /* Faked data wash */
         Http::fake([
-            DawaProvider::WASH_ENDPOINT . '*' => Http::response([
+            $url => Http::response([
                 "kategori"   => $dawa_response_data['confidence'],
                 "resultater" => [
                     0 => [
@@ -137,7 +136,7 @@ class EndPointTest extends TestCase
         // Assert
         expect($response->status())->toBe(200);
         $this->assertDatabaseHas('address', [
-            'confidence'        => 'exact',
+            'confidence'        => Confidence::Exact->value,
             'address_formatted' => "Kollegievej 2B, 3. 9, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
@@ -336,5 +335,87 @@ class EndPointTest extends TestCase
 
         expect($response->status())->toBe(200);
         expect($response->getData())->toHaveKey('address_formatted', 'Fyrkildevej 104, 1. tv, 9220 Aalborg, Danmark');
+    }
+
+
+    public function test_should_return_address_from_no_karverkt()
+    {
+        // Arrange
+        Http::preventStrayRequests();
+        $this->seed();
+
+        $address = new AddressRequest([
+            'street'       => 'Kampengata 18A',
+            'zip_code'     => '0654',
+            'city'         => 'OSLO',
+            'country_code' => 'NO'
+        ]);
+
+        $kartverkt_response_data = [
+            'street_name'   => "Kampengata",
+            'street_number' => "18A",
+            'zip_code'      => "0654",
+            'city'          => "OSLO",
+            'nummer'        => "18",
+            'bokstav'       => "A",
+            'longitude'     => 10.780512503077,
+            'latitude'      => 59.912643213965,
+        ];
+
+        $parameters = http_build_query([
+            "sok"         => $address->street ?? null,
+            "kommunenavn" => $address->state ?? null,
+            "postnummer"  => $address->zip_code ?? null,
+            "poststed"    => $address->city ?? null
+        ]);
+
+        $url = KartverketProvider::WASH_ENDPOINT . $parameters;
+
+        Http::fake([
+            $url => Http::response([
+                "metadata" => [
+                    "sokeStreng"        => "fuzzy=true&sok=Kampengata+18A&postnummer=0654&poststed=OSLO",
+                    "viserTil"          => 10,
+                    "side"              => 0,
+                    "asciiKompatibel"   => true,
+                    "viserFra"          => 0,
+                    "treffPerSide"      => 10,
+                    "totaltAntallTreff" => 1
+                ],
+                "adresser" => [
+                    0 => [
+                        "adressenavn"          => $kartverkt_response_data['street_name'],
+                        "adressetekst"         => $kartverkt_response_data['street_name'] . " " . $kartverkt_response_data['street_number'],
+                        "poststed"             => $kartverkt_response_data['city'],
+                        "nummer"               => $kartverkt_response_data['nummer'],
+                        "bokstav"              => $kartverkt_response_data['bokstav'],
+                        "postnummer"           => $kartverkt_response_data['zip_code'],
+                        "representasjonspunkt" => [
+                            "lat" => $kartverkt_response_data['latitude'],
+                            "lon" => $kartverkt_response_data['longitude'],
+                        ]
+                    ],
+                ],
+            ])
+        ]);
+
+
+        // Act
+        $response = $this->post(
+            url('api/v1/address?' . http_build_query($address->attributesToArray()))
+        )->withHeaders([
+            "Accept" => "application/json"
+        ]);
+
+        // Assert
+        expect($response->status())->toBe(200);
+        $this->assertDatabaseHas('address', [
+            'street_name'       => "Kampengata",
+            'address_formatted' => "Kampengata 18A, 0654 OSLO, Norge",
+            'zip_code'          => "0654",
+            'city'              => "OSLO",
+            'longitude'         => 10.780512503077,
+            'latitude'          => 59.912643213965,
+        ]);
     }
 }
