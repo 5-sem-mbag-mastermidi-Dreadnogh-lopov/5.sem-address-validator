@@ -23,7 +23,13 @@
     }
 </script>
 
-<svelte:window on:keydown={submitLogin} />
+<svelte:window
+    on:keydown={(e) => {
+        if (e.key === "Enter") {
+            submitLogin();
+        }
+    }}
+/>
 <div
     class="flex flex-col items-center pt-12 h-[50vh] justify-around"
     in:fly={{ x: -500, duration: 300 }}
