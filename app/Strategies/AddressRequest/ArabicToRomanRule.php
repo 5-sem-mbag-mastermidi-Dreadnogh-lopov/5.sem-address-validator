@@ -26,7 +26,7 @@ class ArabicToRomanRule implements AddressRequestRuleInterface
     public function apply(AddressRequest $request): AddressRequest
     {
         $exp = "/^\d*/";
-        $exp_street_name = "/^(.+)\s(\d\w+)$/i";
+        $exp_street_name = "/^(.+)(\s\d\w.*)$/i";
 
         // First, seperate street name from house number and split into array
         preg_match($exp_street_name, $request['street'], $matches_street);

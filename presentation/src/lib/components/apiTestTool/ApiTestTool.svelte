@@ -37,10 +37,12 @@
         let response = await fetch(
             import.meta.env.VITE_API_HOST + "/api/v1/address?" + data,
             {
-                method: "GET",
+                method: "POST",
                 headers: {
                     Accept: "application/json",
+                    "Content-Type": "application/json",
                 },
+                body: JSON.stringify(obj),
             }
         );
 

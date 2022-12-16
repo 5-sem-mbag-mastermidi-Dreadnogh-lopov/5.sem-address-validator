@@ -8,7 +8,6 @@ use App\Integrations\Provider;
 use app\models\AddressRequest;
 use App\Models\AddressResponse;
 use App\Strategies\AddressRequest\AddressRequestRuleInterface;
-use App\Strategies\AddressRequest\ArabicToRomanRule;
 use App\Strategies\AddressRequest\StringReplaceRule;
 use Illuminate\Support\Collection;
 
@@ -24,29 +23,16 @@ class BaseStrategy implements Strategy
     {
         $addresses = $this->wash($address);
 
-        $res = [];
         foreach ($this->providers as $provider) {
             $tmp = $this->execute(new $provider(), $address, $addresses);
-            if ($tmp['confidence'] == Confidence::Exact) {
+            if ($tmp['confidence'] == Confidence::Exact || $tmp['confidence'] == Confidence::Sure) {
+                $res = $tmp;
                 break;
             }
-            $res[] = $tmp;
         }
 
-        //dump($res);
-        usort($res, function ($a, $b) {
-            $order = [
-                1 => Confidence::Exact,
-                2 => Confidence::Sure,
-                3 => Confidence::Unsure,
-                4 => Confidence::Unknown
-            ];
 
-            return $order[array_search($a['confidence'], $order)] > $order[array_search($a['confidence'], $order)];
-        });
-        //dd($res);
-
-        return $res[0];
+        return $res;
     }
 
     public function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
@@ -82,7 +68,7 @@ class BaseStrategy implements Strategy
         }
 
         //Extra rules
-        $ruleset[] = new ArabicToRomanRule();
+        //$ruleset[] = new ArabicToRomanRule();
 
         return $ruleset;
     }

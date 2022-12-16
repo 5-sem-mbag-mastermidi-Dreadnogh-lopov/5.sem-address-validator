@@ -32,7 +32,7 @@ class GoogleMapsProvider extends BaseProvider
         if (!isset($determinant['result']['verdict']['hasInferredComponents'])
             && !isset($determinant['result']['verdict']['hasUnconfirmedComponents'])
             && !isset($determinant['result']['verdict']['hasReplacedComponents'])
-            && isset($determinant['result']['verdict']['addressComplete'])){
+            && isset($determinant['result']['verdict']['addressComplete'])) {
             $verdict = Confidence::Exact;
         } elseif (self::getComponentText($determinant, 'confirmationLevel', 'UNCONFIRMED_AND_SUSPICIOUS') != null
             || !isset($determinant['result']['verdict']['addressComplete'])) {
@@ -49,13 +49,13 @@ class GoogleMapsProvider extends BaseProvider
         return new AddressResponse([
             'confidence'        => self::convert_confidence($response),
             'address_formatted' => $response['result']['address']['formattedAddress'] ?? null,
-            'street_name'       => self::getComponentText($response, 'componentType','route') ?? null,
+            'street_name'       => self::getComponentText($response, 'componentType', 'route') ?? null,
             'street_number'     => self::formatStreetNumber($response),
             'zip_code'          => $response['result']['address']['postalAddress']['postalCode'] ?? null,
             'city'              => $response['result']['address']['postalAddress']['locality'] ?? null,
             'state'             => $response['result']['address']['postalAddress']['administrativeArea'] ?? null,
             'country_code'      => $response['result']['address']['postalAddress']['regionCode'] ?? null,
-            'country_name'      => self::getComponentText($response, 'componentType','country'),
+            'country_name'      => self::getComponentText($response, 'componentType', 'country'),
             'longitude'         => $response['result']['geocode']['location']['longitude'] ?? null,
             'latitude'          => $response['result']['geocode']['location']['latitude'] ?? null,
             'response_json'     => json_encode($response->json()),
@@ -83,9 +83,9 @@ class GoogleMapsProvider extends BaseProvider
 
     protected static function formatStreetNumber(Response $response): string
     {
-        $street_number = self::getComponentText($response,'componentType','street_number'); // TODO same problem as subpremise, just returns the input without formatting
+        $street_number = self::getComponentText($response, 'componentType', 'street_number'); // TODO same problem as subpremise, just returns the input without formatting
 
-        $subpremise = self::getComponentText($response,'componentType','subpremise'); // TODO google doesnt format for you, so if your input is 'urbansgade 23 1 tv' you'll get '1 tv' and not '1. tv' as if formatted (like Dawa does)
+        $subpremise = self::getComponentText($response, 'componentType', 'subpremise'); // TODO google doesnt format for you, so if your input is 'urbansgade 23 1 tv' you'll get '1 tv' and not '1. tv' as if formatted (like Dawa does)
         if (isset($subpremise)) {
             $street_number .= ', ' . $subpremise;
         }
