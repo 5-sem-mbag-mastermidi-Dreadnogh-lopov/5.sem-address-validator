@@ -7,6 +7,7 @@ use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class DaoProvider implements Provider
 {
@@ -24,7 +25,7 @@ class DaoProvider implements Provider
     protected function addressFromResponse(DaoAddress $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence'        => $response['confidence'] ?? Confidence::Exact,
+            'confidence'        => $response['distance'] == 0 ? Confidence::Exact : Confidence::Sure,
             'address_formatted' => $response['address_formatted'] . ", Danmark",
             'street_name'       => $response['gadenavn'],
             'street_number'     => $response['hus_nr'] . $response['opgang'],
@@ -38,7 +39,7 @@ class DaoProvider implements Provider
         ]);
     }
 
-    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
+    protected function searchForMathcesOld(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
     {
         $wash_results[] = $address;
         $results = [];
@@ -72,32 +73,28 @@ class DaoProvider implements Provider
         return $results[0];
     }
 
-    protected function searchForMathcesLevensthein(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
+    protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
     {
-        $formatted_address = self::address_formatted($address);
         //dump($formatted_address);
         $raw_query = DB::raw(<<<pgsql
-         select * from (
-            SELECT
-                id,
-                address_formatted,
-                levenshtein_less_equal(lower(address_formatted), :str, length(:str)/3) as distance
-            FROM dao_address_view
-        ) as res
-        join dao_address as dao on dao.id = res.id
-        where res.distance < length(:str)/3+1
+        SELECT
+            *,
+            levenshtein_less_equal(lower(address_formatted), :str, length(:str)/3) as distance
+        FROM dao_address_view
+        join dao_address as dao on dao.id = dao_address_view.id
+        where dao_address_view.post_nr like :postnr
         ORDER BY distance ASC
         LIMIT 1
 pgsql
         );
 
-        $query_select = DB::select($raw_query, ['str' => $formatted_address]);
+        $query_select = DB::select($raw_query, ['str' => $address['street'], 'postnr' => $address['zip_code']]);
         $new_res = new DaoAddress((array)($query_select[0] ?? null));
 
         return $new_res;
     }
 
-    protected static function address_formatted(AddressRequest $address)
+    protected static function address_formatted(AddressRequest $address): string
     {
         return "{$address['street']}, {$address['zip_code']} {$address['city']}";
     }

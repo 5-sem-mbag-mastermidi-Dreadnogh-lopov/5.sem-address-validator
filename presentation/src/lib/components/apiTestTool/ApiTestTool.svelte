@@ -32,9 +32,8 @@
             {}
         );
 
-        const data = new URLSearchParams(obj).toString();
         let response = await fetch(
-            import.meta.env.VITE_API_HOST + "/api/v1/address?" + data,
+            import.meta.env.VITE_API_HOST + "api/v1/address",
             {
                 method: "POST",
                 headers: {
@@ -117,6 +116,7 @@
                         <th scope="col" class="py-3 px-6"> Street Number </th>
                         <th scope="col" class="py-3 px-6"> Zipcode </th>
                         <th scope="col" class="py-3 px-6"> City </th>
+                        <th scope="col" class="py-3 px-6"> State </th>
                         <th scope="col" class="py-3 px-6"> Country </th>
                         <th scope="col" class="py-3 px-6"> Country Code </th>
                     </tr>
@@ -136,6 +136,7 @@
                             <td class="py-4 px-6"> {item.street_number} </td>
                             <td class="py-4 px-6"> {item.zip_code} </td>
                             <td class="py-4 px-6"> {item.city} </td>
+                            <td class="py-4 px-6"> {item.state} </td>
                             <td class="py-4 px-6"> {item.country_name} </td>
                             <td class="py-4 px-6"> {item.country_code} </td>
                         </tr>

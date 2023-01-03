@@ -11,7 +11,7 @@ return new class extends Migration {
      */
     public function up()
     {
-        DB::statement('create view dao_address_view as select id, concat(gadenavn_synonym, \' \', hus_nr, opgang, \', \' , post_nr, \' \', post_distrikt) as address_formatted from dao_address;');
+        DB::statement('create view dao_address_view as select id, concat(gadenavn_synonym, \' \', hus_nr, opgang) as address_formatted, post_nr from dao_address;');
     }
 
     /**

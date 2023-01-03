@@ -26,13 +26,11 @@ class BaseStrategy implements Strategy
         foreach ($this->providers as $provider) {
             $tmp = $this->execute(new $provider(), $address, $addresses);
             if ($tmp['confidence'] == Confidence::Exact || $tmp['confidence'] == Confidence::Sure) {
-                $res = $tmp;
-                break;
+                return $tmp;
             }
         }
 
-
-        return $res;
+        throw new \Exception("could not find any match");
     }
 
     public function execute(Provider $provider, AddressRequest $address, Collection|AddressRequest $wash_results): AddressResponse
