@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
-          php-version: '8.1.2'
+          php-version: '8.2'
       - uses: actions/checkout@v3
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
@@ -44,4 +44,6 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         # The default PostgreSQL port
-          POSTGRES_PORT: ${{job.services.postgres.ports['5432']}}
+          DB_PORT: ${{job.services.postgres.ports['5432']}}
+          DB_HOST: "127.0.0.1"
+
