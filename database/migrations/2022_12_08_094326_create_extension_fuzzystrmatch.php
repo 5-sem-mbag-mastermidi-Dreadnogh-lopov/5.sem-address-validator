@@ -11,7 +11,12 @@ return new class extends Migration {
      */
     public function up()
     {
+        try {
+            //code...
             DB::statement('CREATE EXTENSION fuzzystrmatch;');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }   
     }
 
     /**
