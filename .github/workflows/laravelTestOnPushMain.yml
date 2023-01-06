@@ -35,3 +35,8 @@ jobs:
         run: php artisan key:generate
       - name: Run test with coverage
         run: php artisan test --coverage-html reports/
+        env:
+        # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: postgres
+        # The default PostgreSQL port
+          POSTGRES_PORT: 5432
