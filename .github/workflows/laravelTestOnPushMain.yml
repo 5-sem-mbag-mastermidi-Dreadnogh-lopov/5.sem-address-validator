@@ -36,6 +36,8 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Generate key
         run: php artisan key:generate
+      - name: Migration
+        run: php artisan migrate 
       - name: Run test with coverage
         run: php artisan test --coverage-html reports/
         env:
