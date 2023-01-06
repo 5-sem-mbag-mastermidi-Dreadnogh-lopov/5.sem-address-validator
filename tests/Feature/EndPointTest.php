@@ -152,6 +152,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
+        this->seed();
 
         $address = new AddressRequest([
             "street"       => "Kollegievej 2B",
@@ -294,7 +295,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
+            url('api/v1/address', $address)
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -328,7 +329,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?' . http_build_query($address->attributesToArray()))
+            url('api/v1/address',$address->attributesToArray())
         )->withHeaders([
             "Accept" => "application/json"
         ]);
