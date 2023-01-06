@@ -36,18 +36,10 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Generate key
         run: php artisan key:generate
-      - name: Migrate
-        env: 
-          POSTGRES_HOST: localhost
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        # The default PostgreSQL port
-          DB_PORT: ${{job.services.postgres.ports['5432']}}
-          DB_HOST: "127.0.0.1"
-
-        run: php artisan migrate -v
       - name: Run test with coverage
-        run: php artisan test --coverage-html reports/
+        run: |
+         php artisan test --coverage-html reports/
+         php artisan migrate -v
         env:
         # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
