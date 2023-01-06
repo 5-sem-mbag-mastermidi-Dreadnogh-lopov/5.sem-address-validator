@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class CacheControllerTest extends TestCase
 {
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_success_should_return_address()
     {
