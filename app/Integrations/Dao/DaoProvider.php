@@ -6,6 +6,7 @@ use App\Integrations\Confidence;
 use App\Integrations\Provider;
 use App\Models\AddressRequest;
 use App\Models\AddressResponse;
+use Fuse\Fuse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class DaoProvider implements Provider
     protected function addressFromResponse(DaoAddress $response, array $extra = null): AddressResponse
     {
         return new AddressResponse([
-            'confidence'        => $response['distance'] == 0 ? Confidence::Exact : Confidence::Sure,
+            'confidence'        => $response['distance'] != null && $response['distance'] == 0 ? Confidence::Exact : ($response['distance'] != null && $response['distance'] > 0 ? Confidence::Sure : Confidence::Unknown),
             'address_formatted' => $response['address_formatted'] . ", Danmark",
             'street_name'       => $response['gadenavn'],
             'street_number'     => $response['hus_nr'] . $response['opgang'],
@@ -73,6 +74,24 @@ class DaoProvider implements Provider
         return $results[0];
     }
 
+    protected function searchForMathcesFuzzy(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
+    {
+        $list = DB::table('dao_address_view')
+                  ->join('dao_address', 'dao_address_view.id', '=', 'dao_address.id')
+                  ->where('dao_address_view.post_nr', 'LIKE', substr($address['zip_code'], 0, 2) . '%')
+                  ->get();
+
+        $options = ['keys' => ['address_formatted']];
+
+        $array = json_decode(json_encode($list), true);
+
+        $fuse = new Fuse($array, $options);
+
+        $results = $fuse->search($address['street']);
+
+        return new DaoAddress($results[0]['item']);
+    }
+
     protected function searchForMathces(AddressRequest $address, Collection|AddressRequest $wash_results): DaoAddress
     {
         //dump($formatted_address);
@@ -82,7 +101,7 @@ class DaoProvider implements Provider
             levenshtein_less_equal(lower(address_formatted), :str, length(:str)/3) as distance
         FROM dao_address_view
         join dao_address as dao on dao.id = dao_address_view.id
-        where dao_address_view.post_nr like :postnr
+        where dao_address_view.post_nr like concat(substring(:postnr from 0 for 2), '%')
         ORDER BY distance ASC
         LIMIT 1
 pgsql
