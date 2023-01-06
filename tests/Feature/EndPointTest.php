@@ -295,7 +295,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address', $address)
+            url('api/v1/address', http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -329,7 +329,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address',$address->attributesToArray())
+            url('api/v1/address', http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
