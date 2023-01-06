@@ -152,7 +152,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
-        this->seed();
+        //this->seed();
 
         $address = new AddressRequest([
             "street"       => "Kollegievej 2B",
@@ -318,7 +318,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
-        $this->seed();
+        //$this->seed();
 
         $address = new AddressRequest([
             "street"       => "Fyrkildevej 104, 1. tv",
