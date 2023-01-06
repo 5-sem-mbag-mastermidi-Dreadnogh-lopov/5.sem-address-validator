@@ -36,7 +36,6 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Generate key
         run: php artisan key:generate
-      - name: Run test with coverage
       - name: Migrate
         env: 
           POSTGRES_HOST: localhost
@@ -47,8 +46,8 @@ jobs:
           DB_HOST: "127.0.0.1"
 
         run: php artisan migrate -v
-        run: |
-          php artisan test --coverage-html reports/
+      - name: Run test with coverage
+        run: php artisan test --coverage-html reports/
         env:
         # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
