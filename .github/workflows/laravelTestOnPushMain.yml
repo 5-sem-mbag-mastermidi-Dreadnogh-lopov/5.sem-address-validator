@@ -16,6 +16,8 @@ jobs:
           env: 
             POSTGRES_PASSWORD: postgres
             POSTGRES_USER: postgres
+          ports:
+            - 5432/tcp
           options: >-
             --health-cmd pg_isready
             --health-interval 10s
@@ -42,4 +44,4 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         # The default PostgreSQL port
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: ${{job.services.postgres.ports['5432']}}
