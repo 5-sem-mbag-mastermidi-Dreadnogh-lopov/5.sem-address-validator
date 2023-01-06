@@ -1,0 +1,105 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: random-name-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: random-name-deply
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: random-name-deply
+    spec:
+      volumes:
+        - name: webapp-data
+          emptyDir: { }
+        - name: logs
+          emptyDir: { }
+        - name: cache
+          emptyDir: { }
+        - name: testing
+          emptyDir: { }
+        - name: storage
+          emptyDir: { }
+        - name: public
+          emptyDir: { }
+        - name: sessions
+          emptyDir: { }
+        - name: views
+          emptyDir: { }
+        - name: nginx-conf
+          configMap:
+            name: random-name-nginx-config # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: nginx.conf
+                path: default.conf
+        - name: log
+          emptyDir: { }
+      dnsPolicy : Default
+      dnsConfig:
+        options:
+          - name: single-request-reopen
+      initContainers: #for nginx has index.php and other files in public
+        - name: fpm-init
+          image: CONTAINER_IMAGE
+          command: [ "/bin/sh", "-c", "cp -r /var/www/html/public/. /app" ]
+          volumeMounts:
+            - name: public
+              mountPath: app
+      containers:
+        - name: nginx
+          imagePullPolicy: Always
+          image: public.ecr.aws/nginx/nginx:latest
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: nginx-conf
+            - mountPath: /var/log/nginx
+              name: log
+            - name: public
+              mountPath: /var/www/html/public
+          resources: {}
+          ports:
+            - containerPort: 80
+        - name: fpm
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+            - name: storage
+              mountPath: /var/www/html/storage/
+              subPath: storage
+            - name: cache
+              mountPath: /var/www/html/storage/framework/cache
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+            - name: views
+              mountPath: /var/www/html/storage/framework/views
+          resources: { }
+          image: CONTAINER_IMAGE
+          ports:
+            - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: random-name-service
+  labels:
+    app: random-name-service
+spec:
+  selector:
+    app: random-name-deply
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 80
+  type: NodePort

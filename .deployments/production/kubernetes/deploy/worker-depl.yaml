@@ -1,0 +1,35 @@
+# core-depl.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-name-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: random-name-deploy
+  template:
+    metadata:
+      labels:
+        app: random-name-deploy
+    spec:
+      dnsPolicy: Default
+      dnsConfig:
+        options:
+          - name: single-request-reopen
+      containers:
+        - name: worker
+          image: CONTAINER_IMAGE
+          imagePullPolicy: Always
+          command: ["php", "artisan", "queue:work", "--queue=worker","--timeout=0", "--delay=60","--tries=3"]
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "90Mi"
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "php", "artisan", "queue:restart" ]
+          env:
+            - name: ENVIRONMENT
+              value: production

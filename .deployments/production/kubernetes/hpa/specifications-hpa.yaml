@@ -1,0 +1,16 @@
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: random-name-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: random-name-depl
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    - type: External
+      external:
+        metricName: random-name-queue-length
+        targetAverageValue: 100

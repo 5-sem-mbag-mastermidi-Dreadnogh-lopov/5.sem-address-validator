@@ -1,0 +1,19 @@
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: random-name-queue-length
+spec:
+  name: random-name-queue-length
+  queries:
+    - id: sqs_worker
+      metricStat:
+        metric:
+          namespace: "AWS/SQS"
+          metricName: "ApproximateNumberOfMessagesVisible"
+          dimensions:
+            - name: QueueName
+              value: "specifications-worker"
+        period: 60
+        stat: Average
+        unit: Count
+      returnData: true
