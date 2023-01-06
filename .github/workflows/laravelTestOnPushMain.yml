@@ -38,8 +38,8 @@ jobs:
         run: php artisan key:generate
       - name: Run test with coverage
         run: |
-         php artisan test --coverage-html reports/
          php artisan migrate -v
+         php artisan test --coverage-html reports/
         env:
         # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
