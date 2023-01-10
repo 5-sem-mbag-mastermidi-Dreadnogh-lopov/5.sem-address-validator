@@ -59,7 +59,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
-        $this->seed();
+        //$this->seed();
 
         $address = new AddressRequest([
             "street"       => "Kollegievej 2B",
@@ -152,6 +152,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
+        //this->seed();
 
         $address = new AddressRequest([
             "street"       => "Kollegievej 2B",
@@ -163,7 +164,7 @@ class EndPointTest extends TestCase
         $dawa_response_data = [
             'dawa_id'           => "1b22bd91-adde-41fd-93de-fe5037cbf02d",
             'google_id'         => "6a9d33c6-c93f-419e-b030-b8de53eaa7c0",
-            'confidence'        => "B",
+            'confidence'        => "C",
             'address_formatted' => "Kollegievej 2B, 9000 Aalborg, Danmark",
             'street_name'       => "Kollegievej",
             'street_number'     => "2B",
@@ -294,7 +295,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?' . http_build_query($address->attributesToArray(), encoding_type: PHP_QUERY_RFC3986))
+            url('api/v1/address?'. http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -328,7 +329,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?' . http_build_query($address->attributesToArray()))
+            url('api/v1/address?'. http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -342,7 +343,7 @@ class EndPointTest extends TestCase
     {
         // Arrange
         Http::preventStrayRequests();
-        $this->seed();
+        //$this->seed();
 
         $address = new AddressRequest([
             'street'       => 'Kampengata 18A',

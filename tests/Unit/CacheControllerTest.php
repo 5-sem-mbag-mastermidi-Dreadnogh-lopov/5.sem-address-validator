@@ -13,7 +13,7 @@ class CacheControllerTest extends TestCase
 
         $this->seed();
 
-        $request = new Request(["search_field" => "FyrKildevej",]);
+        $request = new Request(["search_field" => "Fyrkildevej"]);
 
         $result = (new App\Http\Controllers\CacheController)->index($request)->toArray();
 

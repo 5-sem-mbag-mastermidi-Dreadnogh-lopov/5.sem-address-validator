@@ -35,7 +35,6 @@ return new class extends Migration {
             $table->unique(['street_name', 'street_number', 'zip_code'], 'unique_address');
         });
 
-        if (env('APP_ENV') != "testing")
             DB::statement("ALTER TABLE address ALTER COLUMN expire_date SET DEFAULT now() + interval '100 day';");
     }
 

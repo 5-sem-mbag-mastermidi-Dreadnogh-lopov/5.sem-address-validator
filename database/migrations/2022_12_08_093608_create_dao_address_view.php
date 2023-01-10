@@ -21,6 +21,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('dao_address_view');
+        Schema::statement('drop view IF EXISTS dao_address_view');
     }
 };

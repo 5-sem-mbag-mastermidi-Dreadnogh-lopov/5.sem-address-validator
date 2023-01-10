@@ -12,7 +12,7 @@ class CacheController extends Controller
     public function index(Request $request) : Collection
     {
         if($request->search_field){
-            return AddressResponse::where('address_formatted', "LIKE", "$request->search_field%")->get();
+            return AddressResponse::where('address_formatted', "ILIKE", "$request->search_field%")->get();
 
         }
         return AddressResponse::all();

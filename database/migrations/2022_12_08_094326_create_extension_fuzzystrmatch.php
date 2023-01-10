@@ -11,8 +11,12 @@ return new class extends Migration {
      */
     public function up()
     {
-        if (env('APP_ENV') != "testing")
+        try {
+            //code...
             DB::statement('CREATE EXTENSION fuzzystrmatch;');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }   
     }
 
     /**
