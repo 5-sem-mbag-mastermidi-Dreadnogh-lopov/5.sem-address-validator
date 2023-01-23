@@ -36,10 +36,24 @@ services:
             - sail
         volumes:
             - 'sail-postgres:/var/lib/postgresql/data'
+    postgres-test:
+        image: 'postgres:15.0'
+        restart: always
+        environment:
+            POSTGRES_USERNAME: 'postgres'
+            POSTGRES_PASSWORD: 'postgres'
+        ports:
+            - '${FORWARD_DB_PORT:-5433}:5432'
+        networks:
+            - sail
+        volumes:
+            - 'sail-postgres-test:/var/lib/postgresql/data'
 
 networks:
     sail:
         driver: bridge
 volumes:
     sail-postgres:
+        driver: local
+    sail-postgres-test:
         driver: local

@@ -128,7 +128,8 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?' . http_build_query($address->attributesToArray()))
+            'api/v1/address',
+            $address->attributesToArray()
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -146,6 +147,7 @@ class EndPointTest extends TestCase
             'latitude'          => 57.02471574,
             'mainland'          => true,
         ]);
+        Http::assertSentCount(2);
     }
 
     public function test_should_return_address_from_dk_google_maps()
@@ -295,7 +297,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?'. http_build_query($address->attributesToArray()))
+            url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
@@ -329,7 +331,7 @@ class EndPointTest extends TestCase
 
         // Act
         $response = $this->post(
-            url('api/v1/address?'. http_build_query($address->attributesToArray()))
+            url('api/v1/address?' . http_build_query($address->attributesToArray()))
         )->withHeaders([
             "Accept" => "application/json"
         ]);
