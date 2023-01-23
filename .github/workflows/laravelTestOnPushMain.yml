@@ -10,19 +10,19 @@ jobs:
   laravel-tests:
     #PostgresSQL
     runs-on: ubuntu-latest
-    services: 
+    services:
       postgres:
-          image: postgres
-          env: 
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_USER: postgres
-          ports:
-            - 5432/tcp
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
@@ -38,14 +38,16 @@ jobs:
         run: php artisan key:generate
       - name: Run test with coverage
         run: |
-         php artisan migrate -v
-         php artisan test --coverage-html reports/
+          php artisan migrate -v
+          php artisan test --coverage-html reports/
         env:
-        # The hostname used to communicate with the PostgreSQL service container
+          # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
-        # The default PostgreSQL port
+          # The default PostgreSQL port
           DB_PORT: ${{job.services.postgres.ports['5432']}}
           DB_HOST: "127.0.0.1"
+          DB_PORT_TEST: 5433
+          DB_HOST_TEST: postgres-test
 
